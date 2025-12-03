@@ -12,8 +12,6 @@ services:
       - ../build/libs:/plugins:ro
       # External plugins directory
       - ./plugins:/data/plugins
-      # Server configuration
-      - ./server.properties:/data/server.properties
     environment:
       # Accept EULA
       EULA: "TRUE"
@@ -26,6 +24,11 @@ services:
       ENABLE_RCON: "true"
       RCON_PASSWORD: "minecraft"
       RCON_PORT: 25575
+      # Server settings
+      DIFFICULTY: "peaceful"
+      MAX_PLAYERS: "3"
+      ONLINE_MODE: "false"
+      VIEW_DISTANCE: "5"
       # Development settings
       SERVER_NAME: "Rune Core Debug Server"
       MOTD: "§6Rune Core Debug Server"

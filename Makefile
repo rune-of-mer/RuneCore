@@ -3,8 +3,8 @@
 DOCKER_COMPOSE := docker compose -f docker/compose.yml
 
 start:
-	./docker/download-plugins.sh
 	./gradlew shadowJar
+	./docker/download-plugins.sh
 	$(DOCKER_COMPOSE) up
 
 restart:
