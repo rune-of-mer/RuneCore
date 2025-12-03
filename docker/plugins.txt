@@ -14,4 +14,4 @@
 #
 # Add your plugin URLs below:
 
-https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
+https://download.luckperms.net/1609/bukkit/loader/LuckPerms-Bukkit-5.5.20.jar
