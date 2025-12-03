@@ -1,0 +1,43 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server:java21
+    container_name: rune-core-debug
+    ports:
+      - "25565:25565"  # Minecraft server port
+      - "25575:25575"  # RCON port
+    volumes:
+      # Persistent server data
+      - minecraft-data:/data
+      # Plugin source code (for development)
+      - ../build/libs:/plugins:ro
+      # External plugins directory
+      - ./plugins:/data/plugins
+    environment:
+      # Accept EULA
+      EULA: "TRUE"
+      # Server type and version
+      TYPE: "PAPER"
+      VERSION: "1.21.3"
+      # Memory settings
+      MEMORY: "1G"
+      # RCON settings
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "minecraft"
+      RCON_PORT: 25575
+      # Server settings
+      DIFFICULTY: "peaceful"
+      MAX_PLAYERS: "3"
+      ONLINE_MODE: "false"
+      VIEW_DISTANCE: "5"
+      # Development settings
+      SERVER_NAME: "Rune Core Debug Server"
+      MOTD: "§6Rune Core Debug Server"
+      # Auto-sync plugin files
+      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+
+volumes:
+  minecraft-data:
