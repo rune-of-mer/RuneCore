@@ -13,5 +13,7 @@ value class MessageComponent(
 
     fun infoMessage(): Component = Component.text(message).color(NamedTextColor.AQUA)
 
+    fun debugMessage(): Component = Component.text(message).color(NamedTextColor.LIGHT_PURPLE)
+
     fun customMessage(color: NamedTextColor): Component = Component.text(message).color(color)
 }
