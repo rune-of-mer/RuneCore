@@ -4,5 +4,5 @@ main: dev.m1sk9.runeCore.RuneCore
 api-version: '1.21'
 prefix: RuneCore
 load: STARTUP
-authors: [ Sho Sakuma (m1sk9), Rune of Mel DevTeam ]
-description: Rune of Mel Core Plugin
+authors: [ Sho Sakuma (m1sk9), Rune of Mer DevTeam ]
+description: Rune of Mer Core Plugin

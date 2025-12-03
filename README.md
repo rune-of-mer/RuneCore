@@ -1,6 +1,6 @@
 # RuneCore
 
-Rune of Mel におけるコアプラグイン．
+Rune of Mer におけるコアプラグイン．
 
 貢献に関するガイドは [こちら](.github/CONTRIBUTING.md)を参照してください．
 
