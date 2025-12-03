@@ -10,6 +10,8 @@ services:
       - minecraft-data:/data
       # Plugin source code (for development)
       - ../build/libs:/plugins:ro
+      # External plugins directory
+      - ./plugins:/data/plugins
       # Server configuration
       - ./server.properties:/data/server.properties
     environment:

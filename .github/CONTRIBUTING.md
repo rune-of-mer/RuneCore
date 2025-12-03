@@ -126,6 +126,26 @@ make rcon
 make logs
 ```
 
+### 外部プラグインの導入
+
+**前提として:** Rune of Mel は外部プラグインを積極的に採用していません．この機能は最低限導入する外部プラグインおよび開発支援のためにあります．
+
+- 外部プラグインをデバックサーバに導入するには `docker/plugins.txt` にプラグインのダウンロード URL を追加します．
+- 追加後， `make start` を実行するか `docker/download-plugins.sh` スクリプトを実行するとプラグインをダウンロードできます．
+  - RuneCore の再ビルドは `make start` 時に自動で行われるので不要です．
+- サポートされる URL フォーマットは次の通りです:
+  - Jar ファイルへの直接ダウンロード URL
+  - GitHub のリリース URL (例: `https://github.com/owner/repo/releases/download/version/plugin.jar`)
+  - SpigotMC のリソース URL (手動ダウンロードが必要です)
+
+```text
+# Examples:
+# https://github.com/EssentialsX/Essentials/releases/download/2.20.1/EssentialsX-2.20.1.jar
+# https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.11.3/PlaceholderAPI-2.11.3.jar
+
+https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
+```
+
 ## 付録: タスク索引
 
 ### ktlint (ktlint-gradle)
