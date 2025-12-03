@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "2.2.21"
-    id("com.gradleup.shadow") version "8.3.0"
+    id("com.gradleup.shadow") version "8.3.9"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
 }
