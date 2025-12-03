@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "2.2.21"
     id("com.gradleup.shadow") version "8.3.0"
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
 }
 
 group = "dev.m1sk9"
@@ -21,9 +22,6 @@ dependencies {
 
 tasks {
     runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("1.21")
     }
 }

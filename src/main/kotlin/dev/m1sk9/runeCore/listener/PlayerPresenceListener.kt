@@ -11,8 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent
  * Handles actions to be performed when a player joins the server.
  * Processes to be executed before the player logs in should be described in the PlayerLoginListener. Implement the database.
  */
-class PlayerPresenceListener: Listener {
-
+class PlayerPresenceListener : Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
