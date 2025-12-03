@@ -1,0 +1,32 @@
+# Build artifacts
+build/
+.gradle/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Git
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Docker
+docker/logs/
+
+# Documentation
+*.md
+LICENSE
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kotlin
+.kotlin/
+out/
