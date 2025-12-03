@@ -2,12 +2,6 @@
 
 DOCKER_COMPOSE := docker compose -f docker/compose.yml
 
-help:
-	@echo 'Usage: make [target]'
-	@echo ''
-	@echo 'Available targets:'
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-
 start:
 	./gradlew shadowJar
 	$(DOCKER_COMPOSE) up

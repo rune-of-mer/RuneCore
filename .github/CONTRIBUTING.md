@@ -100,6 +100,32 @@ import org.bukkit.entity.Player
 import org.bukkit.entity.*
 ```
 
+## デバッグサーバ
+
+RuneCore の開発環境には Docker を使用したデバッグサーバが付属しています．
+
+Make コマンドを使用して，デバッグサーバを起動・停止できます．
+
+```bash
+# デバッグサーバの起動
+make start
+
+# デバッグサーバの停止
+make stop
+
+# デバッグサーバの再起動
+make restart
+
+# デバッグサーバのリセット
+make clean
+
+# Rcon クライアントの起動
+make rcon
+
+# ログの表示
+make logs
+```
+
 ## 付録: タスク索引
 
 ### ktlint (ktlint-gradle)
