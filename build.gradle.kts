@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.m1sk9"
-version = "0.1.0-beta"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
