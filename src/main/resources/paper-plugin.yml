@@ -1,8 +1,8 @@
 name: rune-core
-version: '0.1.0-beta'
+version: '0.1.0'
 main: dev.m1sk9.runeCore.RuneCore
 api-version: '1.21'
-prefix: RC
+prefix: RuneCore
 load: STARTUP
 authors: [ Sho Sakuma (m1sk9), Rune of Mel DevTeam ]
 description: Rune of Mel Core Plugin
