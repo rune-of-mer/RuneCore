@@ -5,7 +5,7 @@
 RuneCore は以下の環境で動作します:
 
 - Java 21 以上
-    - Rune of Mel では [Zulu OpenJDK](https://www.azul.com/downloads/?package=jdk) を使用しています．
+    - Rune of Mer では [Zulu OpenJDK](https://www.azul.com/downloads/?package=jdk) を使用しています．
 - Gradle 8.8 以上
 
 開発するために必要なツールは以下の通りです:
@@ -128,7 +128,7 @@ make logs
 
 ### 外部プラグインの導入
 
-**前提として:** Rune of Mel は外部プラグインを積極的に採用していません．この機能は最低限導入する外部プラグインおよび開発支援のためにあります．
+**前提として:** Rune of Mer は外部プラグインを積極的に採用していません．この機能は最低限導入する外部プラグインおよび開発支援のためにあります．
 
 - 外部プラグインをデバックサーバに導入するには `docker/plugins.txt` にプラグインのダウンロード URL を追加します．
 - 追加後， `make start` を実行するか `docker/download-plugins.sh` スクリプトを実行するとプラグインをダウンロードできます．
