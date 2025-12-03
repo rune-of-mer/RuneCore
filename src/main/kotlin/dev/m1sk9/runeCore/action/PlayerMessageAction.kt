@@ -1,7 +1,6 @@
 package dev.m1sk9.runeCore.action
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
+import dev.m1sk9.runeCore.component.MessageComponent
 import org.bukkit.Server
 import org.bukkit.entity.Player
 
@@ -12,6 +11,6 @@ data class PlayerMessageAction(
     private val server: Server = player.server
 
     fun sendPluginMessage() {
-        server.broadcast(Component.text(message).color(NamedTextColor.YELLOW))
+        server.broadcast(MessageComponent(message).systemMessage())
     }
 }
