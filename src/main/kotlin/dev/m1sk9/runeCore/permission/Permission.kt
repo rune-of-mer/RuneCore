@@ -1,4 +1,4 @@
-package dev.m1sk9.runeCore.player.permission
+package dev.m1sk9.runeCore.permission
 
 import org.bukkit.entity.Player
 
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
  * これらは node という Paper (Spigot/Bukkit) で扱われる文字列の権限ノードを各種持ち，
  * プレイヤーの権限管理に使用される．
  */
-sealed class PlayerPermission(
+sealed class Permission(
     val node: String,
 ) {
     /**
@@ -16,7 +16,7 @@ sealed class PlayerPermission(
      */
     sealed class Role(
         node: String,
-    ) : PlayerPermission(node) {
+    ) : Permission(node) {
         object Player : Role("runecore.role.player")
 
         object Admin : Role("runecore.role.admin")
@@ -28,7 +28,7 @@ sealed class PlayerPermission(
      */
     sealed class Basic(
         node: String,
-    ) : PlayerPermission(node) {
+    ) : Permission(node) {
         // TODO: Define basic permissions
     }
 
@@ -38,7 +38,7 @@ sealed class PlayerPermission(
      */
     sealed class Admin(
         node: String,
-    ) : PlayerPermission(node) {
+    ) : Permission(node) {
         // ---- Debug Mode Permissions ----
         // デバックモードの使用許可
         object DebugMode : Admin("runecore.player.admin.debugmode")
