@@ -1,4 +1,4 @@
-name: rune-core
+name: RuneCore
 version: ${version}
 main: dev.m1sk9.runeCore.RuneCore
 api-version: '1.21'

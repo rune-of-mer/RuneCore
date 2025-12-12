@@ -1,1 +1,1 @@
-rootProject.name = "rune-core"
+rootProject.name = "RuneCore"
