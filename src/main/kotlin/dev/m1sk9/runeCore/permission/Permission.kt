@@ -10,10 +10,6 @@ import org.bukkit.entity.Player
 sealed class Permission(
     val node: String,
 ) {
-    /**
-     * プレイヤーの役割を定義するシールドクラス
-     * node は `runecore.player.*` で定義される．
-     */
     sealed class Role(
         node: String,
     ) : Permission(node) {
@@ -22,20 +18,10 @@ sealed class Permission(
         object Admin : Role("runecore.role.admin")
     }
 
-    /**
-     * 基本的なプレイヤー権限を定義するシールドクラス
-     * node は `runecore.player.basic.*` で定義される．
-     */
     sealed class Basic(
         node: String,
-    ) : Permission(node) {
-        // TODO: Define basic permissions
-    }
+    ) : Permission(node)
 
-    /**
-     * 管理者向けのプレイヤー権限を定義するシールドクラス
-     * node は `runecore.player.admin.*` で定義される．
-     */
     sealed class Admin(
         node: String,
     ) : Permission(node) {

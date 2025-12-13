@@ -3,17 +3,27 @@ package dev.m1sk9.runeCore.component
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 
-@JvmInline
-value class MessageComponent(
-    val message: String,
-) {
-    fun systemMessage(): Component = Component.text(message).color(NamedTextColor.YELLOW)
+val SYSTEM_COLOR: NamedTextColor = NamedTextColor.YELLOW
+val ERROR_COLOR: NamedTextColor = NamedTextColor.RED
+val INFO_COLOR: NamedTextColor = NamedTextColor.AQUA
+val DEBUG_COLOR: NamedTextColor = NamedTextColor.LIGHT_PURPLE
 
-    fun errorMessage(): Component = Component.text(message).color(NamedTextColor.RED)
+fun String.systemMessage(): Component = Component.text(this).color(SYSTEM_COLOR)
 
-    fun infoMessage(): Component = Component.text(message).color(NamedTextColor.AQUA)
+fun String.errorMessage(): Component = Component.text(this).color(ERROR_COLOR)
 
-    fun debugMessage(): Component = Component.text(message).color(NamedTextColor.LIGHT_PURPLE)
+fun String.infoMessage(): Component = Component.text(this).color(INFO_COLOR)
 
-    fun customMessage(color: NamedTextColor): Component = Component.text(message).color(color)
-}
+fun String.debugMessage(): Component = Component.text(this).color(DEBUG_COLOR)
+
+fun String.customMessage(color: NamedTextColor): Component = Component.text(this).color(color)
+
+fun List<String>.systemMessage(): Component = Component.text(this.joinToString("\n")).color(SYSTEM_COLOR)
+
+fun List<String>.errorMessage(): Component = Component.text(this.joinToString("\n")).color(ERROR_COLOR)
+
+fun List<String>.infoMessage(): Component = Component.text(this.joinToString("\n")).color(INFO_COLOR)
+
+fun List<String>.debugMessage(): Component = Component.text(this.joinToString("\n")).color(DEBUG_COLOR)
+
+fun List<String>.customMessage(color: NamedTextColor): Component = Component.text(this.joinToString("\n")).color(color)
