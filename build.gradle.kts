@@ -3,6 +3,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.9"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
+    id("org.jetbrains.dokka") version "2.1.0"
 }
 
 group = "dev.m1sk9"
@@ -47,5 +48,20 @@ tasks.processResources {
     filteringCharset = "UTF-8"
     filesMatching("paper-plugin.yml") {
         expand(props)
+    }
+}
+
+dokka {
+    moduleName.set("RuneCore")
+    dokkaPublications {
+        html {
+            suppressInheritedMembers = true
+            failOnWarning = true
+        }
+    }
+    pluginsConfiguration {
+        html {
+            footerMessage.set("© 2025 Sho Sakuma and Rune of Mer DevTeam")
+        }
     }
 }
