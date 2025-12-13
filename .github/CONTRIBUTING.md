@@ -100,6 +100,58 @@ import org.bukkit.entity.Player
 import org.bukkit.entity.*
 ```
 
+## 権限管理
+
+- RuneCore の権限はシールドクラス化しており，Spigot/Paper の作法とは少し違う扱いをしています．
+- 権限は全て [Permission.kt](../src/main/kotlin/dev/m1sk9/runeCore/permission/Permission.kt) で管理しています．
+
+### 権限を追加する
+
+権限を追加する際は次の手順に従います．
+
+1. [paper-plugin.yml](../src/main/resources/paper-plugin.yml) に権限ノードを追加する
+
+    - プレイヤーの権限は `runecore.player.basic.*` または `runecore.player.admin.*` に従います．x
+
+    ```yaml
+    runecore.player.admin.*:
+        default: op
+        children:
+            ## Debug mode
+            - runecore.player.admin.debugmode
+            - runecore.player.admin.debugmode.switchinggam
+    ```
+
+2. [Permission.kt](../src/main/kotlin/dev/m1sk9/runeCore/permission/Permission.kt) に新しい object を定義する．
+
+    ```kotlin
+    sealed class Admin(
+       node: String,
+    ) : Permission(node) {
+       object DebugMode : Admin("runecore.player.admin.debugmode")
+       object DebugModeSwitchingGameMode : Admin("runecore.player.admin.debugmode.switchinggame")
+    }
+    ```
+   
+### 権限の確認
+
+- 権限の確認は [PermissionChecker.kt](../src/main/kotlin/dev/m1sk9/runeCore/permission/PermissionChecker.kt) に定義されているヘルパー関数を使用します．
+- 詳しい使用方法は JavaDoc または IDE の [Render Javadocs](https://www.jetbrains.com/help/idea/javadocs.html#toggle-rendered-view) を使用して確認してください．
+
+## メッセージコンポーネント
+
+- RuneCore のメッセージには一貫性を持たせるため，Kotlin の [拡張関数](https://kotlinlang.org/docs/extensions.html) と言う機能を使用し，[既存の `String`, `List<String>` クラスに RuneCore 独自のヘルパー関数を追加しています](../src/main/kotlin/dev/m1sk9/runeCore/component/MessageComponent.kt)．
+- プレイヤー向けに送信するメッセージには適したヘルパー関数を使用してコンポーネントを付与した上で `sendMessage()` や `sendActionBar()` を使用してください．
+
+```kotlin
+fun String.systemMessage(): Component = Component.text(this).color(SYSTEM_COLOR)
+fun String.errorMessage(): Component = Component.text(this).color(ERROR_COLOR)
+```
+
+```kotlin
+player.sendActionBar("ゲームモードを変更しました: ${player.gameMode}".systemMessage())
+```
+
 ## デバッグサーバ
 
 RuneCore の開発環境には Docker を使用したデバッグサーバが付属しています．

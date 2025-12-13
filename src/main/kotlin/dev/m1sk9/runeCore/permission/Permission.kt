@@ -4,8 +4,7 @@ import org.bukkit.entity.Player
 
 /**
  * プレイヤーの権限を定義するシールドクラス．
- * これらは node という Paper (Spigot/Bukkit) で扱われる文字列の権限ノードを各種持ち，
- * プレイヤーの権限管理に使用される．
+ * これらは node という Paper (Spigot/Bukkit) で扱われる文字列の権限ノードを各種持つ．
  */
 sealed class Permission(
     val node: String,

@@ -1,10 +1,7 @@
 package dev.m1sk9.runeCore.permission
 
+import dev.m1sk9.runeCore.exception.RequirePermissionException
 import org.bukkit.entity.Player
-
-class RequirePermissionException(
-    permissions: List<String>,
-) : Exception("権限が不足しています (${permissions.joinToString(", ")})")
 
 @DslMarker
 annotation class PermissionDsl
@@ -24,15 +21,15 @@ class PermissionCollector {
 /**
  * 指定されたいずれかの権限をプレイヤーが持っているかを確認します．
  *
- * @param block 権限を指定するDSLブロック
- * @return 指定された権限のいずれかをプレイヤーが持っている場合に true を返します．
- *
- * 使用例:
- * ```
+ * ```kt
  * player.hasAny {
  *     +PlayerPermission.Admin.DebugMode
  * }
  * ```
+ *
+ * @param block 権限を指定するDSLブロック
+ * @return 指定された権限のいずれかをプレイヤーが持っている場合に true を返します．
+ *
  */
 fun Player.hasPermissionAny(block: PermissionCollector.() -> Unit): Boolean {
     val collector = PermissionCollector().apply(block)
@@ -42,16 +39,16 @@ fun Player.hasPermissionAny(block: PermissionCollector.() -> Unit): Boolean {
 /**
  * 指定されたすべての権限をプレイヤーが持っているかを確認します．
  *
- * @param block 権限を指定するDSLブロック
- * @return 指定されたすべての権限をプレイヤーが持っている場合に true を返します．
- *
- * 使用例:
- * ```
+ * ```kt
  * player.hasAll {
  *     +PlayerPermission.Admin.DebugMode
  *     +PlayerPermission.Admin.DebugModeSwitchingGameMode
  * }
  * ```
+ *
+ * @param block 権限を指定するDSLブロック
+ * @return 指定されたすべての権限をプレイヤーが持っている場合に true を返します．
+ *
  */
 fun Player.hasPermissionAll(block: PermissionCollector.() -> Unit): Boolean {
     val collector = PermissionCollector().apply(block)
@@ -62,15 +59,14 @@ fun Player.hasPermissionAll(block: PermissionCollector.() -> Unit): Boolean {
  * 指定されたいずれかの権限をプレイヤーが持っていることを要求します．
  * プレイヤーが権限を持っていない場合、RequirePermissionException をスローします．
  *
- * @param block 権限を指定するDSLブロック
- * @throws RequirePermissionException プレイヤーが指定された権限のいずれも持っていない場合
- *
- * 使用例:
  * ```
  * player.requirePermissionAny {
  *     +Permission.Admin.DebugMode
  * }
  * ```
+ *
+ * @param block 権限を指定するDSLブロック
+ * @throws dev.m1sk9.runeCore.exception.RequirePermissionException プレイヤーが指定された権限のいずれも持っていない場合
  */
 fun Player.requirePermissionAny(block: PermissionCollector.() -> Unit) {
     val collector = PermissionCollector().apply(block)
@@ -83,16 +79,15 @@ fun Player.requirePermissionAny(block: PermissionCollector.() -> Unit) {
  * 指定されたすべての権限をプレイヤーが持っていることを要求します．
  * プレイヤーが権限を持っていない場合、RequirePermissionException をスローします．
  *
- * @param block 権限を指定するDSLブロック
- * @throws RequirePermissionException プレイヤーが指定された権限のいずれかを持っていない場合
- *
- * 使用例:
- * ```
+ * ```kt
  * player.requirePermissionAll {
  *     +Permission.Admin.DebugMode
  *     +Permission.Admin.DebugModeSwitchingGameMode
  * }
  * ```
+ *
+ * @param block 権限を指定するDSLブロック
+ * @throws RequirePermissionException プレイヤーが指定された権限のいずれかを持っていない場合
  */
 fun Player.requirePermissionAll(block: PermissionCollector.() -> Unit) {
     val collector = PermissionCollector().apply(block)
