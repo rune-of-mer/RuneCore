@@ -3,6 +3,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.9"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
+    id("org.jetbrains.dokka") version "2.0.0"
 }
 
 group = "dev.m1sk9"
