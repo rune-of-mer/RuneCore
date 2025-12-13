@@ -32,7 +32,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Generate JavaDoc with Dokka
-      run: ./gradlew dokkaHtml --no-daemon
+      run: ./gradlew dokkaGenerate --no-daemon
 
     - name: Create CNAME file for custom domain
       if: vars.CUSTOM_DOMAIN != ''
