@@ -31,6 +31,12 @@ kotlin {
     jvmToolchain(targetJavaVersion)
 }
 
+tasks {
+    register("buildPlugin") {
+        dependsOn("ktlintFormat", "ktlintCheck", "shadowJar")
+    }
+}
+
 tasks.build {
     dependsOn("shadowJar")
 }

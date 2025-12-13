@@ -1,6 +1,7 @@
 package dev.m1sk9.runeCore
 
 import dev.m1sk9.runeCore.config.ConfigManager
+import dev.m1sk9.runeCore.listener.PlayerDebugModeListener
 import dev.m1sk9.runeCore.listener.PlayerPresenceListener
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -11,6 +12,7 @@ class RuneCore : JavaPlugin() {
 
         if (config.plugin.debugMode) {
             logger.warning("Debug mode enabled!")
+            server.pluginManager.registerEvents(PlayerDebugModeListener(), this)
         }
 
         server.pluginManager.registerEvents(PlayerPresenceListener(), this)

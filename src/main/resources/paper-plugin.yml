@@ -1,4 +1,4 @@
-name: rune-core
+name: RuneCore
 version: ${version}
 main: dev.m1sk9.runeCore.RuneCore
 api-version: '1.21'
@@ -6,3 +6,20 @@ prefix: RuneCore
 load: STARTUP
 authors: [ Sho Sakuma (m1sk9), Rune of Mer DevTeam ]
 description: Rune of Mer Core Plugin
+
+permissions:
+  # Role
+  runecore.role.player:
+    default: true
+  runecore.role.admin:
+    default: op
+
+  # Basic
+
+  # Admin
+  runecore.player.admin.*:
+    default: op
+    children:
+      ## Debug mode
+      - runecore.player.admin.debugmode
+      - runecore.player.admin.debugmode.switchinggam
