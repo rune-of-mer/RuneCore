@@ -1,4 +1,4 @@
-name: Deploy JavaDoc
+name: Deploy Dokka
 
 on:
   push:
@@ -33,10 +33,6 @@ jobs:
 
     - name: Generate JavaDoc with Dokka
       run: ./gradlew dokkaGenerate --no-daemon
-
-    - name: Create CNAME file for custom domain
-      if: vars.CUSTOM_DOMAIN != ''
-      run: echo "${{ vars.CUSTOM_DOMAIN }}" > build/dokka/html/CNAME
 
     - name: Upload artifact
       id: runecore_dokka
