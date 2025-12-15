@@ -7,7 +7,7 @@ on:
 
 jobs:
   validate:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.get_version.outputs.version }}
       jar_name: ${{ steps.get_version.outputs.jar_name }}
@@ -46,7 +46,7 @@ jobs:
           echo "Release validation passed: $TAG_NAME does not exist yet"
 
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: validate
     steps:
       - name: Checkout repository
@@ -75,7 +75,7 @@ jobs:
           retention-days: 90
 
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [validate, build]
     permissions:
       contents: write
