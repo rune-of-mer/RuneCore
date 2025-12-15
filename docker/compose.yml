@@ -1,4 +1,23 @@
 services:
+  mariadb:
+    image: mariadb:11.6
+    container_name: rune-core-mariadb
+    ports:
+      - "3306:3306"  # MariaDB port
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "runecore_db"
+      MYSQL_USER: "runecore"
+      MYSQL_PASSWORD: "runecore"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   minecraft:
     image: itzg/minecraft-server:java21
     container_name: rune-core-debug
@@ -34,6 +53,9 @@ services:
       MOTD: "§6Rune Core Debug Server"
       # Auto-sync plugin files
       SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+    depends_on:
+      mariadb:
+        condition: service_healthy
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -41,3 +63,4 @@ services:
 
 volumes:
   minecraft-data:
+  mariadb-data:
