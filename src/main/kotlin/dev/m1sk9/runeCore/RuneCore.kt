@@ -10,7 +10,6 @@ import dev.m1sk9.runeCore.listener.PlayerPresenceListener
 import org.bukkit.plugin.java.JavaPlugin
 
 class RuneCore : JavaPlugin() {
-
     private lateinit var databaseManager: DatabaseManager
     private lateinit var playerRepository: PlayerRepository
     private lateinit var statsRepository: StatsRepository
