@@ -1,2 +1,14 @@
 plugin:
   debugMode: false
+
+database:
+  host: "mariadb"
+  port: 3306
+  name: "runecore_db"
+  username: "runecore"
+  password: "runecore"
+  pool:
+    maximumSize: 10
+    minimumIdle: 2
+    idleTimeout: 60000
+    connectionTimeout: 30000
