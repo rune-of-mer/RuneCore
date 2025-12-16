@@ -32,7 +32,7 @@ jobs:
       run: ./gradlew shadowJar --no-daemon
 
     - name: Upload build artifact
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: success()
       with:
         name: rune-core-jar-${{ github.sha }}
