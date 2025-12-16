@@ -7,6 +7,7 @@ import dev.m1sk9.runeCore.database.repository.StatsRepository
 import dev.m1sk9.runeCore.listener.PlayerDebugModeListener
 import dev.m1sk9.runeCore.listener.PlayerLoginListener
 import dev.m1sk9.runeCore.listener.PlayerPresenceListener
+import dev.m1sk9.runeCore.listener.PlayerStatsListener
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -38,6 +39,7 @@ class RuneCore : JavaPlugin() {
 
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(), this)
+        server.pluginManager.registerEvents(PlayerStatsListener(statsRepository, logger), this)
 
         logger.info("RuneCore enabled.")
     }
