@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.time.LocalDateTime
+import java.util.UUID
 
 class StatsRepository {
     private fun ResultRow.toStats() =
@@ -18,7 +19,7 @@ class StatsRepository {
             updatedAt = this[PlayerStats.updatedAt],
         )
 
-    fun findByUuid(uuid: String): RepositoryResult<PlayerStatsData> =
+    fun findByUuid(uuid: UUID): RepositoryResult<PlayerStatsData> =
         try {
             transaction {
                 PlayerStats
@@ -33,7 +34,7 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
-    fun getKills(uuid: String): RepositoryResult<UInt> =
+    fun getKills(uuid: UUID): RepositoryResult<UInt> =
         try {
             transaction {
                 PlayerStats
@@ -49,7 +50,7 @@ class StatsRepository {
         }
 
     fun setKills(
-        uuid: String,
+        uuid: UUID,
         amount: UInt,
     ): RepositoryResult<Unit> =
         try {
@@ -69,7 +70,7 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
-    fun incrementKills(uuid: String): RepositoryResult<Unit> =
+    fun incrementKills(uuid: UUID): RepositoryResult<Unit> =
         try {
             transaction {
                 val updated =
@@ -88,7 +89,7 @@ class StatsRepository {
         }
 
     fun addKills(
-        uuid: String,
+        uuid: UUID,
         amount: UInt,
     ): RepositoryResult<Unit> =
         try {
@@ -108,7 +109,7 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
-    fun getDeaths(uuid: String): RepositoryResult<UInt> =
+    fun getDeaths(uuid: UUID): RepositoryResult<UInt> =
         try {
             transaction {
                 PlayerStats
@@ -124,7 +125,7 @@ class StatsRepository {
         }
 
     fun setDeaths(
-        uuid: String,
+        uuid: UUID,
         amount: UInt,
     ): RepositoryResult<Unit> =
         try {
@@ -144,7 +145,7 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
-    fun incrementDeaths(uuid: String): RepositoryResult<Unit> =
+    fun incrementDeaths(uuid: UUID): RepositoryResult<Unit> =
         try {
             transaction {
                 val updated =
@@ -163,7 +164,7 @@ class StatsRepository {
         }
 
     fun addDeaths(
-        uuid: String,
+        uuid: UUID,
         amount: UInt,
     ): RepositoryResult<Unit> =
         try {
@@ -183,7 +184,7 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
-    fun getKillDeathRatio(uuid: String): RepositoryResult<Double> =
+    fun getKillDeathRatio(uuid: UUID): RepositoryResult<Double> =
         try {
             transaction {
                 PlayerStats

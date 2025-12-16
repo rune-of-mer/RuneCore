@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  * レベルや経験値，主キーとなる UUID が格納される．
  */
 object Players : Table("players") {
-    val uuid = char("uuid", 36)
+    val uuid = uuid("uuid")
     val level = uinteger("level").default(1u)
     val experience = ulong("experience").default(0uL)
     val balance = ulong("balance").default(0uL)

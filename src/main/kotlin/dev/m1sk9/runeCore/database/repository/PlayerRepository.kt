@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.time.LocalDateTime
+import java.util.UUID
 
 class PlayerRepository {
     private fun ResultRow.toPlayer() =
@@ -23,7 +24,7 @@ class PlayerRepository {
             updateAt = this[Players.updatedAt],
         )
 
-    fun createPlayer(uuid: String): RepositoryResult<PlayerData> =
+    fun createPlayer(uuid: UUID): RepositoryResult<PlayerData> =
         try {
             transaction {
                 Players.insert {
@@ -31,7 +32,7 @@ class PlayerRepository {
                 }
 
                 PlayerStats.insert {
-                    it[Players.uuid] = uuid
+                    it[PlayerStats.uuid] = uuid
                 }
             }
 
@@ -40,7 +41,7 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
-    fun findByUUID(uuid: String): RepositoryResult<PlayerData> =
+    fun findByUUID(uuid: UUID): RepositoryResult<PlayerData> =
         try {
             transaction {
                 Players
@@ -55,7 +56,7 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
-    fun existsByUUID(uuid: String): RepositoryResult<Boolean> =
+    fun existsByUUID(uuid: UUID): RepositoryResult<Boolean> =
         try {
             transaction {
                 val exists =
@@ -70,7 +71,7 @@ class PlayerRepository {
         }
 
     fun setLevel(
-        uuid: String,
+        uuid: UUID,
         newLevel: UInt,
     ): RepositoryResult<Unit> =
         try {
@@ -92,7 +93,7 @@ class PlayerRepository {
         }
 
     fun addExperience(
-        uuid: String,
+        uuid: UUID,
         amount: ULong,
     ): RepositoryResult<Unit> =
         try {
@@ -114,7 +115,7 @@ class PlayerRepository {
         }
 
     fun setExperience(
-        uuid: String,
+        uuid: UUID,
         amount: ULong,
     ): RepositoryResult<Unit> =
         try {
@@ -135,7 +136,7 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
-    fun getBalance(uuid: String): RepositoryResult<ULong> =
+    fun getBalance(uuid: UUID): RepositoryResult<ULong> =
         try {
             transaction {
                 Players
@@ -151,7 +152,7 @@ class PlayerRepository {
         }
 
     fun setBalance(
-        uuid: String,
+        uuid: UUID,
         amount: ULong,
     ): RepositoryResult<Unit> =
         try {
@@ -172,7 +173,7 @@ class PlayerRepository {
         }
 
     fun addBalance(
-        uuid: String,
+        uuid: UUID,
         amount: ULong,
     ): RepositoryResult<Unit> =
         try {
@@ -193,7 +194,7 @@ class PlayerRepository {
         }
 
     fun subtractBalance(
-        uuid: String,
+        uuid: UUID,
         amount: ULong,
     ): RepositoryResult<Unit> =
         try {
@@ -221,8 +222,8 @@ class PlayerRepository {
         }
 
     fun transferBalance(
-        fromUuid: String,
-        toUuid: String,
+        fromUuid: UUID,
+        toUuid: UUID,
         amount: ULong,
     ): RepositoryResult<Unit> =
         try {
