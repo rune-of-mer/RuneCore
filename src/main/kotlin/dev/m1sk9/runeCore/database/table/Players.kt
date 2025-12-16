@@ -13,8 +13,8 @@ object Players : Table("players") {
     val level = uinteger("level").default(1u)
     val experience = ulong("experience").default(0uL)
     val balance = ulong("balance").default(0uL)
-    val createdAt = datetime("create_at").default(LocalDateTime.now())
-    val updatedAt = datetime("update_at").default(LocalDateTime.now())
+    val createdAt = datetime("created_at").default(LocalDateTime.now())
+    val updatedAt = datetime("updated_at").default(LocalDateTime.now())
 
     override val primaryKey = PrimaryKey(uuid)
 }
