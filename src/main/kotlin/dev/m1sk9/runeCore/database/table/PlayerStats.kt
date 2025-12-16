@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  * キル数やデス数を記録する
  */
 object PlayerStats : Table("player_stats") {
-    val uuid = char("uuid", 36) references Players.uuid
+    val uuid = uuid("uuid") references Players.uuid
     val kills = uinteger("kills").default(0u)
     val deaths = uinteger("deaths").default(0u)
     val updatedAt = datetime("update_at").default(LocalDateTime.now())

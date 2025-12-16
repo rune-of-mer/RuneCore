@@ -13,7 +13,7 @@ class PlayerLoginListener(
 ) : Listener {
     @EventHandler(ignoreCancelled = true)
     fun onLogin(event: AsyncPlayerPreLoginEvent) {
-        val uuid: String = event.uniqueId.toString()
+        val uuid = event.uniqueId
 
         when (val result = playerRepository.existsByUUID(uuid)) {
             is RepositoryResult.Success -> {
