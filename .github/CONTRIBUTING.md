@@ -29,7 +29,7 @@ RuneCore の開発に必要な環境は以下の通りです:
   - Java は基本的に後方互換性があるため， Java 25 などでも動作しますが，RuneCore では非推奨とさせていただきます．
   - Rune of Mer では [Zulu OpenJDK](https://www.azul.com/downloads/?package=jdk) を使用しています．
 - Gradle 8.8 以上
-- MariaDB 11.8 
+- MariaDB 12.1.2
 
 ### 推奨
 
