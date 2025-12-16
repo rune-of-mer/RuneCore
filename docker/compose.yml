@@ -1,6 +1,6 @@
 services:
   mariadb:
-    image: mariadb:11.8
+    image: mariadb:12.1
     container_name: rune-core-mariadb
     ports:
       - "3306:3306"  # MariaDB port
