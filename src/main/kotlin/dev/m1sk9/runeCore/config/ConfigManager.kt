@@ -18,11 +18,11 @@ object ConfigManager {
                     ),
                 database =
                     DatabaseConfig(
-                        host = config.getString("database.host", "localhost"),
-                        port = config.getInt("database.port", 3306),
-                        name = config.getString("database.name", "runecore_db"),
-                        username = config.getString("database.username", "runecore"),
-                        password = config.getString("database.password", "runecore"),
+                        host = config.getString("database.host")!!,
+                        port = config.getInt("database.port"),
+                        name = config.getString("database.name")!!,
+                        username = config.getString("database.username")!!,
+                        password = config.getString("database.password")!!,
                         pool =
                             PoolConfig(
                                 maximumSize = config.getInt("database.pool.maximumSize", 10),
