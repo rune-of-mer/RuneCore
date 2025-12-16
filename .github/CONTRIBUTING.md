@@ -22,34 +22,43 @@
 
 ## 開発環境
 
-RuneCore は以下の環境で動作します:
+RuneCore の開発に必要な環境は以下の通りです:
 
-- Java 21 以上
-    - Rune of Mer では [Zulu OpenJDK](https://www.azul.com/downloads/?package=jdk) を使用しています．
+- Java 21
+  - Minecraft でサポートされている Java バージョンです．
+  - Java は基本的に後方互換性があるため， Java 25 などでも動作しますが，RuneCore では非推奨とさせていただきます．
+  - Rune of Mer では [Zulu OpenJDK](https://www.azul.com/downloads/?package=jdk) を使用しています．
 - Gradle 8.8 以上
+- MariaDB 11.8 
 
-開発するために必要なツールは以下の通りです:
+### 推奨
 
-- [IntelliJ IDEA Ultimate または Community Edition](https://www.jetbrains.com/ja-jp/idea/)
+- Linux/macOS での開発を推奨します．
+  - WSL2 の使用は自己責任です．
+- 使用する IDE は [IntelliJ IDEA Ultimate または Community Edition](https://www.jetbrains.com/ja-jp/idea/) を使用してください．
+  - Ultimate Edition の機能が使えた方が楽ですが，RuneCore の開発では Community Edition で十分です．
+  - [学生なら無料で使えます](https://www.jetbrains.com/ja-jp/academy/student-pack/)．
 - [Git](https://git-scm.com/)
+  - GitHub Desktop などについてはサポートできないので自己責任で使用してください．
 - [Docker](https://www.docker.com/)
     - デバッグサーバを立ち上げるために使用します．
     - 別途で，[Docker Compose](https://docs.docker.com/compose/) も必要です．
 
-### 非推奨・サポート外の開発環境
-
-- WSL2
-- Eclipse などの IntelliJ IDEA を除く IDE
-- GitHub Desktop などの GUI クライアント
-    - サポートしません．
-
-### 開発環境のセットアップ
+### セットアップ
 
 [mise](https://github.com/jdx/mise) を使用して，開発環境を簡単にセットアップできます．
 
 ```bash
 mise install
 ```
+
+## 技術スタック
+
+- 言語: [Kotlin](https://kotlinlang.org/)
+- ビルドツール: [Gradle](https://gradle.org/)
+- データベース: [MariaDB](https://mariadb.org/)
+  - ORM: [Exposed](https://github.com/JetBrains/Exposed)
+  - JDBC: [HikariCP](https://github.com/brettwooldridge/HikariCP)
 
 ## コントリビューション時の注意点
 
@@ -122,7 +131,7 @@ import org.bukkit.entity.*
 
 ## 権限管理
 
-- RuneCore の権限はシールドクラス化しており，Spigot/Paper の作法とは少し違う扱いをしています．
+- RuneCore の権限は sealed class として実装してるため，Spigot/Paper の作法とは少し違う扱いをしています．
 - 権限は全て [Permission.kt](../src/main/kotlin/dev/m1sk9/runeCore/permission/Permission.kt) で管理しています．
 
 ### 権限を追加する
@@ -172,11 +181,64 @@ fun String.errorMessage(): Component = Component.text(this).color(ERROR_COLOR)
 player.sendActionBar("ゲームモードを変更しました: ${player.gameMode}".systemMessage())
 ```
 
+## データベース
+
+RuneCore ではデータベースに MariaDB を採用しています．
+
+### `runecore_db` について
+
+RuneCore 内部で使用している `runecore_db` は以下のテーブルを持ちます．
+
+いずれもプレイヤーの UUID を主キーとします．([UUID を主キーとしている理由はこちら](#データを扱う際に-uuid-を使う理由))
+
+- [`Players`](../src/main/kotlin/dev/m1sk9/runeCore/database/table/Players.kt):
+  - プレイヤーデータを格納する基本テーブル
+- [`PlayerStats`](../src/main/kotlin/dev/m1sk9/runeCore/database/table/PlayerStats.kt):
+  - プレイヤーのスタッツ (統計情報) を格納するテーブル
+
+### データの扱い方
+
+- データベースへの作用は基本的に Repository として実装します．
+  - RuneCore では `kotlin/dev/m1sk9/runeCore/database/repository` 配下におきます．
+  - SQL 文での直接操作は避けます．
+- データベース操作の結果 (成功か失敗か) を表現するための sealed class が各 Repository に実装されているため，データベース操作は基本的に `when` を使い，エラー時の振る舞いも書く必要があります．
+  - イメージ的には Rust の `match` 文を使った `Result<T, E>` の処理と似ています．
+
+
+```kotlin
+when (val result = playerRepository.existsByUUID(uuid)) {
+    is RepositoryResult.Success -> {
+        if (!result.data) {
+            when (playerRepository.createPlayer(uuid)) {
+                is RepositoryResult.Success -> {
+                    logger.info("Created new player data: $uuid")
+                }
+                is RepositoryResult.Error -> {
+                    logger.severe("Error creating player data: $uuid")
+                }
+                else -> {}
+            }
+        }
+    }
+    is RepositoryResult.Error -> {
+        logger.severe("Failed to check player: $uuid")
+    }
+    else -> {}
+}
+```
+
+- [`RepositoryResult`](../src/main/kotlin/dev/m1sk9/runeCore/database/repository/RepositoryResult.kt) にはエラー型が用意されているため， `is` で取り出して，その型に沿った処理を書いてください．
+  - IDEA なら補完が効くはずです．
+
+![](https://github.com/user-attachments/assets/51b83ebb-5167-4d6f-bd55-2e47fb5506ca)
+
 ## デバッグサーバ
 
-RuneCore の開発環境には Docker を使用したデバッグサーバが付属しています．
-
-Make コマンドを使用して，デバッグサーバを起動・停止できます．
+- RuneCore の開発環境には Docker を使用したデバッグサーバが付属しています．
+- デバッグサーバには以下の環境が付属しています．
+  - Paper
+  - MariaDB
+- Make コマンドを使用して，デバッグサーバを起動・停止できます．
 
 ```bash
 # デバッグサーバの起動
@@ -217,6 +279,16 @@ make logs
 
 https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2.21.2.jar
 ```
+
+## 付録: コラム
+
+### データを扱う際に UUID を使う理由
+
+- Minecraft においてプレイヤーの ID として機能としている MCID は可変です． (つまり，いつでも変更できます．)
+- そのため，データベースなどプレイヤーのデータとして扱っているもので MCID を使って管理すると，プレイヤーが MCID を変更した時点で，そのデータは **[完全性 *Data integrity* ](https://en.wikipedia.org/wiki/Data_integrity) を失うことになります**．
+- 幸運にもプレイヤーには **重複しないこと，衝突しないこと，不変であること** が約束されている ID として UUID が存在しているため，データベースなどでは UUID を主キーとして扱うべきです．
+- RuneCore ではプレイヤーデータに MCID を含めていないのは MCID が信用できるものではないからです．
+  - Paper API から都度取得した方が信頼できます．
 
 ## 付録: タスク索引
 
