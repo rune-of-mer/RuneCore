@@ -13,7 +13,7 @@ jobs:
       jar_name: ${{ steps.get_version.outputs.jar_name }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Extract version from build.gradle.kts
         id: get_version
@@ -50,7 +50,7 @@ jobs:
     needs: validate
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Development Environment
         uses: jdx/mise-action@v3
@@ -81,7 +81,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Download build artifact
         uses: actions/download-artifact@v7
