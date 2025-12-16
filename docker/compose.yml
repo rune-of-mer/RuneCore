@@ -1,64 +1,52 @@
 services:
-  mariadb:
-    image: mariadb:12.1
-    container_name: rune-core-mariadb
-    ports:
-      - "3306:3306"  # MariaDB port
-    volumes:
-      - mariadb-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_DATABASE: "runecore_db"
-      MYSQL_USER: "runecore"
-      MYSQL_PASSWORD: "runecore"
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   minecraft:
     image: itzg/minecraft-server:java21
-    container_name: rune-core-debug
+    container_name: runecore-debug-server
     ports:
-      - "25565:25565"  # Minecraft server port
-      - "25575:25575"  # RCON port
+      - "25565:25565"
+      - "25575:25575"
     volumes:
-      # Persistent server data
       - minecraft-data:/data
-      # Plugin source code (for development)
       - ../build/libs:/plugins:ro
-      # External plugins directory
       - ./plugins:/data/plugins
     environment:
-      # Accept EULA
       EULA: "TRUE"
-      # Server type and version
       TYPE: "PAPER"
       VERSION: "1.21.3"
-      # Memory settings
       MEMORY: "1G"
-      # RCON settings
       ENABLE_RCON: "true"
       RCON_PASSWORD: "minecraft"
       RCON_PORT: 25575
-      # Server settings
       DIFFICULTY: "peaceful"
       MAX_PLAYERS: "3"
       ONLINE_MODE: "false"
       VIEW_DISTANCE: "5"
-      # Development settings
-      SERVER_NAME: "Rune Core Debug Server"
+      SERVER_NAME:  "Rune Core Debug Server"
       MOTD: "§6Rune Core Debug Server"
-      # Auto-sync plugin files
-      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+      SYNC_SKIP_NEWER_IN_DESTINATION:  "false"
     depends_on:
       mariadb:
         condition: service_healthy
     tty: true
     stdin_open: true
-    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:12.1.2
+    container_name: runecore-mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE:  "runecore_db"
+      MYSQL_USER: "runecore"
+      MYSQL_PASSWORD: "runecore"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
 volumes:
