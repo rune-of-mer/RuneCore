@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 object PlayerStats : Table("player_stats") {
     val uuid = uuid("uuid") references Players.uuid
     val kills = uinteger("kills").default(0u)
+    val mobKills = uinteger("mob_kills").default(0u)
     val deaths = uinteger("deaths").default(0u)
-    val updatedAt = datetime("update_at").default(LocalDateTime.now())
+    val updatedAt = datetime("updated_at").default(LocalDateTime.now())
 }

@@ -6,6 +6,7 @@ import java.util.UUID
 data class PlayerStatsData(
     val uuid: UUID,
     val kills: UInt,
+    val mobKills: UInt,
     val deaths: UInt,
     val updatedAt: LocalDateTime? = null,
 )

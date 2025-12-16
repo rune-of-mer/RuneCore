@@ -16,6 +16,7 @@ class StatsRepository {
             uuid = this[PlayerStats.uuid],
             kills = this[PlayerStats.kills],
             deaths = this[PlayerStats.deaths],
+            mobKills = this[PlayerStats.mobKills],
             updatedAt = this[PlayerStats.updatedAt],
         )
 
@@ -97,6 +98,66 @@ class StatsRepository {
                 val updated =
                     PlayerStats.update({ PlayerStats.uuid eq uuid }) {
                         it[kills] = kills + amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    fun setMobKills(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[mobKills] = amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    fun incrementMobKills(uuid: UUID): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[mobKills] = mobKills + 1u
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    fun addMobKills(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[mobKills] = mobKills + amount
                         it[updatedAt] = LocalDateTime.now()
                     }
                 if (updated > 0) {

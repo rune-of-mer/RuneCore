@@ -7,6 +7,8 @@ import dev.m1sk9.runeCore.database.repository.StatsRepository
 import dev.m1sk9.runeCore.listener.PlayerDebugModeListener
 import dev.m1sk9.runeCore.listener.PlayerLoginListener
 import dev.m1sk9.runeCore.listener.PlayerPresenceListener
+import dev.m1sk9.runeCore.listener.PlayerStatsListener
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class RuneCore : JavaPlugin() {
@@ -19,7 +21,7 @@ class RuneCore : JavaPlugin() {
         val config = ConfigManager.load(config)
 
         if (config.plugin.debugMode) {
-            logger.warning("Debug mode enabled!")
+            logger.warning("Debug mode enabled.")
             server.pluginManager.registerEvents(PlayerDebugModeListener(), this)
         }
 
@@ -27,8 +29,8 @@ class RuneCore : JavaPlugin() {
         try {
             databaseManager.connect()
         } catch (e: Exception) {
-            logger.severe("Failed to connect to database!: ${e.message}")
-            server.pluginManager.disablePlugin(this)
+            logger.severe("Failed to connect to database. Shutting down...: ${e.message}")
+            Bukkit.shutdown()
             return
         }
 
@@ -37,6 +39,7 @@ class RuneCore : JavaPlugin() {
 
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(), this)
+        server.pluginManager.registerEvents(PlayerStatsListener(statsRepository, logger), this)
 
         logger.info("RuneCore enabled.")
     }
