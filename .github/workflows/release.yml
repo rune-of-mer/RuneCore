@@ -7,13 +7,13 @@ on:
 
 jobs:
   validate:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.get_version.outputs.version }}
       jar_name: ${{ steps.get_version.outputs.jar_name }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Extract version from build.gradle.kts
         id: get_version
@@ -46,17 +46,17 @@ jobs:
           echo "Release validation passed: $TAG_NAME does not exist yet"
 
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: validate
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Development Environment
         uses: jdx/mise-action@v3
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -68,23 +68,23 @@ jobs:
         run: ./gradlew shadowJar --no-daemon
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: rune-core-jar-v${{ needs.validate.outputs.version }}
           path: build/libs/${{ needs.validate.outputs.jar_name }}
           retention-days: 90
 
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [validate, build]
     permissions:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Download build artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: rune-core-jar-v${{ needs.validate.outputs.version }}
 
