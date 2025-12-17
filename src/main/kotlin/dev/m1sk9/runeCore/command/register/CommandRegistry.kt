@@ -1,5 +1,6 @@
 package dev.m1sk9.runeCore.command.register
 
+import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import dev.m1sk9.runeCore.command.annotation.CommandPermission
@@ -60,6 +61,15 @@ class CommandRegistry(
                 executeCommand(runeCommand, ctx)
             }
 
+        literal =
+            literal.then(
+                Commands
+                    .argument("args", StringArgumentType.greedyString())
+                    .executes { ctx ->
+                        executeCommand(runeCommand, ctx)
+                    },
+            )
+
         return literal
     }
 
@@ -83,10 +93,17 @@ class CommandRegistry(
             return COMMAND_FAILURE
         }
 
+        val input = ctx.input
+        val parts = input.removePrefix("/").split(" ")
+
+        // サブコマンドの深さを計算して適切な位置から引数を取得
+        val commandDepth = countCommandDepth(runeCommand, parts)
+        val args = parts.drop(commandDepth).toTypedArray()
+
         val context =
             RuneCommandContext(
                 source = source,
-                args = emptyMap(),
+                args = args,
             )
 
         val result = runeCommand.execute(context)
@@ -95,12 +112,38 @@ class CommandRegistry(
         return COMMAND_SUCCESS
     }
 
+    /**
+     * コマンドの深さを計算する
+     * 例: /rune info -> depth = 2, /rune -> depth = 1
+     */
+    private fun countCommandDepth(
+        runeCommand: RuneCommand,
+        parts: List<String>,
+    ): Int {
+        // 最低でもルートコマンド分の 1
+        var depth = 1
+
+        // parts の中でサブコマンド名と一致するものをカウント
+        var currentSubcommands = runeCommand.subcommands
+        for (i in 1 until parts.size) {
+            val matchingSubcommand = currentSubcommands.find { it.name == parts[i] }
+            if (matchingSubcommand != null) {
+                depth++
+                currentSubcommands = matchingSubcommand.subcommands
+            } else {
+                break
+            }
+        }
+
+        return depth
+    }
+
     private fun handleResult(
         result: CommandResult,
         sender: CommandSender,
     ) {
         when (result) {
-            is CommandResult.Success<*> -> {
+            is CommandResult.Success -> {
                 result.message?.let { message ->
                     sender.sendMessage(message.systemMessage())
                 }

@@ -25,7 +25,7 @@ interface RuneCommand {
      */
     val subcommands: List<RuneCommand> get() = emptyList()
 
-    fun execute(content: RuneCommandContext): CommandResult
+    fun execute(context: RuneCommandContext): CommandResult
 
-    fun suggest(content: SuggestionContext): List<String> = emptyList()
+    fun suggest(context: SuggestionContext): List<String> = emptyList()
 }

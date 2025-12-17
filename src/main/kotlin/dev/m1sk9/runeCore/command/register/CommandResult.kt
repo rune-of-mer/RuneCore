@@ -11,7 +11,7 @@ sealed class CommandResult {
      *
      * @param message プレイヤーに渡される実行結果のメッセージ
      */
-    data class Success<T>(
+    data class Success(
         val message: String? = null,
     ) : CommandResult()
 
