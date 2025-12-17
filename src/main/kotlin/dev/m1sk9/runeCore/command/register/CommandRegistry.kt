@@ -15,6 +15,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.java.JavaPlugin
 
 private const val COMMAND_SUCCESS = 1
 private const val COMMAND_FAILURE = 0
@@ -24,7 +25,10 @@ private const val COMMAND_FAILURE = 0
  *
  * このクラスは [RuneCommand] の継承クラスを [mutableListOf] で受け取り，それを [LifecycleEvents] で登録する．
  */
-class CommandRegistry {
+class CommandRegistry(
+    // NOTE: `plugin` は必要なので触らない. IDE が never used と推論してしまっているがこれは誤り
+    private val plugin: JavaPlugin,
+) {
     private val runeCommands = mutableListOf<RuneCommand>()
 
     /**
