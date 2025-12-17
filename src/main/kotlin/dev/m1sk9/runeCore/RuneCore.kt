@@ -1,5 +1,11 @@
 package dev.m1sk9.runeCore
 
+import dev.m1sk9.runeCore.command.impl.RuneDiceCommand
+import dev.m1sk9.runeCore.command.impl.RuneLogoutCommand
+import dev.m1sk9.runeCore.command.impl.RunePatchNoteCommand
+import dev.m1sk9.runeCore.command.impl.RunePlayTimeCommand
+import dev.m1sk9.runeCore.command.impl.RunePlayerListCommand
+import dev.m1sk9.runeCore.command.register.CommandRegistry
 import dev.m1sk9.runeCore.config.ConfigManager
 import dev.m1sk9.runeCore.database.DatabaseManager
 import dev.m1sk9.runeCore.database.repository.PlayerRepository
@@ -36,6 +42,14 @@ class RuneCore : JavaPlugin() {
 
         playerRepository = PlayerRepository()
         statsRepository = StatsRepository()
+
+        CommandRegistry(this)
+            .register(RuneDiceCommand())
+            .register(RuneLogoutCommand())
+            .register(RunePatchNoteCommand())
+            .register(RunePlayerListCommand())
+            .register(RunePlayTimeCommand())
+            .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(), this)
