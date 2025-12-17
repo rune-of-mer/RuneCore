@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.dokka") version "2.1.0"
 }
 
-group = "dev.m1sk9"
+group = "org.lyralis"
 version = "0.1.0"
 
 repositories {

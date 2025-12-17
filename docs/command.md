@@ -1,4 +1,4 @@
-# Package dev.m1sk9.runeCore.command
+# Package org.lyralis.runeCore.command
 
 RuneCore で使用できるコマンドの一覧
 
