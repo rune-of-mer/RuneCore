@@ -1,5 +1,6 @@
 plugin:
   debugMode: false
+  patchNoteURL: "https://example.com"
 
 database:
   host: "mariadb"

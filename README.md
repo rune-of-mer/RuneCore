@@ -9,7 +9,7 @@ Rune of Mer におけるコアプラグイン．
 貢献に関するガイドは [こちら](.github/CONTRIBUTING.md)を参照してください．
 
 - [Contributing Guide](.github/CONTRIBUTING.md)
-- [Dokka (RuneCore API Documentation)](http://rune-of-mer.github.io/RuneCore/)
+- [Dokka (RuneCore API Documentation)](http://runeofmer-api.lyralis.org/)
 - [Discord](https://discord.gg/jSsce2T4Xv)
 
 ```shell

@@ -1,9 +1,9 @@
 package dev.m1sk9.runeCore.listener
 
-import dev.m1sk9.runeCore.action.PlayerDebugAction
+import dev.m1sk9.runeCore.component.action.PlayerDebugAction
 import dev.m1sk9.runeCore.component.errorMessage
 import dev.m1sk9.runeCore.component.systemMessage
-import dev.m1sk9.runeCore.exception.RequirePermissionException
+import dev.m1sk9.runeCore.permission.RequirePermissionException
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

@@ -181,6 +181,191 @@ fun String.errorMessage(): Component = Component.text(this).color(ERROR_COLOR)
 player.sendActionBar("ゲームモードを変更しました: ${player.gameMode}".systemMessage())
 ```
 
+## コマンドシステム
+
+- RuneCore は Paper の `LifecycleEventManager` を使用した型安全なコマンドシステムを採用しています．
+
+```
+src/main/kotlin/dev/m1sk9/runeCore/command/
+├── annotation/
+│   ├── CommandPermission.kt    # 権限アノテーション
+│   └── PlayerOnlyCommand.kt    # プレイヤー専用アノテーション
+├── register/
+│   ├── RuneCommand.kt          # コマンドインターフェース
+│   ├── CommandRegistry.kt      # コマンド登録
+│   ├── CommandResult.kt        # 実行結果
+│   ├── RuneCommandContext.kt   # 実行コンテキスト
+│   └── SuggestionContext.kt    # Tab補完コンテキスト
+└── impl/                       # コマンド実装
+    └── ...
+```
+
+- コマンドの実装は `impl/` ディレクトリに配置します．
+- `RuneCommand` を継承します．
+  - Spigot/Paper の `CommandExecutor` は使用しないでください．
+
+```kotlin
+class MyCommand : RuneCommand {
+    override val name = "mycommand"
+    override val description = "コマンドの説明"
+
+    override fun execute(context: RuneCommandContext): CommandResult {
+        val sender = context.sender
+        return CommandResult.Success("実行しました")
+    }
+}
+```
+
+#### プレイヤー専用のコマンドを実装する
+
+- `@PlayerOnlyCommand` アノテーションを付与すると，コンソールからの実行を自動的に拒否します．
+- Spigot/Paper の `CommandExecutor` は本来 `sender` が Player かどうかの判定が必要ですが，このアノテーションが付与されたコマンドは基本的に Player であることが確定するので， `.playerOrThrow` で null安全を保ちながら実装ができます．
+- 基本的なコマンドはコンソールからの実行を想定しないと思いますので，`@PlayerOnlyCommand` アノテーションを付与することを忘れないようにしてください．
+
+```kotlin
+@PlayerOnlyCommand
+class PlayerCommand : RuneCommand {
+    override val name = "playeronly"
+    override val description = "プレイヤー専用コマンド"
+
+    override fun execute(context: RuneCommandContext): CommandResult {
+        val player = context.playerOrThrow
+        
+        player.sendMessage("Hello, ${player.name}!")
+        return CommandResult.Silent
+    }
+}
+```
+
+#### 権限付きコマンドを実装する
+
+- `@CommandPermission` アノテーションで必要な権限を指定します．
+
+```kotlin
+@CommandPermission("runecore.admin")
+class AdminCommand : RuneCommand {
+    override val name = "admin"
+    override val description = "管理者専用コマンド"
+
+    override fun execute(context: RuneCommandContext): CommandResult {
+        return CommandResult.Success("管理者コマンドを実行しました")
+    }
+}
+```
+
+#### サブコマンドを持つコマンドを実装する
+
+```kotlin
+class ParentCommand : RuneCommand {
+    override val name = "parent"
+    override val description = "親コマンド"
+
+    override val subcommands: List<RuneCommand> = listOf(
+        ChildCommand(),
+        AnotherChildCommand(),
+    )
+
+    override fun execute(context: RuneCommandContext): CommandResult {
+        // サブコマンドなしで実行された場合
+        return CommandResult.Success("使用法: /parent <subcommand>")
+    }
+}
+
+class ChildCommand : RuneCommand {
+    override val name = "child"
+    override val description = "子コマンド"
+
+    override fun execute(context: RuneCommandContext): CommandResult {
+        return CommandResult.Success("子コマンドを実行しました")
+    }
+}
+```
+
+### CommandResult
+
+コマンドの実行結果は `CommandResult` で表現します．
+
+| 型                                                       | 用途          |
+|---------------------------------------------------------|-------------|
+| `CommandResult.Success(message?)`                       | 成功（メッセージ付き） |
+| `CommandResult.Silent`                                  | 成功（メッセージなし） |
+| `CommandResult.Failure.InvalidArguments(usage)`         | 引数エラー       |
+| `CommandResult.Failure.NoPermission(permission)`        | 権限エラー       |
+| `CommandResult.Failure.PlayerOnly(reason?)`             | プレイヤー専用エラー  |
+| `CommandResult.Failure.TargetNotFound(target)`          | 対象が見つからない   |
+| `CommandResult.Failure.ExecutionFailed(reason, cause?)` | 実行エラー       |
+| `CommandResult.Failure.Custom(message)`                 | カスタムエラー     |
+
+```kotlin
+override fun execute(context: RuneCommandContext): CommandResult {
+    val player = context.player
+        ?: return CommandResult.Failure.PlayerOnly()
+
+    if (player.isFlying) {
+        return CommandResult.Failure.ExecutionFailed("飛行中は実行できません")
+    }
+
+    return CommandResult.Success("完了しました")
+}
+```
+
+### RuneCommandContext
+
+コマンド実行時のコンテキスト情報を提供します．
+
+| プロパティ/メソッド             | 型                    | 説明                  |
+|------------------------|----------------------|---------------------|
+| `source`               | `CommandSourceStack` | Paper のコマンドソース      |
+| `sender`               | `CommandSender`      | コマンド実行者             |
+| `player`               | `Player?`            | プレイヤー（nullable）     |
+| `playerOrThrow`        | `Player`             | プレイヤー（非null，失敗時は例外） |
+| `args`                 | `Map<String, Any>`   | コマンド引数              |
+| `getArgument<T>(name)` | `T?`                 | 型安全な引数取得            |
+
+### Tab 補完
+
+`suggest` メソッドをオーバーライドして Tab 補完を実装します．
+
+```kotlin
+class TeleportCommand : RuneCommand {
+    override val name = "teleport"
+    override val description = "プレイヤーにテレポート"
+
+    override fun suggest(context: SuggestionContext): List<String> {
+        val playerNames = Bukkit.getOnlinePlayers().map { it.name }
+        return context.filterStartsWith(playerNames)
+    }
+
+    override fun execute(context: RuneCommandContext): CommandResult {
+        // ...
+    }
+}
+```
+
+### コマンドの登録
+
+作成したコマンドは `RuneCore.kt` の `CommandRegistry` に登録します．
+
+```kotlin
+// RuneCore.kt
+override fun onEnable() {
+    // ...
+
+    CommandRegistry(this)
+        .register(RuneRootCommand())  // ルートコマンドを登録
+        .registerAll(lifecycleManager)
+
+    // ...
+}
+```
+
+サブコマンドは親コマンドの `subcommands` プロパティに追加するだけで自動的に登録されます．
+
+### コマンドの命名規則
+
+- コマンドクラス名: `Rune{機能名}Command`（例: `RuneLogoutCommand`, `RuneInfoCommand`）
+- パッケージ: `dev.m1sk9.runeCore.command.impl`
+
 ## データベース
 
 RuneCore ではデータベースに MariaDB を採用しています．

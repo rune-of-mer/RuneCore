@@ -20,10 +20,16 @@ class PlayerRepository {
             level = this[Players.level],
             experience = this[Players.experience],
             balance = this[Players.balance],
-            createAt = this[Players.createdAt],
-            updateAt = this[Players.updatedAt],
+            createdAt = this[Players.createdAt],
+            updatedAt = this[Players.updatedAt],
         )
 
+    /**
+     * プレイヤーデータを新規作成します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] と [PlayerData]
+     */
     fun createPlayer(uuid: UUID): RepositoryResult<PlayerData> =
         try {
             transaction {
@@ -41,6 +47,12 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID にマッチするプレイヤーデータを検索します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] と [PlayerData]
+     */
     fun findByUUID(uuid: UUID): RepositoryResult<PlayerData> =
         try {
             transaction {
@@ -56,6 +68,12 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID にマッチするプレイヤーデータが存在するかどうか確認します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] と [Boolean] - 存在する場合は true, 存在しない場合は false を返します．
+     */
     fun existsByUUID(uuid: UUID): RepositoryResult<Boolean> =
         try {
             transaction {
@@ -70,6 +88,13 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのレベルを設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param newLevel 新しいレベル
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun setLevel(
         uuid: UUID,
         newLevel: UInt,
@@ -92,6 +117,13 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーに経験値を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加する経験値
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun addExperience(
         uuid: UUID,
         amount: ULong,
@@ -114,6 +146,13 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーの経験値を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定する経験値
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun setExperience(
         uuid: UUID,
         amount: ULong,
@@ -136,6 +175,12 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーの所持金を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] と所持金
+     */
     fun getBalance(uuid: UUID): RepositoryResult<ULong> =
         try {
             transaction {
@@ -151,6 +196,13 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーの所持金を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定する所持金
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun setBalance(
         uuid: UUID,
         amount: ULong,
@@ -172,6 +224,13 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーに所持金を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加する所持金
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun addBalance(
         uuid: UUID,
         amount: ULong,
@@ -193,6 +252,13 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーから所持金を減算します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 減算する所持金
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun subtractBalance(
         uuid: UUID,
         amount: ULong,
@@ -221,6 +287,14 @@ class PlayerRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤー間で所持金を送金します．
+     *
+     * @param fromUuid 送金元のプレイヤーの UUID
+     * @param toUuid 送金先のプレイヤーの UUID
+     * @param amount 送金する所持金
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun transferBalance(
         fromUuid: UUID,
         toUuid: UUID,
