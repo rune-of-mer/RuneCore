@@ -1,6 +1,6 @@
 package dev.m1sk9.runeCore.permission
 
-import dev.m1sk9.runeCore.exception.RequirePermissionException
+import dev.m1sk9.runeCore.permission.RequirePermissionException
 import org.bukkit.entity.Player
 
 @DslMarker
@@ -66,7 +66,7 @@ fun Player.hasPermissionAll(block: PermissionCollector.() -> Unit): Boolean {
  * ```
  *
  * @param block 権限を指定するDSLブロック
- * @throws dev.m1sk9.runeCore.exception.RequirePermissionException プレイヤーが指定された権限のいずれも持っていない場合
+ * @throws RequirePermissionException プレイヤーが指定された権限のいずれも持っていない場合
  */
 fun Player.requirePermissionAny(block: PermissionCollector.() -> Unit) {
     val collector = PermissionCollector().apply(block)

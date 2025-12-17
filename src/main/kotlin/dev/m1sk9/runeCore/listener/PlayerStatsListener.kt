@@ -1,6 +1,6 @@
 package dev.m1sk9.runeCore.listener
 
-import dev.m1sk9.runeCore.action.PlayerSessionAction
+import dev.m1sk9.runeCore.component.action.PlayerSessionAction
 import dev.m1sk9.runeCore.database.repository.RepositoryResult
 import dev.m1sk9.runeCore.database.repository.StatsRepository
 import org.bukkit.entity.Player

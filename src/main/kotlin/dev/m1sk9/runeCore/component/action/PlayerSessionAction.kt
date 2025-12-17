@@ -1,4 +1,4 @@
-package dev.m1sk9.runeCore.action
+package dev.m1sk9.runeCore.component.action
 
 import dev.m1sk9.runeCore.component.errorMessage
 import org.bukkit.entity.Player
