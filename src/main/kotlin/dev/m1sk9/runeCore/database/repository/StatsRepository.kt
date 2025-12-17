@@ -20,6 +20,12 @@ class StatsRepository {
             updatedAt = this[PlayerStats.updatedAt],
         )
 
+    /**
+     * 指定された UUID にマッチするプレイヤーの統計データを検索します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] と [PlayerStatsData]
+     */
     fun findByUuid(uuid: UUID): RepositoryResult<PlayerStatsData> =
         try {
             transaction {
@@ -35,6 +41,12 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのキル数を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とキル数
+     */
     fun getKills(uuid: UUID): RepositoryResult<UInt> =
         try {
             transaction {
@@ -50,6 +62,13 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのキル数を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定するキル数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun setKills(
         uuid: UUID,
         amount: UInt,
@@ -71,6 +90,12 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのキル数を1増加させます．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun incrementKills(uuid: UUID): RepositoryResult<Unit> =
         try {
             transaction {
@@ -89,6 +114,13 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーにキル数を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加するキル数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun addKills(
         uuid: UUID,
         amount: UInt,
@@ -110,6 +142,13 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのモブキル数を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定するモブキル数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun setMobKills(
         uuid: UUID,
         amount: UInt,
@@ -131,6 +170,12 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのモブキル数を1増加させます．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun incrementMobKills(uuid: UUID): RepositoryResult<Unit> =
         try {
             transaction {
@@ -149,6 +194,13 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーにモブキル数を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加するモブキル数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun addMobKills(
         uuid: UUID,
         amount: UInt,
@@ -170,6 +222,12 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのデス数を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とデス数
+     */
     fun getDeaths(uuid: UUID): RepositoryResult<UInt> =
         try {
             transaction {
@@ -185,6 +243,13 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのデス数を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定するデス数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun setDeaths(
         uuid: UUID,
         amount: UInt,
@@ -206,6 +271,12 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのデス数を1増加させます．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun incrementDeaths(uuid: UUID): RepositoryResult<Unit> =
         try {
             transaction {
@@ -224,6 +295,13 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーにデス数を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加するデス数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
     fun addDeaths(
         uuid: UUID,
         amount: UInt,
@@ -245,6 +323,14 @@ class StatsRepository {
             RepositoryResult.Error(e)
         }
 
+    /**
+     * 指定された UUID のプレイヤーのキルデス比を計算して取得します．
+     *
+     * デス数が0の場合はキル数をそのまま返します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とキルデス比
+     */
     fun getKillDeathRatio(uuid: UUID): RepositoryResult<Double> =
         try {
             transaction {

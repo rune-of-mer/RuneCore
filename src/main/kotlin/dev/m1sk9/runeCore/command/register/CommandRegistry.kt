@@ -3,6 +3,7 @@ package dev.m1sk9.runeCore.command.register
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
+import dev.m1sk9.runeCore.command.RuneCommand
 import dev.m1sk9.runeCore.command.annotation.CommandPermission
 import dev.m1sk9.runeCore.command.annotation.PlayerOnlyCommand
 import dev.m1sk9.runeCore.component.errorMessage
@@ -18,16 +19,29 @@ import org.bukkit.plugin.Plugin
 private const val COMMAND_SUCCESS = 1
 private const val COMMAND_FAILURE = 0
 
-class CommandRegistry(
-    private val plugin: Plugin,
-) {
+/**
+ * コマンドの登録処理を司るクラス．
+ *
+ * このクラスは [RuneCommand] の継承クラスを [mutableListOf] で受け取り，それを [LifecycleEvents] で登録する．
+ */
+class CommandRegistry {
     private val runeCommands = mutableListOf<RuneCommand>()
 
+    /**
+     * コマンド [RuneCommand] を [CommandRegistry] の [runeCommands] に登録する．
+     *
+     * @return [CommandRegistry]
+     */
     fun register(runeCommand: RuneCommand): CommandRegistry {
         runeCommands.add(runeCommand)
         return this
     }
 
+    /**
+     * [LifecycleEventManager] を Paper サーバーに登録する，
+     *
+     * @param lifecycleManager [Plugin] をもつ [LifecycleEventManager]
+     */
     fun registerAll(lifecycleManager: LifecycleEventManager<Plugin>) {
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
             val registrar = event.registrar()
@@ -38,6 +52,13 @@ class CommandRegistry(
         }
     }
 
+    /**
+     * 実際のコマンドのコンテキストを Paper 側の情報を照らし合わせて [LiteralArgumentBuilder] を生成する．
+     *
+     * [CommandPermission] の権限チェックもここで行われる．
+     *
+     * @param runeCommand コマンドを実装した [RuneCommand] の継承クラス
+     */
     private fun buildLiteral(runeCommand: RuneCommand): LiteralArgumentBuilder<CommandSourceStack> {
         var literal = Commands.literal(runeCommand.name)
 
@@ -73,6 +94,13 @@ class CommandRegistry(
         return literal
     }
 
+    /**
+     * 実際のコマンドを Paper で実行する処理．
+     *
+     * @param runeCommand コマンドを実装した [RuneCommand] の継承クラス
+     * @param ctx コマンドのコンテキスト情報を持つ [CommandContext]
+     * @return コマンドの結果．成功 - [COMMAND_SUCCESS], 失敗 - [COMMAND_FAILURE]
+     */
     private fun executeCommand(
         runeCommand: RuneCommand,
         ctx: CommandContext<CommandSourceStack>,
@@ -113,8 +141,13 @@ class CommandRegistry(
     }
 
     /**
-     * コマンドの深さを計算する
-     * 例: /rune info -> depth = 2, /rune -> depth = 1
+     * コマンドの深さを計算する．
+     *
+     * 例えば，/rune info -> depth = 2, /rune -> depth = 1 となる．
+     *
+     * @param runeCommand コマンドを実装した [RuneCommand] の継承クラス
+     * @param parts コマンドの各パーツを持つ配列
+     * @return コマンドの深さに対応した数値
      */
     private fun countCommandDepth(
         runeCommand: RuneCommand,
@@ -138,6 +171,12 @@ class CommandRegistry(
         return depth
     }
 
+    /**
+     * Paper 側に実際に実装する [CommandResult] に合わせたコマンドの各種結果
+     *
+     * @param result コマンドの各種結果
+     * @param sender コマンドの実行者
+     */
     private fun handleResult(
         result: CommandResult,
         sender: CommandSender,

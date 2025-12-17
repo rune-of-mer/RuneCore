@@ -72,4 +72,10 @@ dokka {
             footerMessage.set("© 2025 Sho Sakuma and Rune of Mer DevTeam")
         }
     }
+    dokkaSourceSets {
+        named("main") {
+            includes.from(project.layout.projectDirectory.file("docs/module.md"))
+            includes.from(project.layout.projectDirectory.file("docs/command.md"))
+        }
+    }
 }

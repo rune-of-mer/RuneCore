@@ -1,4 +1,8 @@
-package dev.m1sk9.runeCore.command.register
+package dev.m1sk9.runeCore.command
+
+import dev.m1sk9.runeCore.command.register.CommandResult
+import dev.m1sk9.runeCore.command.register.RuneCommandContext
+import dev.m1sk9.runeCore.command.register.SuggestionContext
 
 interface RuneCommand {
     /**
@@ -25,7 +29,19 @@ interface RuneCommand {
      */
     val subcommands: List<RuneCommand> get() = emptyList()
 
+    /**
+     * コマンドの実行内容を実装する関数
+     *
+     * @param context [RuneCommandContext] - コマンドのコンテキスト情報
+     * @return [CommandResult] - コマンドの実行結果
+     */
     fun execute(context: RuneCommandContext): CommandResult
 
+    /**
+     * コマンドのサジェスト内容を実装する関数
+     *
+     * @param context [SuggestionContext] - サジェストのコンテキスト情報
+     * @return サジェスト候補のリスト
+     */
     fun suggest(context: SuggestionContext): List<String> = emptyList()
 }
