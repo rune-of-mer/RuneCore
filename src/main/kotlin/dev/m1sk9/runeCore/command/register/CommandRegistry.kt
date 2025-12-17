@@ -48,7 +48,7 @@ class CommandRegistry(
             ?.let { permission ->
                 literal =
                     literal.requires { source ->
-                        source.sender.hasPermission(permission.value)
+                        source.sender.hasPermission(permission.value.toString())
                     }
             }
 
