@@ -109,10 +109,10 @@ const val MAX_HEALTH_POINTS = 100
 ```
 
 - パッケージ名はすべて小文字で記述し，ドメイン名の逆順を使用してください．
-  - RuneCore　では `dev.m1sk9.runeCore` を使用しています．
+  - RuneCore　では `org.lyralis.runeCore` を使用しています．
 
 ```kotlin
-package dev.m1sk9.runeCore.action ...
+package org.lyralis.runeCore.action ...
 ```
 
 ### Import 文
@@ -364,7 +364,7 @@ override fun onEnable() {
 ### コマンドの命名規則
 
 - コマンドクラス名: `Rune{機能名}Command`（例: `RuneLogoutCommand`, `RuneInfoCommand`）
-- パッケージ: `dev.m1sk9.runeCore.command.impl`
+- パッケージ: `org.lyralis.runeCore.command.impl`
 
 ## データベース
 

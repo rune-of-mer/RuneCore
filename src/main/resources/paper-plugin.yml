@@ -1,6 +1,6 @@
 name: RuneCore
 version: ${version}
-main: dev.m1sk9.runeCore.RuneCore
+main: org.lyralis.runeCore.RuneCore
 api-version: '1.21'
 prefix: RuneCore
 load: STARTUP
