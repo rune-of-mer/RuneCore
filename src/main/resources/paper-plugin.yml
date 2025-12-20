@@ -23,3 +23,7 @@ permissions:
       ## Debug mode
       - runecore.player.admin.debugmode
       - runecore.player.admin.debugmode.switchinggam
+
+      ## Experience Command
+      - runecore.player.admin.command.experience
+      - runecore.player.admin.command.experience.add

@@ -24,12 +24,13 @@ sealed class Permission(
     sealed class Admin(
         node: String,
     ) : Permission(node) {
-        // ---- Debug Mode Permissions ----
-        // デバックモードの使用許可
         object DebugMode : Admin("runecore.player.admin.debugmode")
 
-        // デバックモード: ゲームモード切り替え
         object DebugModeSwitchingGameMode : Admin("runecore.player.admin.debugmode.switchinggame")
+
+        object ExperienceCommand : Admin("runecore.player.admin.command.experience")
+
+        object ExperienceAddCommand : Admin("runecore.player.admin.command.experience.add")
     }
 
     fun has(player: Player): Boolean = player.hasPermission(node)
