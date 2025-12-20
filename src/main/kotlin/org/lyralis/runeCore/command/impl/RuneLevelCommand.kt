@@ -18,35 +18,36 @@ import java.util.logging.Logger
 @PlayerOnlyCommand
 class RuneLevelCommand(
     private val playerRepository: PlayerRepository,
-    private val logger: Logger
-): RuneCommand {
-
+    private val logger: Logger,
+) : RuneCommand {
     override val name = "level"
     override val description = "現在のレベルを確認します"
     override val aliases = listOf("lv")
 
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
-        val levelInfo = getLevelInfo(player)
-            ?: return CommandResult.Failure.ExecutionFailed("レベル情報の取得に失敗しました")
+        val levelInfo =
+            getLevelInfo(player)
+                ?: return CommandResult.Failure.ExecutionFailed("レベル情報の取得に失敗しました")
         val maxLevel = ExperienceCalculator.getMaxLevel()
 
         // TODO: 最大レベルの場合，経験値量の処理はどうするか
-        val result = if (levelInfo.third >= maxLevel) {
-            listOf(
-                "現在のレベル情報:",
-                "   最大レベルに到達しています",
-                "   経験値量は最大レベルの上限突破後にレベルアップに使用されます",
-                "   レベル: ${levelInfo.third}",
-                "   経験値: ${levelInfo.first}",
-            ).joinToString("\n")
-        } else {
-            listOf(
-                "現在のレベル情報:",
-                "   レベル: ${levelInfo.third}/${maxLevel}",
-                "   経験値: ${levelInfo.first}/${levelInfo.second}",
-            ).joinToString("\n")
-        }
+        val result =
+            if (levelInfo.third >= maxLevel) {
+                listOf(
+                    "現在のレベル情報:",
+                    "   最大レベルに到達しています",
+                    "   経験値量は最大レベルの上限突破後にレベルアップに使用されます",
+                    "   レベル: ${levelInfo.third}",
+                    "   経験値: ${levelInfo.first}",
+                ).joinToString("\n")
+            } else {
+                listOf(
+                    "現在のレベル情報:",
+                    "   レベル: ${levelInfo.third}/$maxLevel",
+                    "   経験値: ${levelInfo.first}/${levelInfo.second}",
+                ).joinToString("\n")
+            }
 
         return CommandResult.Success(result)
     }

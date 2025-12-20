@@ -15,6 +15,7 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.CommandPermission
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.component.errorMessage
+import org.lyralis.runeCore.component.infoMessage
 import org.lyralis.runeCore.component.systemMessage
 
 private const val COMMAND_SUCCESS = 1
@@ -188,7 +189,7 @@ class CommandRegistry(
         when (result) {
             is CommandResult.Success -> {
                 result.message?.let { message ->
-                    sender.sendMessage(message.systemMessage())
+                    sender.sendMessage(message.infoMessage())
                 }
             }
             is CommandResult.Failure.InvalidArgument -> {
