@@ -16,8 +16,6 @@ import org.lyralis.runeCore.command.annotation.CommandPermission
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.component.errorMessage
 import org.lyralis.runeCore.component.systemMessage
-import java.util.logging.Level
-import java.util.logging.Logger
 
 private const val COMMAND_SUCCESS = 1
 private const val COMMAND_FAILURE = 0
@@ -30,7 +28,6 @@ private const val COMMAND_FAILURE = 0
 class CommandRegistry(
     // NOTE: `plugin` は必要なので触らない. IDE が never used と推論してしまっているがこれは誤り
     private val plugin: JavaPlugin,
-    private val logger: Logger
 ) {
     private val runeCommands = mutableListOf<RuneCommand>()
 
@@ -134,8 +131,6 @@ class CommandRegistry(
         // サブコマンドの深さを計算して適切な位置から引数を取得
         val commandDepth = countCommandDepth(runeCommand, parts)
         val args = parts.drop(commandDepth).toTypedArray()
-
-        logger.info("Command ${parts.joinToString(" ")} executed with args $args")
 
         val context =
             RuneCommandContext(
