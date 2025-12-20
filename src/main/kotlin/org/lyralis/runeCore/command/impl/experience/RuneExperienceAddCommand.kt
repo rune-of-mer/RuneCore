@@ -19,7 +19,8 @@ class RuneExperienceAddCommand(
 
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
-        val experience = context.arg(1, "500").toULong()
+        val experience = context.arg(1, "500").toULongOrNull()
+            ?: return CommandResult.Failure.InvalidArgument("経験値は数値で指定してください")
 
         if (experience !in 1uL..<100000uL) {
             return CommandResult.Failure.InvalidArgument("付与できる経験値は1以上100000未満です")
