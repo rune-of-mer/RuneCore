@@ -65,14 +65,6 @@ object ExperienceBossBarManager {
         bossBars.clear()
     }
 
-    /**
-     * 指定したプレイヤーにボスバーが表示されているかどうかを確認します．
-     *
-     * @param player プレイヤー
-     * @return 表示している場合 true, 表示していない場合は false が返ってきます．
-     */
-    fun hasBossBar(player: Player): Boolean = bossBars.containsKey(player.uniqueId)
-
     private fun createBossBar(): BossBar =
         BossBar.bossBar(
             Component.empty(),
@@ -93,14 +85,14 @@ object ExperienceBossBarManager {
                 .text("レベル ")
                 .color(NamedTextColor.GOLD)
                 .decoration(TextDecoration.BOLD, true)
-                .append(Component.text("$level ").color(NamedTextColor.YELLOW))
-                .append(Component.text("[MAX]").color(NamedTextColor.RED))
+                .append(Component.text("$level ").color(NamedTextColor.GOLD))
+                .append(Component.text("-- MAX --").color(NamedTextColor.RED))
         } else {
             Component
                 .text("レベル ")
-                .color(NamedTextColor.GREEN)
-                .append(Component.text("$level ").color(NamedTextColor.YELLOW))
-                .append(Component.text("| ").color(NamedTextColor.DARK_GRAY))
+                .color(NamedTextColor.AQUA)
+                .append(Component.text("$level ").color(NamedTextColor.AQUA))
+                .append(Component.text(" - ").color(NamedTextColor.DARK_GRAY))
                 .append(Component.text("$currentExperience").color(NamedTextColor.WHITE))
                 .append(Component.text(" / ").color(NamedTextColor.GRAY))
                 .append(Component.text("$requiredExperience").color(NamedTextColor.WHITE))
