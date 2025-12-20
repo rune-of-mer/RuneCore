@@ -21,6 +21,13 @@ class ExperienceService(
     private val experienceCache = ConcurrentHashMap<UUID, ULong>()
     private val levelCache = ConcurrentHashMap<UUID, UInt>()
 
+    /**
+     * 指定したプレイヤーに経験値を付与します．
+     *
+     * @param player プレイヤー
+     * @param amount 付与する経験値
+     * @return 付与した経験値量を返します．付与に失敗した場合は null が帰ってきます
+     */
     fun grantExperience(
         player: Player,
         amount: ULong,
@@ -61,6 +68,12 @@ class ExperienceService(
         }
     }
 
+    /**
+     * 現在の UUID に保存されているレベルを返します
+     *
+     * @param uuid 対象の UUID
+     * @return 保存されているレベル
+     */
     fun getLevel(uuid: UUID): UInt {
         levelCache[uuid]?.let { return it }
 
@@ -71,12 +84,23 @@ class ExperienceService(
         return level
     }
 
+    /**
+     * 経験値ボスバーを初期化します．
+     *
+     * @param player プレイヤー
+     */
     fun initializeBossBar(player: Player) {
         val totalExp = getExperience(player.uniqueId)
         val level = getLevel(player.uniqueId)
         ExperienceBossBarManager.updateBossBar(player, level, totalExp)
     }
 
+    /**
+     * 現在の総経験値を取得する
+     *
+     * @param uuid UUID
+     * @return 現在の総経験値
+     */
     fun getExperience(uuid: UUID): ULong {
         experienceCache[uuid]?.let { return it }
 
@@ -99,6 +123,11 @@ class ExperienceService(
         }
     }
 
+    /**
+     * 現在の総経験値を読み込みます
+     *
+     * @param uuid UUID
+     */
     fun loadExperience(uuid: UUID) {
         when (val result = playerRepository.findByUUID(uuid)) {
             is RepositoryResult.Success -> {
@@ -125,10 +154,19 @@ class ExperienceService(
         }
     }
 
+    /**
+     * キャッシュを初期化します
+     *
+     * @param uuid UUID
+     */
     fun clearCache(uuid: UUID) {
         experienceCache[uuid] = 0uL
+        levelCache[uuid] = 1u
     }
 
+    /**
+     * 全てのキャッシュを初期化します
+     */
     fun clearAllCache() {
         experienceCache.clear()
         levelCache.clear()

@@ -34,14 +34,13 @@ object ExperienceBossBarManager {
             }
 
         val progress = ExperienceCalculator.calculateProgress(totalExperience, level)
-        val currentLevelExperience = ExperienceCalculator.getExperienceForLevel(level)
         val nextLevelExperience = ExperienceCalculator.getExperienceForLevel(level + 1u)
         val title = buildBossBarTitle(level, totalExperience, nextLevelExperience)
         val color = determineBossBarColor(level)
 
         bossBar.name(title)
         bossBar.color(color)
-        bossBar.progress(progress.toFloat().coerceIn(0f, 1f))
+        bossBar.progress(progress.coerceIn(0f, 1f))
 
         if (!player.activeBossBars().contains(bossBar)) {
             player.showBossBar(bossBar)
