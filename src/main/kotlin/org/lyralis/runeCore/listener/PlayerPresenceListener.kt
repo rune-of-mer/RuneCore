@@ -13,7 +13,7 @@ import org.lyralis.runeCore.permission.Permission
 import org.lyralis.runeCore.permission.hasPermissionAny
 
 class PlayerPresenceListener(
-    private val experienceService: ExperienceService
+    private val experienceService: ExperienceService,
 ) : Listener {
     private val config = ConfigManager.get()
 

@@ -82,9 +82,9 @@ object ExperienceCalculator {
     fun calculateProgress(
         totalExperience: ULong,
         currentLevel: UInt,
-    ): Double {
+    ): Float {
         if (currentLevel >= MAX_LEVEL) {
-            return 1.0
+            return 1.0f
         }
 
         val currentExperience = getExperienceForLevel(currentLevel)
@@ -92,7 +92,7 @@ object ExperienceCalculator {
         val requiredExperience = nextLevelExperience - currentExperience
         val currentProgress = totalExperience - currentExperience
 
-        return (currentProgress.toDouble() / requiredExperience.toDouble()).coerceIn(0.0, 1.0)
+        return (currentProgress.toDouble() / requiredExperience.toDouble()).coerceIn(0.0, 1.0).toFloat()
     }
 
     /**

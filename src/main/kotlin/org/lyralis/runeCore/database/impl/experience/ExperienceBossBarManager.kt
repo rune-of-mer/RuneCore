@@ -36,10 +36,7 @@ object ExperienceBossBarManager {
         val progress = ExperienceCalculator.calculateProgress(totalExperience, level)
         val currentLevelExperience = ExperienceCalculator.getExperienceForLevel(level)
         val nextLevelExperience = ExperienceCalculator.getExperienceForLevel(level + 1u)
-        val currentProgress = totalExperience - currentLevelExperience
-        val requiredExperience = nextLevelExperience - currentLevelExperience
-
-        val title = buildBossBarTitle(level, currentProgress, requiredExperience)
+        val title = buildBossBarTitle(level, totalExperience, nextLevelExperience)
         val color = determineBossBarColor(level)
 
         bossBar.name(title)
