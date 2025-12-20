@@ -89,6 +89,27 @@ class PlayerRepository {
         }
 
     /**
+     * 指定された UUID のプレイヤーのレベルを取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とレベル
+     */
+    fun getLevel(uuid: UUID): RepositoryResult<UInt> =
+        try {
+            transaction {
+                Players
+                    .selectAll()
+                    .where { Players.uuid eq uuid }
+                    .map { it[Players.level] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player $uuid not found")
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
      * 指定された UUID のプレイヤーのレベルを設定します．
      *
      * @param uuid プレイヤーの UUID
@@ -112,6 +133,27 @@ class PlayerRepository {
                 } else {
                     RepositoryResult.NotFound("Player $uuid not found")
                 }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーの経験値を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] と経験値
+     */
+    fun getExperience(uuid: UUID): RepositoryResult<ULong> =
+        try {
+            transaction {
+                Players
+                    .selectAll()
+                    .where { Players.uuid eq uuid }
+                    .map { it[Players.experience] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player $uuid not found")
             }
         } catch (e: Exception) {
             RepositoryResult.Error(e)

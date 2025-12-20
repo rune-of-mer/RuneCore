@@ -3,6 +3,7 @@ package org.lyralis.runeCore
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.command.impl.RuneDiceCommand
+import org.lyralis.runeCore.command.impl.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.RuneLogoutCommand
 import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
 import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
@@ -52,6 +53,7 @@ RuneCore : JavaPlugin() {
         CommandRegistry(this)
             .register(RuneExperienceCommand(experienceService))
             .register(RuneDiceCommand())
+            .register(RuneLevelCommand(playerRepository, logger))
             .register(RuneLogoutCommand())
             .register(RunePatchNoteCommand())
             .register(RunePlayerListCommand())
