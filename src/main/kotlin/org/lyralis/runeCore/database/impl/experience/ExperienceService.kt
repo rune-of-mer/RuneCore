@@ -1,8 +1,15 @@
 package org.lyralis.runeCore.database.impl.experience
 
+import net.kyori.adventure.sound.Sound
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.title.Title
 import org.bukkit.entity.Player
+import org.lyralis.runeCore.component.infoMessage
+import org.lyralis.runeCore.component.systemMessage
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
+import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Logger
@@ -38,6 +45,7 @@ class ExperienceService(
                 levelCache[uuid] = newLevel
 
                 ExperienceBossBarManager.updateBossBar(player, newLevel, newExperience)
+                notifyGetExperience(player, amount, newLevel, oldLevel)
 
                 newExperience
             }
@@ -63,59 +71,10 @@ class ExperienceService(
         return level
     }
 
-    fun isMaxLevel(uuid: UUID): Boolean {
-        val level = getLevel(uuid)
-        return level >= ExperienceCalculator.getMaxLevel()
-    }
-
     fun initializeBossBar(player: Player) {
         val totalExp = getExperience(player.uniqueId)
         val level = getLevel(player.uniqueId)
         ExperienceBossBarManager.updateBossBar(player, level, totalExp)
-    }
-
-    fun cleanupBossBar(player: Player) {
-        ExperienceBossBarManager.removeBossBar(player)
-    }
-
-    fun setExperience(
-        player: Player,
-        totalExperience: ULong,
-    ): ULong? {
-        val validExperience = totalExperience.coerceAtLeast(0uL)
-        val uuid = player.uniqueId
-        val newLevel = ExperienceCalculator.calculateLevel(validExperience)
-
-        when (playerRepository.setExperience(uuid, validExperience)) {
-            is RepositoryResult.Success -> {
-                val currentLevel = levelCache[uuid] ?: 1
-                if (newLevel != currentLevel) {
-                    when (playerRepository.setLevel(uuid, newLevel)) {
-                        is RepositoryResult.Success -> {
-                            levelCache[uuid] = newLevel
-                        }
-                        is RepositoryResult.NotFound -> {
-                            logger.warning("Attempted to set level for non-existent experience: $uuid")
-                            return null
-                        }
-                        is RepositoryResult.Error -> {
-                            logger.severe("Failed to set level for non-existent experience: $uuid")
-                            return null
-                        }
-                        else -> {
-                            return null
-                        }
-                    }
-                }
-
-                experienceCache[uuid] = validExperience
-                levelCache[uuid] = newLevel
-
-                ExperienceBossBarManager.updateBossBar(player, newLevel, validExperience)
-                return validExperience
-            }
-            else -> return null
-        }
     }
 
     fun getExperience(uuid: UUID): ULong {
@@ -166,29 +125,6 @@ class ExperienceService(
         }
     }
 
-    fun saveExperience(uuid: UUID): Boolean {
-        val cachedExperience = experienceCache[uuid] ?: return true
-        val cachedLevel = levelCache[uuid] ?: return true
-
-        return when (playerRepository.setExperience(uuid, cachedExperience)) {
-            is RepositoryResult.Success -> {
-                when (playerRepository.setLevel(uuid, cachedLevel)) {
-                    is RepositoryResult.Success -> true
-                    is RepositoryResult.Error -> {
-                        logger.severe("Failed to set level for $uuid: $cachedLevel")
-                        false
-                    }
-                    else -> false
-                }
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to set level for $uuid: $cachedLevel")
-                false
-            }
-            else -> false
-        }
-    }
-
     fun clearCache(uuid: UUID) {
         experienceCache[uuid] = 0uL
     }
@@ -196,5 +132,51 @@ class ExperienceService(
     fun clearAllCache() {
         experienceCache.clear()
         levelCache.clear()
+    }
+
+    private fun notifyGetExperience(
+        player: Player,
+        addedExperience: ULong,
+        newLevel: UInt,
+        oldLevel: UInt,
+    ) {
+        if (newLevel > oldLevel) {
+            val title =
+                Title.title(
+                    Component.text("LEVEL UP!").color(NamedTextColor.YELLOW),
+                    Component.text("Lv$oldLevel → Lv$newLevel").color(NamedTextColor.YELLOW),
+                    Title.Times.times(
+                        Duration.ofMillis(200),
+                        Duration.ofSeconds(1),
+                        Duration.ofMillis(200),
+                    ),
+                )
+            val sound =
+                Sound.sound(
+                    org.bukkit.Sound.UI_TOAST_CHALLENGE_COMPLETE,
+                    Sound.Source.PLAYER,
+                    1.0f,
+                    1.0f,
+                )
+            player.apply {
+                sendMessage("レベル${newLevel}にあがった".systemMessage())
+                server.broadcast("${player.name}はレベル${newLevel}にあがった".systemMessage())
+                showTitle(title)
+                playSound(sound)
+            }
+            return
+        }
+
+        player.apply {
+            val sound =
+                Sound.sound(
+                    org.bukkit.Sound.BLOCK_AMETHYST_BLOCK_STEP,
+                    Sound.Source.PLAYER,
+                    0.5f,
+                    1.0f,
+                )
+            sendActionBar("+$addedExperience EXP".infoMessage())
+            playSound(sound)
+        }
     }
 }

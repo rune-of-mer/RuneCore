@@ -49,7 +49,7 @@ RuneCore : JavaPlugin() {
         statsRepository = StatsRepository()
         experienceService = ExperienceService(playerRepository, logger)
 
-        CommandRegistry(this, logger)
+        CommandRegistry(this)
             .register(RuneExperienceCommand(experienceService))
             .register(RuneDiceCommand())
             .register(RuneLogoutCommand())
