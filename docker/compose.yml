@@ -2,6 +2,7 @@ services:
   minecraft:
     image: itzg/minecraft-server:java21
     container_name: runecore-debug-server
+    user: "0:0"
     ports:
       - "25565:25565"
       - "25575:25575"
@@ -14,16 +15,26 @@ services:
       TYPE: "PAPER"
       VERSION: "1.21.3"
       MEMORY: "1G"
+
+      # デバッグ用高速化設定
+      LEVEL_TYPE: "flat"
+      VIEW_DISTANCE: "3"
+      SIMULATION_DISTANCE: "3"
+      GENERATE_STRUCTURES: "false"
+      SPAWN_PROTECTION: "0"
+
+      # 権限関連
+      OVERRIDE_SERVER_PROPERTIES: "true"
+
       ENABLE_RCON: "true"
       RCON_PASSWORD: "minecraft"
       RCON_PORT: 25575
       DIFFICULTY: "peaceful"
       MAX_PLAYERS: "3"
       ONLINE_MODE: "false"
-      VIEW_DISTANCE: "5"
-      SERVER_NAME:  "Rune Core Debug Server"
+      SERVER_NAME: "Rune Core Debug Server"
       MOTD: "§6Rune Core Debug Server"
-      SYNC_SKIP_NEWER_IN_DESTINATION:  "false"
+      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
     depends_on:
       mariadb:
         condition: service_healthy
@@ -39,7 +50,7 @@ services:
       - mariadb-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_DATABASE:  "runecore_db"
+      MYSQL_DATABASE: "runecore_db"
       MYSQL_USER: "runecore"
       MYSQL_PASSWORD: "runecore"
     healthcheck:
@@ -47,7 +58,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
 
 volumes:
   minecraft-data:
