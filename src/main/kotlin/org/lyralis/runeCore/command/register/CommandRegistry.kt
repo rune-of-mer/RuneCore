@@ -16,7 +16,6 @@ import org.lyralis.runeCore.command.annotation.CommandPermission
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.component.errorMessage
 import org.lyralis.runeCore.component.infoMessage
-import org.lyralis.runeCore.component.systemMessage
 
 private const val COMMAND_SUCCESS = 1
 private const val COMMAND_FAILURE = 0

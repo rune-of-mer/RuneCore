@@ -17,6 +17,7 @@ import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.StatsRepository
 import org.lyralis.runeCore.listener.PlayerDebugModeListener
+import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
 import org.lyralis.runeCore.listener.PlayerStatsListener
@@ -60,6 +61,7 @@ RuneCore : JavaPlugin() {
             .register(RunePlayTimeCommand())
             .registerAll(lifecycleManager)
 
+        server.pluginManager.registerEvents(PlayerExperienceListener(experienceService), this)
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(experienceService), this)
         server.pluginManager.registerEvents(PlayerStatsListener(statsRepository, logger), this)
