@@ -127,3 +127,8 @@ gradle-app.setting
 .classpath
 
 docker/plugins
+
+### Other settings
+
+# Claude Code
+.claude/settings.local.json
