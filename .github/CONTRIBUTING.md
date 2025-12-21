@@ -32,7 +32,9 @@
   * [付録: コラム](#付録-コラム)
     * [データを扱う際に UUID を使う理由](#データを扱う際に-uuid-を使う理由)
   * [付録: タスク索引](#付録-タスク索引)
+    * [RuneCore](#runecore)
     * [ktlint (ktlint-gradle)](#ktlint-ktlint-gradle)
+    * [Dokka](#dokka)
 <!-- TOC -->
 
 ## 開発環境
@@ -43,18 +45,20 @@ RuneCore の開発に必要な環境は以下の通りです:
   - Minecraft でサポートされている Java バージョンです．
   - Java は基本的に後方互換性があるため， Java 25 などでも動作しますが，RuneCore では非推奨とさせていただきます．
   - Rune of Mer では [Zulu OpenJDK](https://www.azul.com/downloads/?package=jdk) を使用しています．
-- Gradle 8.8 以上
+- Gradle 9 以上
+  - RuneCore は Gradle Wrapper を提供しています．
+  - Linux/macOS では `./gradlew` を使うことができます．
 - MariaDB 12.1.2
 
 ### 推奨
 
 - Linux/macOS での開発を推奨します．
-  - WSL2 の使用は自己責任です．
+  - Windows / WSL2 の使用は非推奨です．自己責任で使用してください．サポートはしません．
 - 使用する IDE は [IntelliJ IDEA Ultimate または Community Edition](https://www.jetbrains.com/ja-jp/idea/) を使用してください．
   - Ultimate Edition の機能が使えた方が楽ですが，RuneCore の開発では Community Edition で十分です．
   - [学生なら無料で使えます](https://www.jetbrains.com/ja-jp/academy/student-pack/)．
 - [Git](https://git-scm.com/)
-  - GitHub Desktop などについてはサポートできないので自己責任で使用してください．
+  - GitHub Desktop などの GUI アプリケーションの使用は非推奨です．自己責任で使用してください．サポートはしません．
 - [Docker](https://www.docker.com/)
     - デバッグサーバを立ち上げるために使用します．
     - 別途で，[Docker Compose](https://docs.docker.com/compose/) も必要です．
@@ -85,7 +89,7 @@ mise install
 ## ブランチ・コミット戦略
 
 - 新しい機能やバグ修正は，`main` ブランチから派生したトピックブランチで行ってください．
-  - ブランチの命名規則は特にありませんが，`feat/` や `fix/` などのプレフィックスを使用することを推奨します．
+  - `feat/` や `fix/` などのプレフィックスを使用してください．
     - 例: `feat/add-new-api`, `fix/fix-null-pointer`
   - 全く意味をなさないブランチ名は禁止します．
 - コミットメッセージは Conventional Commits に準拠します． (参考: [Conventional Commitsとは?](https://www.conventionalcommits.org/ja/v1.0.0/#%e6%a6%82%e8%a6%81))
@@ -147,7 +151,7 @@ import org.bukkit.entity.*
 ## 権限管理
 
 - RuneCore の権限は sealed class として実装してるため，Spigot/Paper の作法とは少し違う扱いをしています．
-- 権限は全て [Permission.kt](../src/main/kotlin/dev/m1sk9/runeCore/permission/Permission.kt) で管理しています．
+- 権限は全て [Permission.kt](../src/main/kotlin/org/lyralis/runeCore/permission/Permission.kt) で管理しています．
 
 ### 権限を追加する
 
@@ -166,7 +170,7 @@ import org.bukkit.entity.*
             - runecore.player.admin.debugmode.switchinggam
     ```
 
-2. [Permission.kt](../src/main/kotlin/dev/m1sk9/runeCore/permission/Permission.kt) に新しい object を定義する．
+2. [Permission.kt](../src/main/kotlin/org/lyralis/runeCore/permission/Permission.kt) に新しい object を定義する．
 
     ```kotlin
     sealed class Admin(
@@ -179,12 +183,12 @@ import org.bukkit.entity.*
    
 ### 権限の確認
 
-- 権限の確認は [PermissionChecker.kt](../src/main/kotlin/dev/m1sk9/runeCore/permission/PermissionChecker.kt) に定義されているヘルパー関数を使用します．
+- 権限の確認は [PermissionChecker.kt](../src/main/kotlin/org/lyralis/runeCore/permission/PermissionChecker.kt) に定義されているヘルパー関数を使用します．
 - 詳しい使用方法は JavaDoc または IDE の [Render Javadocs](https://www.jetbrains.com/help/idea/javadocs.html#toggle-rendered-view) を使用して確認してください．
 
 ## メッセージコンポーネント
 
-- RuneCore のメッセージには一貫性を持たせるため，Kotlin の [拡張関数](https://kotlinlang.org/docs/extensions.html) と言う機能を使用し，[既存の `String`, `List<String>` クラスに RuneCore 独自のヘルパー関数を追加しています](../src/main/kotlin/dev/m1sk9/runeCore/component/MessageComponent.kt)．
+- RuneCore のメッセージには一貫性を持たせるため，Kotlin の [拡張関数](https://kotlinlang.org/docs/extensions.html) と言う機能を使用し，[既存の `String`, `List<String>` クラスに RuneCore 独自のヘルパー関数を追加しています](../src/main/kotlin/org/lyralis/runeCore/component/MessageComponent.kt)．
 - プレイヤー向けに送信するメッセージには適したヘルパー関数を使用してコンポーネントを付与した上で `sendMessage()` や `sendActionBar()` を使用してください．
 
 ```kotlin
@@ -201,7 +205,7 @@ player.sendActionBar("ゲームモードを変更しました: ${player.gameMode
 - RuneCore は Paper の `LifecycleEventManager` を使用した型安全なコマンドシステムを採用しています．
 
 ```
-src/main/kotlin/dev/m1sk9/runeCore/command/
+src/main/kotlin/org/lyralis/runeCore/command/
 ├── annotation/
 │   ├── CommandPermission.kt    # 権限アノテーション
 │   └── PlayerOnlyCommand.kt    # プレイヤー専用アノテーション
@@ -257,7 +261,7 @@ class PlayerCommand : RuneCommand {
 - `@CommandPermission` アノテーションで必要な権限を指定します．
 
 ```kotlin
-@CommandPermission("runecore.admin")
+@CommandPermission(Permission.Admin.ExperienceCommand::class)
 class AdminCommand : RuneCommand {
     override val name = "admin"
     override val description = "管理者専用コマンド"
@@ -391,15 +395,15 @@ RuneCore 内部で使用している `runecore_db` は以下のテーブルを�
 
 いずれもプレイヤーの UUID を主キーとします．([UUID を主キーとしている理由はこちら](#データを扱う際に-uuid-を使う理由))
 
-- [`Players`](../src/main/kotlin/dev/m1sk9/runeCore/database/table/Players.kt):
+- [`Players`](../src/main/kotlin/org/lyralis/runeCore/database/table/Players.kt):
   - プレイヤーデータを格納する基本テーブル
-- [`PlayerStats`](../src/main/kotlin/dev/m1sk9/runeCore/database/table/PlayerStats.kt):
+- [`PlayerStats`](../src/main/kotlin/org/lyralis/runeCore/database/table/PlayerStats.kt):
   - プレイヤーのスタッツ (統計情報) を格納するテーブル
 
 ### データの扱い方
 
 - データベースへの作用は基本的に Repository として実装します．
-  - RuneCore では `kotlin/dev/m1sk9/runeCore/database/repository` 配下におきます．
+  - RuneCore では `kotlin/org/lyralis/runeCore/database/repository` 配下におきます．
   - SQL 文での直接操作は避けます．
 - データベース操作の結果 (成功か失敗か) を表現するための sealed class が各 Repository に実装されているため，データベース操作は基本的に `when` を使い，エラー時の振る舞いも書く必要があります．
   - イメージ的には Rust の `match` 文を使った `Result<T, E>` の処理と似ています．
@@ -427,8 +431,8 @@ when (val result = playerRepository.existsByUUID(uuid)) {
 }
 ```
 
-- [`RepositoryResult`](../src/main/kotlin/dev/m1sk9/runeCore/database/repository/RepositoryResult.kt) にはエラー型が用意されているため， `is` で取り出して，その型に沿った処理を書いてください．
-  - IDEA なら補完が効くはずです．
+- [`RepositoryResult`](../src/main/kotlin/org/lyralis/runeCore/database/repository/RepositoryResult.kt) にはエラー型が用意されているため， `is` で取り出して，その型に沿った処理を書いてください．
+  - IntelliJ IDEA なら補完が効くはずです．
 
 ![](https://github.com/user-attachments/assets/51b83ebb-5167-4d6f-bd55-2e47fb5506ca)
 
@@ -492,9 +496,21 @@ https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2
 
 ## 付録: タスク索引
 
+### RuneCore
+
+- `./gradlew shadowJar`: ShadowJar を使ってビルドを行います．
+- `./gradlew buildPlugin`: [`ktlintFormat`, `ktlintCheck`](#ktlint-ktlint-gradle), `shadowJar` を一度に実行します．
+
 ### ktlint (ktlint-gradle)
 
 - `./gradlew ktlintCheck` : コードスタイルのチェックを実行します．
 - `./gradlew ktlintFormat` : コードスタイルの自動整形を実行します．
 
 [その他のタスク一覧](https://github.com/jlleitschuh/ktlint-gradle?tab=readme-ov-file#tasks-added)
+
+### Dokka
+
+- `./gralew dokkaGeneratePublicationHtml`: HTML 形式で Dokka をビルドします．．
+  - IntelliJ IDEA の Run Panel に表示される URL をクリックするとブラウザで Dokka を開くことが可能です．
+
+![](https://github.com/user-attachments/assets/3f4462af-affe-44f9-b652-bf946774d82b)
