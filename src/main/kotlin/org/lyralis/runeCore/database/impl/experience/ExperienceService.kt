@@ -6,11 +6,11 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
-import org.lyralis.runeCore.component.errorMessage
-import org.lyralis.runeCore.component.infoMessage
-import org.lyralis.runeCore.component.systemMessage
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
+import org.lyralis.runeCore.utils.errorMessage
+import org.lyralis.runeCore.utils.infoMessage
+import org.lyralis.runeCore.utils.systemMessage
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap

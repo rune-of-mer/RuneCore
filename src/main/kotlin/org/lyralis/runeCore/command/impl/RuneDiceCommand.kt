@@ -5,7 +5,7 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
-import org.lyralis.runeCore.component.systemMessage
+import org.lyralis.runeCore.utils.systemMessage
 
 /**
  * /dice コマンドを定義するクラス

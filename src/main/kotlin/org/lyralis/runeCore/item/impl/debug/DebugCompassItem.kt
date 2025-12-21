@@ -1,16 +1,17 @@
 package org.lyralis.runeCore.item.impl.debug
 
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.lyralis.runeCore.component.action.PlayerDebugAction
-import org.lyralis.runeCore.component.errorMessage
-import org.lyralis.runeCore.component.systemMessage
 import org.lyralis.runeCore.item.CustomItem
 import org.lyralis.runeCore.item.CustomItemType
 import org.lyralis.runeCore.item.ItemRarity
 import org.lyralis.runeCore.item.model.CustomItemAction
 import org.lyralis.runeCore.permission.Permission
 import org.lyralis.runeCore.permission.RequirePermissionException
+import org.lyralis.runeCore.permission.requirePermissionAll
+import org.lyralis.runeCore.utils.errorMessage
+import org.lyralis.runeCore.utils.systemMessage
 
 /**
  * 右クリック + スニークでゲームモードを切り替えるアイテム
@@ -31,8 +32,21 @@ object DebugCompassItem : CustomItem, CustomItemType.Usable {
         if (!player.isSneaking) return false
 
         return try {
-            PlayerDebugAction(player).changeGameMode()
-            player.sendActionBar("ゲームモードを変更しました: ${player.gameMode}".systemMessage())
+            player.requirePermissionAll {
+                +Permission.Admin.DebugMode
+                +Permission.Admin.DebugModeSwitchingGameMode
+            }
+
+            player.apply {
+                gameMode =
+                    when (player.gameMode) {
+                        GameMode.SURVIVAL -> GameMode.CREATIVE
+                        GameMode.CREATIVE -> GameMode.SURVIVAL
+                        else -> GameMode.SURVIVAL
+                    }
+                sendActionBar("ゲームモードを変更しました: ${player.gameMode}".systemMessage())
+            }
+
             true
         } catch (e: RequirePermissionException) {
             player.sendMessage((e.message ?: "権限が不足しています").errorMessage())

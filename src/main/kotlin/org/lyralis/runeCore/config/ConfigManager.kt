@@ -20,7 +20,6 @@ object ConfigManager {
             Config(
                 plugin =
                     PluginConfig(
-                        debugMode = config.getBoolean("plugin.debugMode", false),
                         patchNoteURL = config.getString("plugin.patchNoteURL", "https://example.com")!!,
                     ),
                 database =

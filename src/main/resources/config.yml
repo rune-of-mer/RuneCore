@@ -5,8 +5,6 @@
 
 # 一般設定
 plugin:
-  ## デバッグモードの切り替え．起動するとデバッグ専用の機能が使用できます．
-  debugMode: false
   ## /patchnote で表示されるパッチノートの URL
   patchNoteURL: "https://example.com"
 

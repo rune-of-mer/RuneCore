@@ -24,7 +24,6 @@ import org.lyralis.runeCore.listener.CustomItemInteractListener
 import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
-import org.lyralis.runeCore.listener.PlayerStatsListener
 
 class
 RuneCore : JavaPlugin() {
@@ -72,7 +71,6 @@ RuneCore : JavaPlugin() {
         server.pluginManager.registerEvents(PlayerExperienceListener(experienceService), this)
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(experienceService), this)
-        server.pluginManager.registerEvents(PlayerStatsListener(statsRepository, logger), this)
 
         logger.info("RuneCore enabled.")
     }
