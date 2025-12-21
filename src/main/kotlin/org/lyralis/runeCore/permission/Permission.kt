@@ -31,6 +31,8 @@ sealed class Permission(
         object ExperienceCommand : Admin("runecore.player.admin.command.experience")
 
         object ExperienceAddCommand : Admin("runecore.player.admin.command.experience.add")
+
+        object CustomGiveCommand : Admin("runecore.player.admin.command.customgive")
     }
 
     fun has(player: Player): Boolean = player.hasPermission(node)
