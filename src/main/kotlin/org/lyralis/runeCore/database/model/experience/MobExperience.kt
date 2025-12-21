@@ -4,12 +4,13 @@ import org.bukkit.entity.EntityType
 import org.lyralis.runeCore.database.model.experience.ExperienceCategory
 import org.lyralis.runeCore.database.model.experience.ExperienceSource
 
+// TODO: 経験値を獲得できる Mob の調整は必要．特にカッパーゴーレム・ハッピーガストなどの特殊Mobに至っては経験値が獲得できるのはおかしい
+
 /**
  * モブ殺害時の経験値定義
  *
  * 各モブに対応する経験値とカテゴリを定義する．
  */
-// TODO: 経験値を獲得できる Mob の調整は必要．特にカッパーゴーレム・ハッピーガストなどの特殊Mobに至っては経験値が獲得できるのはおかしい
 enum class MobExperience(
     val entityType: EntityType,
     override val experience: ULong,
@@ -75,7 +76,6 @@ enum class MobExperience(
     WOLF(EntityType.WOLF, 8uL, ExperienceCategory.MOB_NATURAL),
     DOLPHIN(EntityType.DOLPHIN, 5uL, ExperienceCategory.MOB_NATURAL),
     GOAT(EntityType.GOAT, 5uL, ExperienceCategory.MOB_NATURAL),
-    /// ラウダハスクは敵対Mobが騎乗している間のみ敵対する特殊なMobだが， RuneCore 上では中立Mob扱いとする
     CAMELHUSK(EntityType.CAMEL_HUSK, 10uL, ExperienceCategory.MOB_NATURAL),
     NAUTILUS(EntityType.NAUTILUS, 5uL, ExperienceCategory.MOB_NATURAL),
     ZOMBIE_NAUTILUS(EntityType.ZOMBIE_NAUTILUS, 10uL, ExperienceCategory.MOB_NATURAL),
