@@ -19,11 +19,11 @@ cd RuneCore
 ./gradlew shadowJar
 ```
 
-_[Supports Minecraft 1.21.11](https://ja.minecraft.wiki/w/Java_Edition_1.21.11) | [Requires Java 21+ and Gradle 9+](.github/CONTRIBUTING.md#開発環境)_
+_[Supports Minecraft 1.21.10](https://ja.minecraft.wiki/w/Java_Edition_1.21.10) | [Requires Java 21+ and Gradle 9+](.github/CONTRIBUTING.md#開発環境)_
 
 ## セットアップ
 
-- RuneCore は Minecraft 1.21.11 をサポートしている **Paper プラグイン** です．
+- RuneCore は Minecraft 1.21.10 をサポートしている **Paper プラグイン** です．
   - Paper API を全面的にサポートしているため， [Spigot](https://www.spigotmc.org/) では使用できません．
   - また，マルチコアでの動作は未検証のため，[Folia](https://github.com/PaperMC/Folia) では動作しません．
 
