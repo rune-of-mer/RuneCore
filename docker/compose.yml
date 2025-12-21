@@ -13,7 +13,7 @@ services:
     environment:
       EULA: "TRUE"
       TYPE: "PAPER"
-      VERSION: "1.21.3"
+      VERSION: "1.21.10"
       MEMORY: "1G"
 
       # デバッグ用高速化設定
