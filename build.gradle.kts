@@ -19,7 +19,7 @@ repositories {
 val exposedVersion = "0.61.0"
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.mariadb.jdbc:mariadb-java-client:3.5.7")
