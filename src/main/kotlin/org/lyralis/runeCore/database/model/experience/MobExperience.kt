@@ -1,8 +1,6 @@
-package org.lyralis.runeCore.experience.source
+package org.lyralis.runeCore.database.model.experience
 
 import org.bukkit.entity.EntityType
-import org.lyralis.runeCore.database.model.experience.ExperienceCategory
-import org.lyralis.runeCore.database.model.experience.ExperienceSource
 
 // TODO: 経験値を獲得できる Mob の調整は必要．特にカッパーゴーレム・ハッピーガストなどの特殊Mobに至っては経験値が獲得できるのはおかしい
 
@@ -74,9 +72,9 @@ enum class MobExperience(
     WOLF(EntityType.WOLF, 8uL, ExperienceCategory.MOB_NATURAL),
     DOLPHIN(EntityType.DOLPHIN, 5uL, ExperienceCategory.MOB_NATURAL),
     GOAT(EntityType.GOAT, 5uL, ExperienceCategory.MOB_NATURAL),
-    CAMELHUSK(EntityType.CAMEL_HUSK, 10uL, ExperienceCategory.MOB_NATURAL),
-    NAUTILUS(EntityType.NAUTILUS, 5uL, ExperienceCategory.MOB_NATURAL),
-    ZOMBIE_NAUTILUS(EntityType.ZOMBIE_NAUTILUS, 10uL, ExperienceCategory.MOB_NATURAL),
+    // CAMELHUSK(EntityType.CAMEL_HUSK, 10uL, ExperienceCategory.MOB_NATURAL),
+    // NAUTILUS(EntityType.NAUTILUS, 5uL, ExperienceCategory.MOB_NATURAL),
+    // ZOMBIE_NAUTILUS(EntityType.ZOMBIE_NAUTILUS, 10uL, ExperienceCategory.MOB_NATURAL),
 
     // ========== 受動モブ（家畜） ==========
     PIG(EntityType.PIG, 3uL, ExperienceCategory.MOB_PASSIVE),

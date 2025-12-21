@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDeathEvent
 import org.lyralis.runeCore.component.infoMessage
 import org.lyralis.runeCore.component.systemMessage
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
-import org.lyralis.runeCore.experience.source.MobExperience
+import org.lyralis.runeCore.database.model.experience.MobExperience
 import org.lyralis.runeCore.experience.source.OreExperience
 import org.lyralis.runeCore.experience.source.PvPExperience
 
