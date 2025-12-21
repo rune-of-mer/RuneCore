@@ -1,15 +1,39 @@
+# -----------------------
+# RuneCore Configuration
+# -----------------------
+
+
+# 一般設定
 plugin:
+  ## デバッグモードの切り替え．起動するとデバッグ専用の機能が使用できます．
   debugMode: false
+  ## /patchnote で表示されるパッチノートの URL
   patchNoteURL: "https://example.com"
 
+# データベース設定
 database:
+  ## データベースのホスト
   host: "mariadb"
+  ## データベースのポート
   port: 3306
+  ## データベース名
   name: "runecore_db"
+  ## データベースに接続する場合のユーザー名．`root` での接続はしないでください．
   username: "runecore"
+  ## データベースに接続する場合のパスワード
   password: "runecore"
+  ## HikariCP でのプール設定 (詳細はこちら: https://github.com/brettwooldridge/HikariCP?tab=readme-ov-file#gear-configuration-knobs-baby)
+  ## 小規模構成で RuneCore を使う場合は `maximumSize` を `5`, `minimumIdle` を `1` で運用することが推奨されます．
+  ## 以下の設定は本来であれば変更不要です．
   pool:
+    ### プールで使用できる最大接続数
     maximumSize: 10
+    ### プールで維持する最小限のアイドル接続数．
+    ### この値が `maximumPoolSize` よりも小さい場合は `idleTimeout` を超えてアイドル状態にある接続は削除されます．
     minimumIdle: 2
+    ### 接続がプール内でアイドル状態のまま維持できる最大時間 (ミリ秒単位)
+    ### 例えばデフォルト値では1分間アイドル状態の接続が対象となります．`minimumIdle` の値を超えている場合のみ，この時間をすぎたアイドル接続は削除されます．
     idleTimeout: 60000
+    ### プールから接続を取得するために待機する最大時間 (ミリ秒単位)
+    ### 設定した制限時間を超えても接続を取得できない場合はエラーとなります．
     connectionTimeout: 30000
