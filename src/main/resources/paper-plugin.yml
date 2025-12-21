@@ -22,7 +22,10 @@ permissions:
     children:
       ## Debug mode
       - runecore.player.admin.debugmode
-      - runecore.player.admin.debugmode.switchinggam
+      - runecore.player.admin.debugmode.switchinggamemode
+
+      # Custom Item
+      - runecore.player.admin.command.customgive
 
       ## Experience Command
       - runecore.player.admin.command.experience
