@@ -58,8 +58,6 @@ enum class MobExperience(
     WITCH(EntityType.WITCH, 25uL, ExperienceCategory.MOB_HOSTILE),
     GUARDIAN(EntityType.GUARDIAN, 100uL, ExperienceCategory.MOB_HOSTILE),
     BREEZE(EntityType.BREEZE, 20uL, ExperienceCategory.MOB_HOSTILE),
-    CREAKING(EntityType.CREAKING, 25uL, ExperienceCategory.MOB_HOSTILE),
-    PARCHED(EntityType.PARCHED, 25uL, ExperienceCategory.MOB_HOSTILE),
 
     // ========== 敵対モブ（襲撃） ==========
     PILLAGER(EntityType.PILLAGER, 15uL, ExperienceCategory.MOB_HOSTILE),
