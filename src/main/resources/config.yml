@@ -7,6 +7,20 @@
 plugin:
   ## /patchnote で表示されるパッチノートの URL
   patchNoteURL: "https://example.com"
+  ## サーバー参加時に送信される Motd
+  motd:
+    - " --- Welcome to Rune of Mer! --- "
+    - "公式サイト: https://example.com"
+  ## 初見プレイヤー対応に関する設定
+  noKnownPlayers:
+    ### 初見プレイヤーが参加時に送信される Motd
+    firstMotd:
+      - "Rune of Mer へようこそ!"
+      - "まずはチュートリアルを受けましょう!"
+    ### 初見プレイヤーに最初に支給される所持金
+    tutorialRune: 1000
+    ### チュートリアルを受けた際に入手できる経験値 (チュートリアルを受けた際の報酬として)
+    tutorialExp: 1000
 
 # データベース設定
 database:
