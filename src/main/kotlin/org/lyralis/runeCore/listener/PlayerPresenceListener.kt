@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceBossBarManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
+import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
 import org.lyralis.runeCore.utils.systemMessage
 
 class PlayerPresenceListener(
@@ -30,6 +31,7 @@ class PlayerPresenceListener(
 
         ExperienceBossBarManager.removeBossBar(player)
         experienceService.clearCache(player.uniqueId)
+        PlayerHeadCacheManager.invalidateCache(player.uniqueId)
 
         event.quitMessage("${player.name} がログアウトしました".systemMessage())
     }
