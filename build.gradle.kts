@@ -24,8 +24,9 @@ val exposedVersion = "0.61.0"
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("xyz.xenondevs.invui:invui:1.49")
-    implementation("xyz.xenondevs.invui:invui-kotlin:1.49")
+    // InvUI は Paper の library loader を通してロードするため compileOnly
+    compileOnly("xyz.xenondevs.invui:invui:1.49")
+    compileOnly("xyz.xenondevs.invui:invui-kotlin:1.49")
 
     implementation("org.mariadb.jdbc:mariadb-java-client:3.5.7")
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
