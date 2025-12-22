@@ -34,7 +34,7 @@ class RuneExperienceAddCommand(
 
         val newExperience =
             experienceService.grantExperience(targetPlayer, experience)
-                ?: return CommandResult.Failure.ExecutionFailed("経験値の付与に失敗しました．")
+                ?: return CommandResult.Failure.ExecutionFailed("経験値の付与に失敗しました")
 
         return CommandResult.Success("$target に $experience EXP を付与しました (現在の経験値: $newExperience)")
     }
