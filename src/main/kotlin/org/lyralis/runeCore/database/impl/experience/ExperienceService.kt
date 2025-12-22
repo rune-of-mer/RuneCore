@@ -8,11 +8,11 @@ import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.component.bossbar.BossBarManager
+import org.lyralis.runeCore.component.message.errorMessage
+import org.lyralis.runeCore.component.message.infoMessage
+import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
-import org.lyralis.runeCore.utils.errorMessage
-import org.lyralis.runeCore.utils.infoMessage
-import org.lyralis.runeCore.utils.systemMessage
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap

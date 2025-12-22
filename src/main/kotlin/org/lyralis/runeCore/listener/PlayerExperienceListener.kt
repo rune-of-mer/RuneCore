@@ -11,12 +11,12 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
+import org.lyralis.runeCore.component.message.infoMessage
+import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.model.experience.MobExperience
 import org.lyralis.runeCore.experience.source.OreExperience
 import org.lyralis.runeCore.experience.source.PvPExperience
-import org.lyralis.runeCore.utils.infoMessage
-import org.lyralis.runeCore.utils.systemMessage
 
 class PlayerExperienceListener(
     private val experienceService: ExperienceService,

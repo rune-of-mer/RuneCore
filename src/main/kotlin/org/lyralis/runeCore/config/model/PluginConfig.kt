@@ -5,5 +5,5 @@ data class PluginConfig(
     val motd: List<String> = listOf(" --- Welcome to Rune of Mer! --- "),
     val firstMotd: List<String> = listOf("Rune of Mer へようこそ!"),
     val tutorialRune: Long = 1000,
-    val tutorialExp: Long = 1000
+    val tutorialExp: Long = 1000,
 )

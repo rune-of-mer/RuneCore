@@ -10,19 +10,18 @@ import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.component.actionbar.StatusActionBarProvider
 import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
+import org.lyralis.runeCore.component.message.errorMessage
+import org.lyralis.runeCore.component.message.infoMessage
+import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
-import org.lyralis.runeCore.utils.errorMessage
-import org.lyralis.runeCore.utils.infoMessage
-import org.lyralis.runeCore.utils.systemMessage
 
 class PlayerPresenceListener(
     private val experienceService: ExperienceService,
     private val moneyService: MoneyService,
 ) : Listener {
-
     private val config = ConfigManager.get()
 
     private val statusActionBarProvider =

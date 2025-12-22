@@ -14,8 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.CommandPermission
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
-import org.lyralis.runeCore.utils.errorMessage
-import org.lyralis.runeCore.utils.infoMessage
+import org.lyralis.runeCore.component.message.errorMessage
+import org.lyralis.runeCore.component.message.infoMessage
 
 private const val COMMAND_SUCCESS = 1
 private const val COMMAND_FAILURE = 0

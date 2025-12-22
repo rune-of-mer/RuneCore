@@ -4,6 +4,8 @@ import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
+import org.lyralis.runeCore.component.message.errorMessage
+import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.item.CustomItem
 import org.lyralis.runeCore.item.CustomItemType
 import org.lyralis.runeCore.item.ItemRarity
@@ -11,8 +13,6 @@ import org.lyralis.runeCore.item.model.CustomItemAction
 import org.lyralis.runeCore.permission.Permission
 import org.lyralis.runeCore.permission.RequirePermissionException
 import org.lyralis.runeCore.permission.requirePermissionAll
-import org.lyralis.runeCore.utils.errorMessage
-import org.lyralis.runeCore.utils.systemMessage
 
 /**
  * 右クリック + スニークでゲームモードを切り替えるアイテム
