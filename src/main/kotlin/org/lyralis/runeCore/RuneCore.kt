@@ -3,7 +3,6 @@ package org.lyralis.runeCore
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.command.impl.RuneCustomGiveCommand
-import org.lyralis.runeCore.command.impl.RuneCustomItemIDCommand
 import org.lyralis.runeCore.command.impl.RuneDiceCommand
 import org.lyralis.runeCore.command.impl.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.RuneLogoutCommand
@@ -18,12 +17,15 @@ import org.lyralis.runeCore.database.impl.experience.ExperienceBossBarManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.StatsRepository
+import org.lyralis.runeCore.gui.cache.PlayerHeadCacheCleanupTask
+import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
 import org.lyralis.runeCore.item.ItemRegistry
 import org.lyralis.runeCore.item.impl.debug.DebugCompassItem
 import org.lyralis.runeCore.listener.CustomItemInteractListener
 import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
+import xyz.xenondevs.invui.InvUI
 
 class
 RuneCore : JavaPlugin() {
@@ -31,8 +33,12 @@ RuneCore : JavaPlugin() {
     private lateinit var playerRepository: PlayerRepository
     private lateinit var statsRepository: StatsRepository
     private lateinit var experienceService: ExperienceService
+    private lateinit var headCacheCleanupTask: PlayerHeadCacheCleanupTask
 
     override fun onEnable() {
+        // InvUI のプラグインインスタンスを設定（Paper 1.20.5+ で必要）
+        InvUI.getInstance().setPlugin(this)
+
         saveDefaultConfig()
         val config = ConfigManager.load(config)
 
@@ -58,12 +64,11 @@ RuneCore : JavaPlugin() {
         CommandRegistry(this)
             .register(RuneExperienceCommand(experienceService))
             .register(RuneCustomGiveCommand())
-            .register(RuneCustomItemIDCommand())
             .register(RuneDiceCommand())
             .register(RuneLevelCommand(playerRepository, logger))
             .register(RuneLogoutCommand())
             .register(RunePatchNoteCommand())
-            .register(RunePlayerListCommand())
+            .register(RunePlayerListCommand(playerRepository))
             .register(RunePlayTimeCommand())
             .registerAll(lifecycleManager)
 
@@ -71,6 +76,10 @@ RuneCore : JavaPlugin() {
         server.pluginManager.registerEvents(PlayerExperienceListener(experienceService), this)
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(experienceService), this)
+
+        // プレイヤーの頭キャッシュクリーンアップタスクを開始
+        headCacheCleanupTask = PlayerHeadCacheCleanupTask(this, logger)
+        headCacheCleanupTask.start()
 
         logger.info("RuneCore enabled.")
     }
@@ -82,6 +91,14 @@ RuneCore : JavaPlugin() {
 
         ExperienceBossBarManager.removeAllBossBars()
         experienceService.clearAllCache()
+
+        // プレイヤーの頭キャッシュをクリア
+        PlayerHeadCacheManager.clearAllCache()
+
+        // クリーンアップタスクを停止
+        if (::headCacheCleanupTask.isInitialized) {
+            headCacheCleanupTask.stop()
+        }
 
         logger.info("RuneCore disabled.")
     }

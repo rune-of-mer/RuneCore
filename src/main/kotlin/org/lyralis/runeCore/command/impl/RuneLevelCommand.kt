@@ -1,5 +1,6 @@
 package org.lyralis.runeCore.command.impl
 
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
@@ -8,6 +9,10 @@ import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.database.impl.experience.ExperienceCalculator
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
+import org.lyralis.runeCore.gui.getCachedPlayerHead
+import org.lyralis.runeCore.gui.openGui
+import org.lyralis.runeCore.gui.result.GuiResult
+import org.lyralis.runeCore.gui.toCommandResult
 import java.util.logging.Logger
 
 /**
@@ -31,25 +36,59 @@ class RuneLevelCommand(
                 ?: return CommandResult.Failure.ExecutionFailed("レベル情報の取得に失敗しました")
         val maxLevel = ExperienceCalculator.getMaxLevel()
 
-        // TODO: 最大レベルの場合，経験値量の処理はどうするか
         val result =
             if (levelInfo.third >= maxLevel) {
                 listOf(
-                    "現在のレベル情報:",
-                    "   最大レベルに到達しています",
-                    "   経験値量は最大レベルの上限突破後にレベルアップに使用されます",
-                    "   レベル: ${levelInfo.third}",
+                    "   レベル: ${levelInfo.third}/$maxLevel",
                     "   経験値: ${levelInfo.first}",
-                ).joinToString("\n")
+                    "",
+                    "すでに最大レベルに到達しています",
+                    "超過分は上限突破後に引き続きカウントされます",
+                )
             } else {
                 listOf(
-                    "現在のレベル情報:",
                     "   レベル: ${levelInfo.third}/$maxLevel",
                     "   経験値: ${levelInfo.first}/${levelInfo.second}",
-                ).joinToString("\n")
+                )
             }
 
-        return CommandResult.Success(result)
+        return player
+            .openGui {
+                title = "レベル/経験値"
+                rows = 3
+
+                structure {
+                    +"# # # # # # # # #"
+                    +"# # H # # # L # #"
+                    +"# # # # # # # # #"
+                }
+
+                decoration('#', Material.BLACK_STAINED_GLASS_PANE)
+
+                item('L') {
+                    material = Material.EXPERIENCE_BOTTLE
+                    displayName = "お金からレベルアップ"
+                    lore =
+                        listOf(
+                            "お金を経験値に変換してレベルアップできます",
+                        )
+                    // TODO: Add convert logic
+                    onClick {
+                        GuiResult.Silent
+                    }
+                }
+
+                item('H') {
+                    customItem =
+                        player.getCachedPlayerHead {
+                            displayName = "${player.name}のレベル情報:"
+                            lore(result)
+                        }
+                    onClick {
+                        GuiResult.Silent
+                    }
+                }
+            }.toCommandResult()
     }
 
     // 総経験値/次までの経験値/現在のレベル
@@ -72,6 +111,5 @@ class RuneLevelCommand(
             }
             else -> return null
         }
-        return null
     }
 }

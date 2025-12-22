@@ -32,6 +32,7 @@ class PlayerLoginListener(
                         else -> {}
                     }
                 }
+                logger.info("Player $uuid successfully logged in.")
             }
             is RepositoryResult.Error -> {
                 logger.severe("Failed to check player: $uuid")
