@@ -1,8 +1,6 @@
-package org.lyralis.runeCore.experience.source
+package org.lyralis.runeCore.database.model.experience
 
 import org.bukkit.Material
-import org.lyralis.runeCore.database.model.experience.ExperienceCategory
-import org.lyralis.runeCore.database.model.experience.ExperienceSource
 
 /**
  * 鉱石破壊時の経験値定義

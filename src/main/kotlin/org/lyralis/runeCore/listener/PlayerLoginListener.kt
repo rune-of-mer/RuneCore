@@ -4,9 +4,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result
+import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
-import org.lyralis.runeCore.utils.errorMessage
 import java.util.logging.Logger
 
 class PlayerLoginListener(

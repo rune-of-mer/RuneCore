@@ -1,4 +1,4 @@
-package org.lyralis.runeCore.utils
+package org.lyralis.runeCore.component.message
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor

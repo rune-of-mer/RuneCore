@@ -5,10 +5,10 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
+import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.gui.result.ConfirmationResult
 import org.lyralis.runeCore.gui.template.showConfirmation
 import org.lyralis.runeCore.gui.toCommandResult
-import org.lyralis.runeCore.utils.systemMessage
 
 /**
  * /logout コマンドを定義するクラス

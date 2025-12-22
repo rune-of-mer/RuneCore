@@ -21,6 +21,11 @@ object ConfigManager {
                 plugin =
                     PluginConfig(
                         patchNoteURL = config.getString("plugin.patchNoteURL", "https://example.com")!!,
+                        motd = config.getStringList("plugin.motd"),
+                        // noKnownPlayers
+                        firstMotd = config.getStringList("plugin.noKnownPlayers.firstMotd"),
+                        tutorialRune = config.getLong("plugin.noKnownPlayers.tutorialRune"),
+                        tutorialExp = config.getLong("plugin.noKnownPlayers.tutorialExp"),
                     ),
                 database =
                     DatabaseConfig(

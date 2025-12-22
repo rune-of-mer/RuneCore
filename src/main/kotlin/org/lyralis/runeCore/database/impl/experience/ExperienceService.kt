@@ -6,11 +6,13 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
+import org.lyralis.runeCore.component.actionbar.ActionBarManager
+import org.lyralis.runeCore.component.bossbar.BossBarManager
+import org.lyralis.runeCore.component.message.errorMessage
+import org.lyralis.runeCore.component.message.infoMessage
+import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
-import org.lyralis.runeCore.utils.errorMessage
-import org.lyralis.runeCore.utils.infoMessage
-import org.lyralis.runeCore.utils.systemMessage
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -39,7 +41,10 @@ class ExperienceService(
         }
 
         if (player.gameMode == GameMode.CREATIVE) {
-            player.sendActionBar("クリエイティブモードの場合は経験値は獲得できません".errorMessage())
+            ActionBarManager.showTemporaryNotification(
+                player,
+                "クリエイティブモードの場合は経験値は獲得できません".errorMessage(),
+            )
             return null
         }
 
@@ -58,7 +63,7 @@ class ExperienceService(
                 experienceCache[uuid] = newExperience
                 levelCache[uuid] = newLevel
 
-                ExperienceBossBarManager.updateBossBar(player, newLevel, newExperience)
+                BossBarManager.update(player)
                 notifyGetExperience(player, amount, newLevel, oldLevel)
 
                 newExperience
@@ -89,17 +94,6 @@ class ExperienceService(
 
         levelCache[uuid] = level
         return level
-    }
-
-    /**
-     * 経験値ボスバーを初期化します．
-     *
-     * @param player プレイヤー
-     */
-    fun initializeBossBar(player: Player) {
-        val totalExp = getExperience(player.uniqueId)
-        val level = getLevel(player.uniqueId)
-        ExperienceBossBarManager.updateBossBar(player, level, totalExp)
     }
 
     /**
@@ -220,7 +214,7 @@ class ExperienceService(
                     0.5f,
                     1.0f,
                 )
-            sendActionBar("+$addedExperience EXP".infoMessage())
+            ActionBarManager.showTemporaryNotification(this, "+$addedExperience EXP".infoMessage())
             playSound(sound)
         }
     }

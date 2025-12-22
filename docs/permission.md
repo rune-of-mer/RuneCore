@@ -30,3 +30,7 @@ LuckPerms の Group に対して以下の権限ノードを指定するのを推
 | `runecore.player.admin.debugmode.switchinggame` | デバッグモードのゲームモード切り替えを許可する．                                   |
 | `runecore.player.admin.command.experience`      | `/experience` コマンドの使用を許可する．この権限ノードはサブコマンドの子ノードをオーバーライドします． |
 | `runecore.player.admin.command.experience.add`  | `/experience add` コマンドの使用を許可する．                            |
+| `runecore.player.admin.command.money`           | `/money` コマンドの使用を許可する この権限ノードはサブコマンドの子ノードをオーバーライドします．      |
+| `runecore.player.admin.command.money.set`       | `/money set` コマンドの使用を許可する                                  |
+| `runecore.player.admin.command.money.add`       | `/money add` コマンドの使用を許可する                                  |
+| `runecore.player.admin.command.money.reduce`    | `/money redice` コマンドの使用を許可する                               |

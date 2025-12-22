@@ -5,10 +5,10 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.item.CustomItemType
 import org.lyralis.runeCore.item.ItemRegistry
 import org.lyralis.runeCore.item.model.CustomItemAction
-import org.lyralis.runeCore.utils.errorMessage
 
 /**
  * カスタムアイテムの使用イベントを処理するリスナー
