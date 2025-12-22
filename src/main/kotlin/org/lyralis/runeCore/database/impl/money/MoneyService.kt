@@ -1,6 +1,8 @@
 package org.lyralis.runeCore.database.impl.money
 
 import org.bukkit.entity.Player
+import org.lyralis.runeCore.component.actionbar.ActionBarManager
+import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
 import java.util.UUID
@@ -55,6 +57,8 @@ class MoneyService(
         val uuid = player.uniqueId
         val currentBalance = getBalance(uuid)
         val newBalance = currentBalance + amount
+
+        ActionBarManager.showTemporaryNotification(player, "+$amount Rune".infoMessage())
 
         return when (val result = playerRepository.addBalance(uuid, amount)) {
             is RepositoryResult.Success -> {

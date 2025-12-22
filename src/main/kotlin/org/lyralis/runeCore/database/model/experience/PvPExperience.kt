@@ -1,7 +1,4 @@
-package org.lyralis.runeCore.experience.source
-
-import org.lyralis.runeCore.database.model.experience.ExperienceCategory
-import org.lyralis.runeCore.database.model.experience.ExperienceSource
+package org.lyralis.runeCore.database.model.experience
 
 /**
  * プレイヤー殺害（PvP）時の経験値定義

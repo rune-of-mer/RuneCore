@@ -80,7 +80,7 @@ class RuneCore : JavaPlugin() {
             .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
-        server.pluginManager.registerEvents(PlayerExperienceListener(experienceService), this)
+        server.pluginManager.registerEvents(PlayerExperienceListener(experienceService, moneyService), this)
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(experienceService, moneyService), this)
 
