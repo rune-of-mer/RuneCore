@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack
 import org.lyralis.runeCore.gui.annotation.GuiDsl
 import org.lyralis.runeCore.gui.handler.ClickAction
 import org.lyralis.runeCore.gui.result.GuiResult
+import org.lyralis.runeCore.item.impl.debug.DebugCompassItem.displayName
 import xyz.xenondevs.invui.gui.PagedGui
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
@@ -88,6 +89,13 @@ class PaginatedGuiBuilder<T> {
                 PaginatedItem(item, renderer, onItemClickHandler)
             }
 
+        val borderItem =
+            ItemStack(Material.BLACK_STAINED_GLASS_PANE).apply {
+                editMeta { meta ->
+                    meta.displayName(Component.text(""))
+                }
+            }
+
         val gui =
             PagedGui
                 .items()
@@ -96,10 +104,10 @@ class PaginatedGuiBuilder<T> {
                     "x x x x x x x x x",
                     "x x x x x x x x x",
                     "x x x x x x x x x",
-                    "# # # # # # # # #",
+                    "x x x x x x x x x",
                     "# # < # # # > # #",
                 ).addIngredient('x', xyz.xenondevs.invui.gui.structure.Markers.CONTENT_LIST_SLOT_HORIZONTAL)
-                .addIngredient('#', ItemStack(Material.BLACK_STAINED_GLASS_PANE))
+                .addIngredient('#', borderItem)
                 .addIngredient('<', BackwardPageItem())
                 .addIngredient('>', ForwardPageItem())
                 .setContent(items)
@@ -109,7 +117,7 @@ class PaginatedGuiBuilder<T> {
             Window
                 .single()
                 .setViewer(player)
-                .setTitle(title)
+                .setTitle("$title - ${gui.currentPage + 1}/${gui.pageAmount}")
                 .setGui(gui)
                 .build()
                 .open()

@@ -58,7 +58,7 @@ class ConfirmationGuiBuilder {
 
                 structure {
                     +"# # # # # # # # #"
-                    +"# M M M M M M M #"
+                    +"# # # # M # # # #"
                     +"# # C # # # D # #"
                 }
 

@@ -1,6 +1,7 @@
 package org.lyralis.runeCore.gui.builder
 
 import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 import org.lyralis.runeCore.gui.annotation.GuiDsl
 import org.lyralis.runeCore.gui.handler.ClickAction
 import org.lyralis.runeCore.gui.item.ClickableItem
@@ -21,6 +22,16 @@ import org.lyralis.runeCore.gui.result.GuiResult
  *         GuiResult.Success(Unit)
  *     }
  * }
+ *
+ * // カスタムアイテム（プレイヤーの頭など）を使う場合
+ * item('B') {
+ *     customItem = player.getCachedPlayerHead {
+ *         displayName = "プレイヤー情報"
+ *     }
+ *     onClick { action ->
+ *         GuiResult.Success(Unit)
+ *     }
+ * }
  * ```
  */
 @GuiDsl
@@ -29,6 +40,7 @@ class ItemDefinition {
     var displayName: String = ""
     var lore: List<String> = emptyList()
     var amount: Int = 1
+    var customItem: ItemStack? = null
 
     private var clickHandler: ((ClickAction) -> GuiResult<Unit>)? = null
     private var leftClickHandler: ((ClickAction) -> GuiResult<Unit>)? = null
@@ -61,6 +73,7 @@ class ItemDefinition {
             displayName = displayName,
             loreLines = lore,
             amount = amount,
+            customItem = customItem,
             clickHandler = { action ->
                 when {
                     action.isLeftClick && leftClickHandler != null -> leftClickHandler!!(action)

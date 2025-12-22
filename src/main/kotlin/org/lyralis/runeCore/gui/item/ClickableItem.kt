@@ -5,6 +5,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.ItemStack
 import org.lyralis.runeCore.gui.handler.ClickAction
 import org.lyralis.runeCore.gui.result.GuiResult
 import xyz.xenondevs.invui.item.Item
@@ -18,6 +19,7 @@ import xyz.xenondevs.invui.item.impl.AbstractItem
  * @param displayName 表示名
  * @param loreLines 説明文
  * @param amount アイテム数
+ * @param customItem カスタムアイテム（設定時は material/displayName/lore より優先）
  * @param clickHandler クリック時のハンドラー
  */
 class ClickableItem(
@@ -25,6 +27,7 @@ class ClickableItem(
     private val displayName: String,
     private val loreLines: List<String> = emptyList(),
     private val amount: Int = 1,
+    private val customItem: ItemStack? = null,
     private val clickHandler: ((ClickAction) -> GuiResult<Unit>)? = null,
 ) : GuiItem {
     override fun toInvUiItem(): Item = ClickableInvUiItem()
@@ -32,7 +35,8 @@ class ClickableItem(
     private inner class ClickableInvUiItem : AbstractItem() {
         override fun getItemProvider(): ItemProvider =
             ItemProvider {
-                org.bukkit.inventory.ItemStack(material, amount).apply {
+                // customItem が設定されている場合はそれを使用
+                customItem?.clone() ?: org.bukkit.inventory.ItemStack(material, amount).apply {
                     editMeta { meta ->
                         meta.displayName(Component.text(displayName))
                         if (loreLines.isNotEmpty()) {
