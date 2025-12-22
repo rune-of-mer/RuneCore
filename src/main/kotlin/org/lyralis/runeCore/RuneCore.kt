@@ -10,11 +10,12 @@ import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
 import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
 import org.lyralis.runeCore.command.impl.RunePlayerListCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
+import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
 import org.lyralis.runeCore.command.register.CommandRegistry
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
+import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.database.DatabaseManager
-import org.lyralis.runeCore.database.impl.experience.ExperienceBossBarManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.database.repository.PlayerRepository
@@ -68,6 +69,7 @@ class RuneCore : JavaPlugin() {
 
         CommandRegistry(this)
             .register(RuneExperienceCommand(experienceService))
+            .register(RuneMoneyCommand(moneyService))
             .register(RuneCustomGiveCommand())
             .register(RuneDiceCommand())
             .register(RuneLevelCommand(playerRepository, logger))
@@ -82,7 +84,6 @@ class RuneCore : JavaPlugin() {
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(experienceService, moneyService), this)
 
-        // プレイヤーの頭キャッシュクリーンアップタスクを開始
         headCacheCleanupTask = PlayerHeadCacheCleanupTask(this, logger)
         headCacheCleanupTask.start()
 
@@ -94,7 +95,7 @@ class RuneCore : JavaPlugin() {
             databaseManager.disconnect()
         }
 
-        ExperienceBossBarManager.removeAllBossBars()
+        BossBarManager.shutdown()
         experienceService.clearAllCache()
 
         ActionBarManager.shutdown()

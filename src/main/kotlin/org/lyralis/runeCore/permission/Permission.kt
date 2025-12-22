@@ -24,6 +24,8 @@ sealed class Permission(
     sealed class Admin(
         node: String,
     ) : Permission(node) {
+        object CustomGiveCommand : Admin("runecore.player.admin.command.customgive")
+
         object DebugMode : Admin("runecore.player.admin.debugmode")
 
         object DebugModeSwitchingGameMode : Admin("runecore.player.admin.debugmode.switchinggame")
@@ -32,7 +34,13 @@ sealed class Permission(
 
         object ExperienceAddCommand : Admin("runecore.player.admin.command.experience.add")
 
-        object CustomGiveCommand : Admin("runecore.player.admin.command.customgive")
+        object MoneyCommand : Admin("runecore.player.admin.command.money")
+
+        object MoneySetCommand : Admin("runecore.player.admin.command.money.set")
+
+        object MoneyAddCommand : Admin("runecore.player.admin.command.money.add")
+
+        object MoneyReduceCommand : Admin("runecore.player.admin.command.money.reduce")
     }
 
     fun has(player: Player): Boolean = player.hasPermission(node)
