@@ -3,6 +3,7 @@ package org.lyralis.runeCore.item.impl.debug
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.item.CustomItem
 import org.lyralis.runeCore.item.CustomItemType
 import org.lyralis.runeCore.item.ItemRarity
@@ -44,7 +45,10 @@ object DebugCompassItem : CustomItem, CustomItemType.Usable {
                         GameMode.CREATIVE -> GameMode.SURVIVAL
                         else -> GameMode.SURVIVAL
                     }
-                sendActionBar("ゲームモードを変更しました: ${player.gameMode}".systemMessage())
+                ActionBarManager.showTemporaryNotification(
+                    this,
+                    "ゲームモードを変更しました: ${player.gameMode}".systemMessage(),
+                )
             }
 
             true

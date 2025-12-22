@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
+import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.RepositoryResult
 import org.lyralis.runeCore.utils.errorMessage
@@ -39,7 +40,10 @@ class ExperienceService(
         }
 
         if (player.gameMode == GameMode.CREATIVE) {
-            player.sendActionBar("クリエイティブモードの場合は経験値は獲得できません".errorMessage())
+            ActionBarManager.showTemporaryNotification(
+                player,
+                "クリエイティブモードの場合は経験値は獲得できません".errorMessage(),
+            )
             return null
         }
 
@@ -220,7 +224,7 @@ class ExperienceService(
                     0.5f,
                     1.0f,
                 )
-            sendActionBar("+$addedExperience EXP".infoMessage())
+            ActionBarManager.showTemporaryNotification(this, "+$addedExperience EXP".infoMessage())
             playSound(sound)
         }
     }

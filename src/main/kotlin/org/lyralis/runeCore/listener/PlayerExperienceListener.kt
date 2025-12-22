@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDeathEvent
+import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.model.experience.MobExperience
 import org.lyralis.runeCore.experience.source.OreExperience
@@ -61,7 +62,10 @@ class PlayerExperienceListener(
 
         val tool = player.inventory.itemInMainHand
         if (tool.containsEnchantment(Enchantment.SILK_TOUCH)) {
-            player.sendActionBar(Component.text("+0EXP (シルクタッチでの破壊)").color(NamedTextColor.WHITE))
+            ActionBarManager.showTemporaryNotification(
+                player,
+                Component.text("+0EXP (シルクタッチでの破壊)").color(NamedTextColor.WHITE),
+            )
             return
         }
 
