@@ -7,6 +7,9 @@ import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
+import org.lyralis.runeCore.gui.result.GuiResult
+import org.lyralis.runeCore.gui.template.showPaginatedGui
+import org.lyralis.runeCore.gui.toCommandResult
 import org.lyralis.runeCore.item.ItemRegistry
 import org.lyralis.runeCore.permission.Permission
 
@@ -19,36 +22,28 @@ class RuneCustomGiveCommand : RuneCommand {
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
 
-        val itemId =
-            context.args.getOrNull(0)
-                ?: return CommandResult.Failure.InvalidArgument("/giveu <ID> [個数] [プレイヤー]")
+        return player
+            .showPaginatedGui {
+                title = "カスタムアイテム一覧"
+                itemsPerPage = 28
 
-        val customItem =
-            ItemRegistry.getById(itemId)
-                ?: return CommandResult.Failure.ExecutionFailed("アイテム $itemId は存在しません")
+                items(ItemRegistry.getAllItems())
 
-        val amount = context.args.getOrNull(1)?.toIntOrNull() ?: 1
-        if (amount !in 1..64) {
-            return CommandResult.Failure.InvalidArgument("個数は1〜64の範囲で指定してください")
-        }
+                render { customItem ->
+                    customItem.createItemStack()
+                }
 
-        val targetName = context.arg(2, player.name)
-        val target =
-            Bukkit.getPlayer(targetName)
-                ?: return CommandResult.Failure.ExecutionFailed("指定したプレイヤーは存在しません")
-
-        if (target.inventory.firstEmpty() == -1) {
-            return CommandResult.Failure.ExecutionFailed("対象のプレイヤーのインベントリに空きがありません")
-        }
-
-        val itemStack = customItem.createItemStack(amount)
-        target.inventory.addItem(itemStack)
-
-        return if (target == player) {
-            CommandResult.Success("${customItem.displayName} を付与しました")
-        } else {
-            CommandResult.Success("${target.name} に ${customItem.displayName} を付与しました")
-        }
+                onItemClick { item, action ->
+                    if (!action.isLeftClick) {
+                        GuiResult.Silent
+                    } else if (player.inventory.firstEmpty() == -1) {
+                        GuiResult.Failure.ClickFailed("対象のプレイヤーのインベントリに空きがありません")
+                    } else {
+                        player.inventory.addItem(item.createItemStack())
+                        GuiResult.Success(Unit)
+                    }
+                }
+            }.toCommandResult()
     }
 
     override fun suggest(context: SuggestionContext): List<String> =
