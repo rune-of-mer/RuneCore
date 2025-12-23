@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.lyralis.runeCore.config.model.DatabaseConfig
+import org.lyralis.runeCore.database.table.PlayerSettings
 import org.lyralis.runeCore.database.table.PlayerStats
 import org.lyralis.runeCore.database.table.Players
 import java.util.logging.Logger
@@ -42,6 +43,7 @@ class DatabaseManager(
             SchemaUtils.create(
                 Players,
                 PlayerStats,
+                PlayerSettings,
             )
         }
 
