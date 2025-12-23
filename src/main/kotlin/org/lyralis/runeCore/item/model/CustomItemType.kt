@@ -26,6 +26,9 @@ sealed interface CustomItemType {
         val isUsableOnLeftClick: Boolean
             get() = false
 
+        val enchantments: List<CustomItemEnchantment>
+            get() = emptyList()
+
         /**
          * アイテム使用時の処理
          *
