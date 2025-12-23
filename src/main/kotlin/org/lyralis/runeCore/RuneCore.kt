@@ -6,9 +6,12 @@ import org.lyralis.runeCore.command.impl.RuneCustomGiveCommand
 import org.lyralis.runeCore.command.impl.RuneDiceCommand
 import org.lyralis.runeCore.command.impl.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.RuneLogoutCommand
+import org.lyralis.runeCore.command.impl.RuneMenuCommand
 import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
 import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
+import org.lyralis.runeCore.command.impl.RunePlayerInfoCommand
 import org.lyralis.runeCore.command.impl.RunePlayerListCommand
+import org.lyralis.runeCore.command.impl.RuneTrashCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
 import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
 import org.lyralis.runeCore.command.register.CommandRegistry
@@ -28,6 +31,7 @@ import org.lyralis.runeCore.listener.CustomItemInteractListener
 import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
+import org.lyralis.runeCore.listener.TrashInventoryListener
 import xyz.xenondevs.invui.InvUI
 
 class RuneCore : JavaPlugin() {
@@ -74,15 +78,19 @@ class RuneCore : JavaPlugin() {
             .register(RuneDiceCommand())
             .register(RuneLevelCommand(playerRepository, logger))
             .register(RuneLogoutCommand())
+            .register(RuneMenuCommand(experienceService, moneyService))
             .register(RunePatchNoteCommand())
+            .register(RunePlayerInfoCommand(experienceService, moneyService))
             .register(RunePlayerListCommand(playerRepository))
             .register(RunePlayTimeCommand())
+            .register(RuneTrashCommand())
             .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
         server.pluginManager.registerEvents(PlayerExperienceListener(experienceService, moneyService), this)
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(PlayerPresenceListener(experienceService, moneyService), this)
+        server.pluginManager.registerEvents(TrashInventoryListener(this, moneyService), this)
 
         headCacheCleanupTask = PlayerHeadCacheCleanupTask(this, logger)
         headCacheCleanupTask.start()

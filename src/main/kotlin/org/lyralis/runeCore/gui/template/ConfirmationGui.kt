@@ -49,7 +49,8 @@ class ConfirmationGuiBuilder {
      * ダイアログを構築してプレイヤーに表示
      */
     internal fun buildAndShow(player: Player): GuiResult<Unit> {
-        var result: ConfirmationResult = ConfirmationResult.Cancelled
+        // クロージャでキャプチャできるように配列を使用
+        val resultHolder = arrayOf<ConfirmationResult>(ConfirmationResult.Cancelled)
 
         val guiBuilder =
             GuiBuilder().apply {
@@ -72,7 +73,7 @@ class ConfirmationGuiBuilder {
                     amount = 1
 
                     onClick {
-                        result = ConfirmationResult.Confirmed
+                        resultHolder[0] = ConfirmationResult.Confirmed
                         it.player.closeInventory()
                         GuiResult.Success(Unit)
                     }
@@ -84,14 +85,14 @@ class ConfirmationGuiBuilder {
                     amount = 1
 
                     onClick {
-                        result = ConfirmationResult.Denied
+                        resultHolder[0] = ConfirmationResult.Denied
                         it.player.closeInventory()
                         GuiResult.Success(Unit)
                     }
                 }
 
                 onClose {
-                    this@ConfirmationGuiBuilder.onResultHandler?.invoke(result)
+                    this@ConfirmationGuiBuilder.onResultHandler?.invoke(resultHolder[0])
                 }
             }
 
