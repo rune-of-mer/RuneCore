@@ -60,46 +60,12 @@ class RuneMenuCommand(
                  *  O - ショップを開く
                  */
                 structure {
-                    +"B # # # H # # # P"
+                    +"T # # # H # # # P"
                     +"# L O # # # # # #"
-                    +"S G # # Q # # # T"
+                    +"S # # # Q # # # G"
                 }
 
                 decoration('#', Material.WHITE_STAINED_GLASS_PANE)
-
-                // レベル情報ページ
-                item('B') {
-                    displayName = "メニューブック"
-                    material = Material.KNOWLEDGE_BOOK
-                    lore =
-                        listOf(
-                            "右クリックでメニューが開けるアイテムをインベントリに追加します",
-                        )
-                    onClick { action ->
-                        if (!action.isLeftClick) {
-                            return@onClick GuiResult.Silent
-                        }
-
-                        val inv = player.inventory
-                        val menuBook = ItemRegistry.getById("menu_book")!!.createItemStack()
-
-                        if (inv.contains(menuBook)) {
-                            action.player.closeInventory()
-                            player.sendMessage("すでにメニューブックを持っています".errorMessage())
-                            return@onClick GuiResult.Silent
-                        }
-
-                        if (inv.firstEmpty() == -1) {
-                            action.player.closeInventory()
-                            player.sendMessage("インベントリに空きがありません".errorMessage())
-                            return@onClick GuiResult.Silent
-                        }
-
-                        action.player.closeInventory()
-                        player.inventory.addItem(menuBook)
-                        return@onClick GuiResult.Success(Unit)
-                    }
-                }
 
                 // プレイヤー情報
                 item('H') {
@@ -114,10 +80,18 @@ class RuneMenuCommand(
                                 +"UUID: ${player.uniqueId}"
                                 +"Ping値: ${player.ping}ms"
                                 +"現在地: ${player.world.name}"
+                                +""
+                                +"左クリックでプレイヤー情報を開きます"
                             }
                         }
-                    onClick {
-                        GuiResult.Silent
+                    onClick { action ->
+                        if (!action.isLeftClick) {
+                            return@onClick GuiResult.Silent
+                        }
+
+                        action.player.closeInventory()
+                        player.performCommand("playerinfo")
+                        return@onClick GuiResult.Success(Unit)
                     }
                 }
 
@@ -144,7 +118,7 @@ class RuneMenuCommand(
                 // レベル情報ページ
                 item('L') {
                     displayName = "レベル情報"
-                    material = Material.EXPERIENCE_BOTTLE
+                    material = Material.KNOWLEDGE_BOOK
                     lore =
                         listOf(
                             "レベル情報ページを開きます",

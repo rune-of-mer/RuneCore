@@ -9,6 +9,7 @@ import org.lyralis.runeCore.command.impl.RuneLogoutCommand
 import org.lyralis.runeCore.command.impl.RuneMenuCommand
 import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
 import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
+import org.lyralis.runeCore.command.impl.RunePlayerInfoCommand
 import org.lyralis.runeCore.command.impl.RunePlayerListCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
 import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
@@ -25,7 +26,6 @@ import org.lyralis.runeCore.gui.cache.PlayerHeadCacheCleanupTask
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
 import org.lyralis.runeCore.item.ItemRegistry
 import org.lyralis.runeCore.item.impl.debug.DebugCompassItem
-import org.lyralis.runeCore.item.impl.debug.MenuCompass
 import org.lyralis.runeCore.listener.CustomItemInteractListener
 import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
@@ -58,9 +58,7 @@ class RuneCore : JavaPlugin() {
 
         ItemRegistry.initialize(this)
         ItemRegistry.registerAll(
-            DebugCompassItem,
-            MenuCompass,
-        )
+            DebugCompassItem)
         logger.info("Registered ${ItemRegistry.getAllItems().size} items!")
 
         playerRepository = PlayerRepository()
@@ -79,6 +77,7 @@ class RuneCore : JavaPlugin() {
             .register(RuneLogoutCommand())
             .register(RuneMenuCommand(experienceService, moneyService))
             .register(RunePatchNoteCommand())
+            .register(RunePlayerInfoCommand(experienceService, moneyService))
             .register(RunePlayerListCommand(playerRepository))
             .register(RunePlayTimeCommand())
             .registerAll(lifecycleManager)

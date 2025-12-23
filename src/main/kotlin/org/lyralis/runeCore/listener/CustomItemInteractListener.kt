@@ -26,11 +26,11 @@ class CustomItemInteractListener : Listener {
 
         val action =
             when (event.action) {
-                Action.RIGHT_CLICK_BLOCK -> {
+                Action.RIGHT_CLICK_BLOCK, Action.RIGHT_CLICK_AIR -> {
                     if (!customItem.isUsableOnRightClick) return
                     CustomItemAction.RIGHT_CLICK
                 }
-                Action.LEFT_CLICK_BLOCK -> {
+                Action.LEFT_CLICK_BLOCK, Action.LEFT_CLICK_AIR -> {
                     if (!customItem.isUsableOnLeftClick) return
                     CustomItemAction.LEFT_CLICK
                 }
