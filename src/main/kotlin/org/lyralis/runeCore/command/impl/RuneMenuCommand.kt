@@ -6,7 +6,6 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
-import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.database.impl.experience.ExperienceCalculator
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.impl.money.MoneyService
@@ -14,7 +13,6 @@ import org.lyralis.runeCore.gui.getCachedPlayerHead
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 import org.lyralis.runeCore.gui.toCommandResult
-import org.lyralis.runeCore.item.ItemRegistry
 
 @PlayerOnlyCommand
 class RuneMenuCommand(
@@ -122,6 +120,7 @@ class RuneMenuCommand(
                     lore =
                         listOf(
                             "レベル情報ページを開きます",
+                            "また、お金から経験値に変換できます",
                         )
                     onClick { action ->
                         if (!action.isLeftClick) {
@@ -141,18 +140,11 @@ class RuneMenuCommand(
                     lore =
                         listOf(
                             "右クリックでショップを開きます",
-                            "左クリックでオークションを開きます",
                         )
                     onClick { action ->
                         when {
                             action.isRightClick -> {
                                 action.player.closeInventory()
-                                // ショップ
-                                return@onClick GuiResult.Success(Unit)
-                            }
-                            action.isLeftClick -> {
-                                action.player.closeInventory()
-                                // オークション
                                 return@onClick GuiResult.Success(Unit)
                             }
                             else -> {
@@ -182,15 +174,15 @@ class RuneMenuCommand(
                     }
                 }
 
-                // 設定ページ
+                // ゴミ箱ページ
                 item('G') {
                     displayName = "ゴミ箱"
                     material = Material.POISONOUS_POTATO
                     lore =
                         listOf(
                             "ゴミ箱を開きます",
-                            "不要なアイテムを捨てることができます",
-                            "アイテムは 1Rune と交換されますが、一度捨てたアイテムは帰ってきません",
+                            "不要なアイテムを売却・処分することができます。",
+                            "アイテムはルーンと交換されますが、一度捨てたアイテムは帰ってきません",
                         )
                     onClick { action ->
                         if (!action.isLeftClick) {
