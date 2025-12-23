@@ -1,6 +1,7 @@
 package org.lyralis.runeCore.listener
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -39,26 +40,34 @@ class PlayerPresenceListener(
         experienceService.loadExperience(player.uniqueId)
         settingsService.loadSettings(player.uniqueId)
 
-        if (settingsService.shouldShowBossBar(player)) {
-            BossBarManager.registerProvider(player, experienceBossBarProvider)
-        }
-
         moneyService.loadBalance(player.uniqueId)
         ActionBarManager.registerPersistentProvider(player, statusActionBarProvider)
-        player.sendMessage("プレイヤーデータ読み込み完了".infoMessage())
+        player.sendMessage("プレイヤーデータの読み込みが完了しました".infoMessage())
+
+        if (settingsService.shouldShowBossBar(player)) {
+            BossBarManager.registerProvider(player, experienceBossBarProvider)
+        } else {
+            player.apply {
+                sendMessage(
+                    "現在経験値バーが非表示になっています。このメッセージをクリックすると表示することができます"
+                        .infoMessage()
+                        .clickEvent(ClickEvent.runCommand("/settings bossbar")),
+                )
+            }
+        }
 
         // 初見時の処理
         if (!player.hasPlayedBefore()) {
             // TODO: チュートリアルの処理を入れる?
             event.joinMessage(Component.text("初参加の ${player.name} がログインしました! ようこそ!").color(NamedTextColor.LIGHT_PURPLE))
-            player.sendMessage(config.plugin.firstMotd.infoMessage())
+            player.sendMessage(Component.text(config.plugin.firstMotd.joinToString("\n"), NamedTextColor.LIGHT_PURPLE))
             moneyService.addBalance(player, config.plugin.tutorialRune.toULong())
                 ?: player.sendMessage("チュートリアルの際に付与される Rune が正しく入手できませんでした。運営に連絡してください".errorMessage())
             return
         }
 
-        player.sendMessage(config.plugin.motd.systemMessage())
-        event.joinMessage("${player.name} がログインしました".systemMessage())
+        player.sendMessage(Component.text(config.plugin.motd.joinToString("\n"), NamedTextColor.LIGHT_PURPLE))
+        event.joinMessage("[Join] ${player.name} がログインしました".systemMessage())
     }
 
     @EventHandler
@@ -74,6 +83,6 @@ class PlayerPresenceListener(
 
         PlayerHeadCacheManager.invalidateCache(player.uniqueId)
 
-        event.quitMessage("${player.name} がログアウトしました".systemMessage())
+        event.quitMessage("[Quit] ${player.name} がログアウトしました".systemMessage())
     }
 }

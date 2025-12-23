@@ -27,22 +27,23 @@ class SettingsGui(
         val settings = settingsService.getSettings(player.uniqueId)
 
         return player.openGui {
-            title = "設定"
+            title = "§e設定"
             rows = 3
 
             structure {
                 +"# # # # # # # # #"
-                +"# . . A . . . . #"
+                +"# . . . A . . . #"
                 +"# # # # # # # # #"
             }
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
+            decoration('.', Material.WHITE_STAINED_GLASS_PANE)
 
             item('A') {
                 customItem =
-                    Material.EXPERIENCE_BOTTLE.asGuiItem {
+                    Material.KNOWLEDGE_BOOK.asGuiItem {
                         displayName = "§e経験値ボスバー"
-                        lore(buildBossBarLore(settings.showBossBar))
+                        lore(*buildBossBarLore(settings.showBossBar).toTypedArray())
                         glowing = settings.showBossBar
                     }
 

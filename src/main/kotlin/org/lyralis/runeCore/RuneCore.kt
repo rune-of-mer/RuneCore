@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.command.impl.RuneCustomGiveCommand
 import org.lyralis.runeCore.command.impl.RuneDiceCommand
+import org.lyralis.runeCore.command.impl.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.RuneLogoutCommand
 import org.lyralis.runeCore.command.impl.RuneMenuCommand
 import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
@@ -107,7 +108,6 @@ class RuneCore : JavaPlugin() {
             PlayerPresenceListener(experienceService, moneyService, settingsService, experienceBossBarProvider),
             this,
         )
-        server.pluginManager.registerEvents(PlayerPresenceListener(experienceService, moneyService), this)
         server.pluginManager.registerEvents(TrashInventoryListener(this, moneyService), this)
 
         headCacheCleanupTask = PlayerHeadCacheCleanupTask(this, logger)
