@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import org.lyralis.runeCore.database.model.PlayerData
+import org.lyralis.runeCore.database.table.PlayerSettings
 import org.lyralis.runeCore.database.table.PlayerStats
 import org.lyralis.runeCore.database.table.Players
 import java.time.LocalDateTime
@@ -39,6 +40,10 @@ class PlayerRepository {
 
                 PlayerStats.insert {
                     it[PlayerStats.uuid] = uuid
+                }
+
+                PlayerSettings.insert {
+                    it[PlayerSettings.uuid] = uuid
                 }
             }
 
