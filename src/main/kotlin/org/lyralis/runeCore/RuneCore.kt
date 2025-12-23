@@ -4,16 +4,17 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.command.impl.RuneCustomGiveCommand
 import org.lyralis.runeCore.command.impl.RuneDiceCommand
-import org.lyralis.runeCore.command.impl.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.RuneLogoutCommand
 import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
 import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
 import org.lyralis.runeCore.command.impl.RunePlayerListCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
 import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
+import org.lyralis.runeCore.command.impl.settings.RuneSettingsCommand
 import org.lyralis.runeCore.command.register.CommandRegistry
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.component.bossbar.BossBarManager
+import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.database.DatabaseManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
@@ -40,6 +41,7 @@ class RuneCore : JavaPlugin() {
     private lateinit var experienceService: ExperienceService
     private lateinit var moneyService: MoneyService
     private lateinit var settingsService: SettingsService
+    private lateinit var experienceBossBarProvider: ExperienceBossBarProvider
     private lateinit var headCacheCleanupTask: PlayerHeadCacheCleanupTask
 
     override fun onEnable() {
@@ -70,6 +72,11 @@ class RuneCore : JavaPlugin() {
         experienceService = ExperienceService(playerRepository, logger)
         moneyService = MoneyService(playerRepository, logger)
         settingsService = SettingsService(settingsRepository, logger)
+        experienceBossBarProvider =
+            ExperienceBossBarProvider(
+                experienceProvider = { uuid -> experienceService.getExperience(uuid) },
+                levelProvider = { uuid -> experienceService.getLevel(uuid) },
+            )
 
         ActionBarManager.initialize(this)
 
@@ -83,12 +90,16 @@ class RuneCore : JavaPlugin() {
             .register(RunePatchNoteCommand())
             .register(RunePlayerListCommand(playerRepository))
             .register(RunePlayTimeCommand())
+            .register(RuneSettingsCommand(settingsService, experienceBossBarProvider))
             .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
         server.pluginManager.registerEvents(PlayerExperienceListener(experienceService, moneyService), this)
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
-        server.pluginManager.registerEvents(PlayerPresenceListener(experienceService, moneyService, settingsService), this)
+        server.pluginManager.registerEvents(
+            PlayerPresenceListener(experienceService, moneyService, settingsService, experienceBossBarProvider),
+            this,
+        )
 
         headCacheCleanupTask = PlayerHeadCacheCleanupTask(this, logger)
         headCacheCleanupTask.start()

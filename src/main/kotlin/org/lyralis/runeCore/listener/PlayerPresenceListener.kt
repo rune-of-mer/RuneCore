@@ -23,6 +23,7 @@ class PlayerPresenceListener(
     private val experienceService: ExperienceService,
     private val moneyService: MoneyService,
     private val settingsService: SettingsService,
+    private val experienceBossBarProvider: ExperienceBossBarProvider,
 ) : Listener {
     private val config = ConfigManager.get()
 
@@ -30,12 +31,6 @@ class PlayerPresenceListener(
         StatusActionBarProvider { uuid ->
             moneyService.getBalance(uuid)
         }
-
-    private val experienceBossBarProvider =
-        ExperienceBossBarProvider(
-            experienceProvider = { uuid -> experienceService.getExperience(uuid) },
-            levelProvider = { uuid -> experienceService.getLevel(uuid) },
-        )
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
