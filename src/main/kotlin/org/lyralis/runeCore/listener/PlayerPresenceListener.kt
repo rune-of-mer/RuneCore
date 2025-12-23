@@ -16,11 +16,13 @@ import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.impl.money.MoneyService
+import org.lyralis.runeCore.database.impl.settings.SettingsService
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
 
 class PlayerPresenceListener(
     private val experienceService: ExperienceService,
     private val moneyService: MoneyService,
+    private val settingsService: SettingsService,
 ) : Listener {
     private val config = ConfigManager.get()
 
@@ -40,7 +42,11 @@ class PlayerPresenceListener(
         val player = event.player
 
         experienceService.loadExperience(player.uniqueId)
-        BossBarManager.registerProvider(player, experienceBossBarProvider)
+        settingsService.loadSettings(player.uniqueId)
+
+        if (settingsService.shouldShowBossBar(player)) {
+            BossBarManager.registerProvider(player, experienceBossBarProvider)
+        }
 
         moneyService.loadBalance(player.uniqueId)
         ActionBarManager.registerPersistentProvider(player, statusActionBarProvider)
@@ -69,6 +75,7 @@ class PlayerPresenceListener(
 
         ActionBarManager.unregisterPersistentProvider(player)
         moneyService.clearCache(player.uniqueId)
+        settingsService.clearCache(player.uniqueId)
 
         PlayerHeadCacheManager.invalidateCache(player.uniqueId)
 
