@@ -104,6 +104,10 @@ interface CustomItem {
                     }
                 }
             }
+        } else if (this is CustomItemType.Usable) {
+            enchantments.forEach { itemEnchantment ->
+                meta.addEnchant(itemEnchantment.enchantment, itemEnchantment.level, true)
+            }
         }
 
         item.itemMeta = meta
