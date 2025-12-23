@@ -6,6 +6,7 @@ import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
 import org.lyralis.runeCore.database.impl.settings.SettingsService
 import org.lyralis.runeCore.database.model.PlayerSettingKey
+import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 
@@ -38,9 +39,12 @@ class SettingsGui(
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
             item('A') {
-                material = if (settings.showBossBar) Material.ENDER_EYE else Material.ENDER_PEARL
-                displayName = "§e経験値ボスバー"
-                lore = buildBossBarLore(settings.showBossBar)
+                customItem =
+                    Material.EXPERIENCE_BOTTLE.asGuiItem {
+                        displayName = "§e経験値ボスバー"
+                        lore(buildBossBarLore(settings.showBossBar))
+                        glowing = settings.showBossBar
+                    }
 
                 onClick { action ->
                     toggleBossBar(action.player)
