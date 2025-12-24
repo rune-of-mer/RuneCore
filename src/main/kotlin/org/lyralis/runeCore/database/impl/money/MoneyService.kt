@@ -150,6 +150,55 @@ class MoneyService(
     }
 
     /**
+     * 指定したプレイヤー同士で所持金を移動します
+     *
+     * @param from 移動元のプレイヤー
+     * @param to 移動先のプレイヤー
+     * @param amount 移動する金額
+     * @return 早期処理後の所持金が [Pair] として返されます．左辺には送金元の所持金・右辺には送金先の金額．トランザクションに失敗した場合は null が返ってきます
+     */
+    fun transferBalance(
+        from: Player,
+        to: Player,
+        amount: ULong,
+    ): Pair<ULong, ULong>? {
+        if (amount == 0uL) return null
+
+        val fromUuid = from.uniqueId
+        val toUuid = to.uniqueId
+
+        if (fromUuid == toUuid) return null
+
+        val currentFromBalance = getBalance(fromUuid)
+        val currentToBalance = getBalance(toUuid)
+
+        return when (val result = playerRepository.transferBalance(fromUuid, toUuid, amount)) {
+            is RepositoryResult.Success -> {
+                // トランザクション成功後にキャッシュを更新
+                val newFromBalance = currentFromBalance - amount
+                val newToBalance = currentToBalance + amount
+
+                balanceCache[fromUuid] = newFromBalance
+                balanceCache[toUuid] = newToBalance
+
+                Pair(newFromBalance, newToBalance)
+            }
+            is RepositoryResult.InsufficientBalance -> {
+                logger.info("Insufficient balance for ${from.name}: current=${result.current}, required=${result.required}")
+                null
+            }
+            is RepositoryResult.NotFound -> {
+                logger.warning("Player not found during transfer: ${from.name} -> ${to.name}")
+                null
+            }
+            is RepositoryResult.Error -> {
+                logger.severe("Failed to transfer balance: ${result.exception.message}")
+                null
+            }
+        }
+    }
+
+    /**
      * 所持金キャッシュを読み込みます．
      *
      * @param uuid UUID

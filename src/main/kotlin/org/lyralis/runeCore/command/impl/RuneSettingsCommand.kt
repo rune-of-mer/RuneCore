@@ -1,4 +1,4 @@
-package org.lyralis.runeCore.command.impl.settings
+package org.lyralis.runeCore.command.impl
 
 import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
