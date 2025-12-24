@@ -21,6 +21,12 @@ cd RuneCore
 
 _[Supports Minecraft 1.21.10](https://ja.minecraft.wiki/w/Java_Edition_1.21.10) | [Requires Java 21+ and Gradle 9+](.github/CONTRIBUTING.md#開発環境)_
 
+## 依存関係プラグイン
+
+RuneCore を動作させるには次のプラグインが必要です．
+
+- [Multiverse-Core](https://modrinth.com/plugin/multiverse-core)
+
 ## セットアップ
 
 - RuneCore は Minecraft 1.21.10 をサポートしている **Paper プラグイン** です．

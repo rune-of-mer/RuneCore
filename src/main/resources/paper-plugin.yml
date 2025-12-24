@@ -8,6 +8,13 @@ load: STARTUP
 authors: [ Sho Sakuma (m1sk9), Rune of Mer DevTeam ]
 description: Rune of Mer Core Plugin
 
+dependencies:
+  server:
+    Multiverse-Core:
+      load: BEFORE
+      required: true
+      join-classpath: true
+
 permissions:
   # Role
   runecore.role.player:
