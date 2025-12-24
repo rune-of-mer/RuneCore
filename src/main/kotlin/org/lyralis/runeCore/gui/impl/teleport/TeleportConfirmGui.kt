@@ -55,9 +55,7 @@ class TeleportConfirmGui(
                             "",
                             "§7送信者: §f${request.requesterName}",
                             "§7料金: §6${request.cost} Rune",
-                            "§7所持金: §6$balance Rune",
                             "",
-                            if (canAfford) "§a料金を支払えます" else "§c料金が不足しています",
                         )
                     }
             }

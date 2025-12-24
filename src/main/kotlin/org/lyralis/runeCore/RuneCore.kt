@@ -127,7 +127,7 @@ class RuneCore : JavaPlugin() {
             .register(RuneShopCommand(shopMainGui))
             .register(RuneTrashCommand())
             // テレポートコマンド
-            .register(RuneTppCommand(teleportRequestManager, teleportCostCalculator))
+            .register(RuneTppCommand(teleportRequestManager, teleportCostCalculator, moneyService))
             .register(RuneTpaCommand(teleportRequestManager, teleportService, moneyService))
             .register(RuneTpcCommand(teleportRequestManager))
             .register(
