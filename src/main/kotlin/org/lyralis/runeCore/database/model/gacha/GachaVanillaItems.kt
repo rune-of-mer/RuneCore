@@ -28,22 +28,17 @@ object GachaVanillaItems {
     val commonItems: List<GachaVanillaItem> =
         listOf(
             // 鉱石・素材
-            GachaVanillaItem(Material.IRON_INGOT, 8, ItemRarity.COMMON),
-            GachaVanillaItem(Material.GOLD_INGOT, 4, ItemRarity.COMMON),
+            GachaVanillaItem(Material.IRON_INGOT, 2, ItemRarity.COMMON),
+            GachaVanillaItem(Material.GOLD_INGOT, 2, ItemRarity.COMMON),
             GachaVanillaItem(Material.COAL, 16, ItemRarity.COMMON),
-            GachaVanillaItem(Material.COPPER_INGOT, 8, ItemRarity.COMMON),
-            GachaVanillaItem(Material.LAPIS_LAZULI, 8, ItemRarity.COMMON),
-            GachaVanillaItem(Material.REDSTONE, 16, ItemRarity.COMMON),
             // 食料
             GachaVanillaItem(Material.BREAD, 16, ItemRarity.COMMON),
-            GachaVanillaItem(Material.COOKED_BEEF, 8, ItemRarity.COMMON),
-            GachaVanillaItem(Material.GOLDEN_APPLE, 2, ItemRarity.COMMON),
+            GachaVanillaItem(Material.PUMPKIN_PIE, 16, ItemRarity.COMMON),
             // 建材
             GachaVanillaItem(Material.OAK_LOG, 32, ItemRarity.COMMON),
             GachaVanillaItem(Material.COBBLESTONE, 64, ItemRarity.COMMON),
-            GachaVanillaItem(Material.GLASS, 32, ItemRarity.COMMON),
             // その他
-            GachaVanillaItem(Material.ARROW, 32, ItemRarity.COMMON),
+            GachaVanillaItem(Material.ARROW, 5, ItemRarity.COMMON),
             GachaVanillaItem(Material.BONE, 16, ItemRarity.COMMON),
             GachaVanillaItem(Material.STRING, 16, ItemRarity.COMMON),
             GachaVanillaItem(Material.GUNPOWDER, 8, ItemRarity.COMMON),
@@ -61,18 +56,10 @@ object GachaVanillaItems {
             GachaVanillaItem(Material.ANCIENT_DEBRIS, 1, ItemRarity.RARE),
             // 装備品
             GachaVanillaItem(Material.DIAMOND_SWORD, 1, ItemRarity.RARE),
-            GachaVanillaItem(Material.DIAMOND_PICKAXE, 1, ItemRarity.RARE),
-            GachaVanillaItem(Material.DIAMOND_CHESTPLATE, 1, ItemRarity.RARE),
             // レアアイテム
             GachaVanillaItem(Material.ENCHANTED_GOLDEN_APPLE, 1, ItemRarity.RARE),
-            GachaVanillaItem(Material.TOTEM_OF_UNDYING, 1, ItemRarity.RARE),
-            GachaVanillaItem(Material.ELYTRA, 1, ItemRarity.RARE),
-            GachaVanillaItem(Material.TRIDENT, 1, ItemRarity.RARE),
             // エンチャント本
             GachaVanillaItem(Material.EXPERIENCE_BOTTLE, 32, ItemRarity.RARE),
-            GachaVanillaItem(Material.ENDER_PEARL, 16, ItemRarity.RARE),
-            GachaVanillaItem(Material.BLAZE_ROD, 8, ItemRarity.RARE),
-            GachaVanillaItem(Material.GHAST_TEAR, 4, ItemRarity.RARE),
         )
 
     /**
