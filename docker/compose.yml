@@ -10,6 +10,7 @@ services:
       - minecraft-data:/data
       - ../build/libs:/plugins:ro
       - ./plugins:/data/plugins
+      - ./bukkit.yml:/data/bukkit.yml
     environment:
       EULA: "TRUE"
       TYPE: "PAPER"
@@ -17,11 +18,13 @@ services:
       MEMORY: "1G"
 
       # デバッグ用高速化設定
+      LEVEL: "world_life"
       LEVEL_TYPE: "flat"
       VIEW_DISTANCE: "3"
       SIMULATION_DISTANCE: "3"
       GENERATE_STRUCTURES: "false"
       SPAWN_PROTECTION: "0"
+      ALLOW_NETHER: "false"
 
       # 権限関連
       OVERRIDE_SERVER_PROPERTIES: "true"
@@ -29,6 +32,17 @@ services:
       ENABLE_RCON: "true"
       RCON_PASSWORD: "minecraft"
       RCON_PORT: 25575
+
+      # Multiverse-Core でデバッグ用ワールドを作成 (全てフラット)
+      # config.yml の world 設定に対応
+      # world_life は LEVEL で自動生成されるため import で登録
+      RCON_CMDS_STARTUP: |-
+        mv import world_life NORMAL
+        mv create world_resource NORMAL -t FLAT
+        mv create world_resource_nether NETHER -t FLAT
+        mv create world_resource_end THE_END -t FLAT
+        mv create world_pvp NORMAL -t FLAT
+        mv
       DIFFICULTY: "peaceful"
       MAX_PLAYERS: "3"
       ONLINE_MODE: "false"
