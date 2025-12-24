@@ -12,6 +12,7 @@ import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
 import org.lyralis.runeCore.command.impl.RunePlayerInfoCommand
 import org.lyralis.runeCore.command.impl.RunePlayerListCommand
 import org.lyralis.runeCore.command.impl.RuneSettingsCommand
+import org.lyralis.runeCore.command.impl.RuneShopCommand
 import org.lyralis.runeCore.command.impl.RuneTrashCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
 import org.lyralis.runeCore.command.impl.level.RuneLevelCommand
@@ -30,12 +31,14 @@ import org.lyralis.runeCore.database.repository.SettingsRepository
 import org.lyralis.runeCore.database.repository.StatsRepository
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheCleanupTask
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
+import org.lyralis.runeCore.gui.impl.shop.ShopMainGui
 import org.lyralis.runeCore.item.ItemRegistry
 import org.lyralis.runeCore.item.impl.debug.DebugCompassItem
 import org.lyralis.runeCore.listener.CustomItemInteractListener
 import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
+import org.lyralis.runeCore.listener.ShopChatInputListener
 import org.lyralis.runeCore.listener.TrashInventoryListener
 import xyz.xenondevs.invui.InvUI
 
@@ -49,6 +52,7 @@ class RuneCore : JavaPlugin() {
     private lateinit var settingsService: SettingsService
     private lateinit var experienceBossBarProvider: ExperienceBossBarProvider
     private lateinit var headCacheCleanupTask: PlayerHeadCacheCleanupTask
+    private lateinit var shopMainGui: ShopMainGui
 
     override fun onEnable() {
         // InvUI のプラグインインスタンスを設定（Paper 1.20.5+ で必要）
@@ -83,6 +87,7 @@ class RuneCore : JavaPlugin() {
                 experienceProvider = { uuid -> experienceService.getExperience(uuid) },
                 levelProvider = { uuid -> experienceService.getLevel(uuid) },
             )
+        shopMainGui = ShopMainGui(moneyService)
 
         ActionBarManager.initialize(this)
 
@@ -100,6 +105,7 @@ class RuneCore : JavaPlugin() {
             .register(RunePlayerListCommand(playerRepository))
             .register(RunePlayTimeCommand())
             .register(RuneSettingsCommand(settingsService, experienceBossBarProvider))
+            .register(RuneShopCommand(shopMainGui))
             .register(RuneTrashCommand())
             .registerAll(lifecycleManager)
 
@@ -111,6 +117,7 @@ class RuneCore : JavaPlugin() {
             this,
         )
         server.pluginManager.registerEvents(TrashInventoryListener(this, moneyService), this)
+        server.pluginManager.registerEvents(ShopChatInputListener(this, moneyService, shopMainGui), this)
 
         headCacheCleanupTask = PlayerHeadCacheCleanupTask(this, logger)
         headCacheCleanupTask.start()

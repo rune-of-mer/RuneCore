@@ -50,6 +50,7 @@ class PaginatedGuiBuilder<T> {
     private var itemRenderer: ((T) -> ItemStack)? = null
     private var onItemClickHandler: ((T, ClickAction) -> GuiResult<Unit>)? = null
     private var filterPredicate: ((T) -> Boolean) = { true }
+    private var onBackHandler: ((Player) -> Unit)? = null
 
     /**
      * 表示するアイテムを設定
@@ -79,6 +80,14 @@ class PaginatedGuiBuilder<T> {
         filterPredicate = predicate
     }
 
+    /**
+     * 戻るボタンクリック時のハンドラー
+     * 設定すると左下に戻るボタンが表示される
+     */
+    fun onBack(handler: (Player) -> Unit) {
+        onBackHandler = handler
+    }
+
     internal fun buildAndShow(player: Player): GuiResult<Unit> {
         val renderer = itemRenderer ?: return GuiResult.Failure.Custom("itemRenderer が設定されていません")
 
@@ -96,7 +105,7 @@ class PaginatedGuiBuilder<T> {
                 }
             }
 
-        val gui =
+        val guiBuilder =
             PagedGui
                 .items()
                 .setStructure(
@@ -105,19 +114,28 @@ class PaginatedGuiBuilder<T> {
                     "x x x x x x x x x",
                     "x x x x x x x x x",
                     "x x x x x x x x x",
-                    "# # < # # # > # #",
+                    "B # < # # # > # #",
                 ).addIngredient('x', xyz.xenondevs.invui.gui.structure.Markers.CONTENT_LIST_SLOT_HORIZONTAL)
                 .addIngredient('#', borderItem)
                 .addIngredient('<', BackwardPageItem())
                 .addIngredient('>', ForwardPageItem())
                 .setContent(items)
-                .build()
+
+        // 戻るボタンの設定
+        val backHandler = onBackHandler
+        if (backHandler != null) {
+            guiBuilder.addIngredient('B', BackButtonItem(backHandler))
+        } else {
+            guiBuilder.addIngredient('B', borderItem)
+        }
+
+        val gui = guiBuilder.build()
 
         return try {
             Window
                 .single()
                 .setViewer(player)
-                .setTitle("$title - ${gui.currentPage + 1}/${gui.pageAmount}")
+                .setTitle(title)
                 .setGui(gui)
                 .build()
                 .open()
@@ -222,4 +240,29 @@ private class BackwardPageItem : PageItem(false) {
                 }
             }
         }
+}
+
+/**
+ * 戻るボタンアイテム
+ */
+private class BackButtonItem(
+    private val onBack: (Player) -> Unit,
+) : AbstractItem() {
+    override fun getItemProvider(): ItemProvider =
+        ItemProvider {
+            ItemStack(Material.BARRIER).apply {
+                editMeta { meta ->
+                    meta.displayName(Component.text("§c戻る"))
+                    meta.lore(listOf(Component.text("§7クリックで前の画面に戻る")))
+                }
+            }
+        }
+
+    override fun handleClick(
+        clickType: ClickType,
+        player: Player,
+        event: InventoryClickEvent,
+    ) {
+        onBack(player)
+    }
 }

@@ -75,6 +75,9 @@ class RuneLevelCommand(
                     lore =
                         listOf(
                             "お金を経験値に変換してレベルアップできます",
+                            "このボタンからでは 1000 Rune を経験値に変換します",
+                            "さらに変換するには \"/level convert <変換金額>\" を実行します",
+                            "",
                             "一度に変換できる経験値は10万Expまでです",
                         )
                     onClick { action ->
@@ -82,8 +85,7 @@ class RuneLevelCommand(
                             return@onClick GuiResult.Silent
                         }
 
-                        action.player.closeInventory()
-                        player.performCommand("level convert")
+                        player.performCommand("level convert 1000")
                         return@onClick GuiResult.Success(Unit)
                     }
                 }
