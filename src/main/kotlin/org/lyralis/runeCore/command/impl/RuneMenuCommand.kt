@@ -54,19 +54,20 @@ class RuneMenuCommand(
                 rows = 3
 
                 /**
-                 *  B - メニューブックをインベントリに追加
                  *  H - プレイヤー情報
                  *  P - プレイヤー一覧ページを開く
                  *  T - プレイ時間を表示
                  *  S - 設定ページを開く
-                 *  L - レペル情報ページを開く
+                 *  L - レベル情報ページを開く
                  *  Q - ログアウトページを開く
                  *  G - ゴミ箱を開く
                  *  O - ショップを開く
+                 *  W - ワールド移動
+                 *  A - ガチャを開く
                  */
                 structure {
                     +"T # # # H # # # P"
-                    +"# L O # # # # # #"
+                    +"# L O A # # W # #"
                     +"S # # # Q # # # G"
                 }
 
@@ -143,6 +144,28 @@ class RuneMenuCommand(
                                 material = Material.CLOCK,
                                 lore = listOf("現在の累計プレイ時間を表示します"),
                                 command = "playtime",
+                            ),
+                        'W' to
+                            MenuItemData(
+                                displayName = "ワールド移動",
+                                material = Material.GRASS_BLOCK,
+                                lore =
+                                    listOf(
+                                        "ワールド間テレポートを行います",
+                                        "生活ワールド、資源ワールドなどに移動できます",
+                                    ),
+                                command = "world",
+                            ),
+                        'A' to
+                            MenuItemData(
+                                displayName = "ガチャ",
+                                material = Material.ENDER_CHEST,
+                                lore =
+                                    listOf(
+                                        "ガチャを開きます",
+                                        "チケットを使用してアイテムを入手できます",
+                                    ),
+                                command = "gacha",
                             ),
                     )
 

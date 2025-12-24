@@ -6,6 +6,8 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.lyralis.runeCore.config.model.DatabaseConfig
+import org.lyralis.runeCore.database.table.GachaEvents
+import org.lyralis.runeCore.database.table.PlayerGachaPity
 import org.lyralis.runeCore.database.table.PlayerSettings
 import org.lyralis.runeCore.database.table.PlayerStats
 import org.lyralis.runeCore.database.table.Players
@@ -48,6 +50,8 @@ class DatabaseManager(
                 PlayerSettings,
                 WarpPoints,
                 WarpSlots,
+                GachaEvents,
+                PlayerGachaPity,
             )
         }
 

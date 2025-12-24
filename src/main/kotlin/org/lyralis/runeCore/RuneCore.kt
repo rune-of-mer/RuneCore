@@ -15,6 +15,8 @@ import org.lyralis.runeCore.command.impl.RuneSettingsCommand
 import org.lyralis.runeCore.command.impl.RuneShopCommand
 import org.lyralis.runeCore.command.impl.RuneTrashCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
+import org.lyralis.runeCore.command.impl.gacha.RuneGachaAdminCommand
+import org.lyralis.runeCore.command.impl.gacha.RuneGachaCommand
 import org.lyralis.runeCore.command.impl.level.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTpaCommand
@@ -29,9 +31,11 @@ import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.database.DatabaseManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
+import org.lyralis.runeCore.database.impl.gacha.GachaService
 import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.database.impl.settings.SettingsService
 import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
+import org.lyralis.runeCore.database.repository.GachaRepository
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.SettingsRepository
 import org.lyralis.runeCore.database.repository.StatsRepository
@@ -42,6 +46,7 @@ import org.lyralis.runeCore.gui.impl.shop.ShopMainGui
 import org.lyralis.runeCore.item.ItemRegistry
 import org.lyralis.runeCore.item.impl.debug.DebugCompassItem
 import org.lyralis.runeCore.listener.CustomItemInteractListener
+import org.lyralis.runeCore.listener.GachaInventoryListener
 import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
@@ -67,6 +72,8 @@ class RuneCore : JavaPlugin() {
     private lateinit var teleportRequestManager: TeleportRequestManager
     private lateinit var teleportCostCalculator: TeleportCostCalculator
     private lateinit var teleportService: TeleportService
+    private lateinit var gachaRepository: GachaRepository
+    private lateinit var gachaService: GachaService
 
     override fun onEnable() {
         // InvUI のプラグインインスタンスを設定（Paper 1.20.5+ で必要）
@@ -110,6 +117,11 @@ class RuneCore : JavaPlugin() {
         teleportRequestManager = TeleportRequestManager(this, config.teleport.requestTimeoutSeconds)
         teleportRequestManager.start()
 
+        // ガチャシステムの初期化
+        gachaRepository = GachaRepository()
+        gachaService = GachaService(gachaRepository, logger)
+        gachaService.initializeDefaultEvents()
+
         ActionBarManager.initialize(this)
 
         CommandRegistry(this)
@@ -149,7 +161,11 @@ class RuneCore : JavaPlugin() {
                     moneyService,
                     config.teleport.costs.crossWorldBaseCost,
                 ),
-            ).registerAll(lifecycleManager)
+            )
+            // ガチャコマンド
+            .register(RuneGachaCommand(gachaService))
+            .register(RuneGachaAdminCommand(gachaService))
+            .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
         server.pluginManager.registerEvents(PlayerExperienceListener(experienceService, moneyService), this)
@@ -164,6 +180,7 @@ class RuneCore : JavaPlugin() {
         )
         server.pluginManager.registerEvents(TrashInventoryListener(this, moneyService), this)
         server.pluginManager.registerEvents(ShopChatInputListener(this, moneyService, shopMainGui), this)
+        server.pluginManager.registerEvents(GachaInventoryListener(), this)
 
         headCacheCleanupTask = PlayerHeadCacheCleanupTask(this, logger)
         headCacheCleanupTask.start()

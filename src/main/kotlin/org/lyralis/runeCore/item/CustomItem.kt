@@ -57,6 +57,14 @@ interface CustomItem {
         get() = null
 
     /**
+     * このアイテムが排出されるガチャイベントのIDリスト
+     *
+     * 空の場合はどのガチャからも排出されない
+     */
+    val gachaEventIds: List<String>
+        get() = emptyList()
+
+    /**
      * このカスタムアイテムの ItemStack を生成する
      *
      * @param amount アイテムの個数

@@ -97,6 +97,15 @@ object ItemRegistry {
     fun getGachaItems(): List<CustomItem> = items.values.filter { it.rarity.weight > 0 }
 
     /**
+     * 指定したガチャイベントIDで排出可能なアイテムを取得する
+     *
+     * @param eventId ガチャイベントID
+     * @return 該当するカスタムアイテムのリスト
+     */
+    fun getGachaItemsByEventId(eventId: String): List<CustomItem> =
+        items.values.filter { eventId in it.gachaEventIds && it.rarity.weight > 0 }
+
+    /**
      * ItemMeta に アイテムID を設定する
      *
      * @param meta 対象の ItemMeta
