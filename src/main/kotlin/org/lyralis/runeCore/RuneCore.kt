@@ -20,6 +20,7 @@ import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTpaCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTpcCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTppCommand
+import org.lyralis.runeCore.command.impl.gacha.RuneGachaAdminCommand
 import org.lyralis.runeCore.command.impl.gacha.RuneGachaCommand
 import org.lyralis.runeCore.command.impl.warp.RuneWarpCommand
 import org.lyralis.runeCore.command.impl.world.RuneWorldCommand
@@ -163,6 +164,7 @@ class RuneCore : JavaPlugin() {
             )
             // ガチャコマンド
             .register(RuneGachaCommand(gachaService))
+            .register(RuneGachaAdminCommand(gachaService))
             .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
