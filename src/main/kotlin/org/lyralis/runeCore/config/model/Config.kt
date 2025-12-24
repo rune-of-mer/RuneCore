@@ -4,4 +4,5 @@ data class Config(
     val plugin: PluginConfig,
     val database: DatabaseConfig,
     val teleport: TeleportConfig = TeleportConfig(),
+    val world: WorldConfig,
 )

@@ -2,12 +2,19 @@ package org.lyralis.runeCore.config
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.lyralis.runeCore.config.model.Config
+import org.lyralis.runeCore.config.model.DarkZoneWorld
 import org.lyralis.runeCore.config.model.DatabaseConfig
 import org.lyralis.runeCore.config.model.DistanceTier
+import org.lyralis.runeCore.config.model.LifeWorld
 import org.lyralis.runeCore.config.model.PluginConfig
 import org.lyralis.runeCore.config.model.PoolConfig
+import org.lyralis.runeCore.config.model.PvPWorld
+import org.lyralis.runeCore.config.model.ResourceEndWorld
+import org.lyralis.runeCore.config.model.ResourceNetherWorld
+import org.lyralis.runeCore.config.model.ResourceWorld
 import org.lyralis.runeCore.config.model.TeleportConfig
 import org.lyralis.runeCore.config.model.TeleportCostConfig
+import org.lyralis.runeCore.config.model.WorldConfig
 
 object ConfigManager {
     private var pluginConfig: Config? = null
@@ -46,6 +53,7 @@ object ConfigManager {
                             ),
                     ),
                 teleport = loadTeleportConfig(config),
+                world = loadWorldConfig(config),
             )
 
         pluginConfig = loaded
@@ -110,4 +118,40 @@ object ConfigManager {
                 )
             }.sortedBy { it.minDistance }
     }
+
+    private fun loadWorldConfig(config: FileConfiguration): WorldConfig =
+        WorldConfig(
+            life =
+                LifeWorld(
+                    name = config.getString("world.life.name", "world_life")!!,
+                    crossWorldCost = config.getInt("world.life.crossWorldCost", 20),
+                ),
+            resource =
+                ResourceWorld(
+                    name = config.getString("world.resource.name", "world_resource")!!,
+                    crossWorldCost = config.getInt("world.resource.crossWorldCost", 50),
+                ),
+            resourceNether =
+                ResourceNetherWorld(
+                    name = config.getString("world.resourceNether.name", "world_resource_nether")!!,
+                    crossWorldCost = config.getInt("world.resourceNether.crossWorldCost", 100),
+                ),
+            resourceEnd =
+                ResourceEndWorld(
+                    name = config.getString("world.resourceEnd.name", "world_resource_end")!!,
+                    crossWorldCost = config.getInt("world.resourceEnd.crossWorldCost", 200),
+                ),
+            dz =
+                DarkZoneWorld(
+                    name = config.getString("world.dz.name", "world_dz")!!,
+                    crossWorldCost = config.getInt("world.dz.crossWorldCost", 500),
+                    enabled = config.getBoolean("world.dz.enabled", false),
+                    maxMemberSize = config.getInt("world.dz.maxMemberSize", 10),
+                ),
+            pvp =
+                PvPWorld(
+                    name = config.getString("world.pvp.name", "world_pvp")!!,
+                    crossWorldCost = config.getInt("world.pvp.crossWorldCost", 0),
+                ),
+        )
 }
