@@ -1,19 +1,17 @@
-package org.lyralis.runeCore.command.impl
+package org.lyralis.runeCore.command.impl.level
 
 import org.bukkit.Material
-import org.bukkit.entity.Player
 import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.database.impl.experience.ExperienceCalculator
-import org.lyralis.runeCore.database.repository.PlayerRepository
-import org.lyralis.runeCore.database.repository.RepositoryResult
+import org.lyralis.runeCore.database.impl.experience.ExperienceService
+import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.gui.getCachedPlayerHead
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 import org.lyralis.runeCore.gui.toCommandResult
-import java.util.logging.Logger
 
 /**
  * /level コマンドを定義するクラス
@@ -22,33 +20,39 @@ import java.util.logging.Logger
  */
 @PlayerOnlyCommand
 class RuneLevelCommand(
-    private val playerRepository: PlayerRepository,
-    private val logger: Logger,
+    moneyService: MoneyService,
+    val experienceService: ExperienceService,
 ) : RuneCommand {
     override val name = "level"
     override val description = "現在のレベルを確認します"
     override val aliases = listOf("lv")
 
+    override val subcommands =
+        listOf(
+            RuneLevelConvertCommand(moneyService, experienceService),
+        )
+
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
-        val levelInfo =
-            getLevelInfo(player)
-                ?: return CommandResult.Failure.ExecutionFailed("レベル情報の取得に失敗しました")
+
+        val currentLevel = experienceService.getLevel(player.uniqueId)
+        val currentExp = experienceService.getExperience(player.uniqueId)
+        val nextExp = ExperienceCalculator.getExperienceForNextLevel(currentLevel)
         val maxLevel = ExperienceCalculator.getMaxLevel()
 
         val result =
-            if (levelInfo.third >= maxLevel) {
+            if (currentLevel >= maxLevel) {
                 listOf(
-                    "   レベル: ${levelInfo.third}/$maxLevel",
-                    "   経験値: ${levelInfo.first}",
+                    "   レベル: $currentLevel/$maxLevel",
+                    "   経験値: $currentExp",
                     "",
                     "すでに最大レベルに到達しています",
                     "超過分は上限突破後に引き続きカウントされます",
                 )
             } else {
                 listOf(
-                    "   レベル: ${levelInfo.third}/$maxLevel",
-                    "   経験値: ${levelInfo.first}/${levelInfo.second}",
+                    "   レベル: $currentLevel/$maxLevel",
+                    "   経験値: $currentExp/$nextExp",
                 )
             }
 
@@ -71,10 +75,16 @@ class RuneLevelCommand(
                     lore =
                         listOf(
                             "お金を経験値に変換してレベルアップできます",
+                            "一度に変換できる経験値は10万Expまでです",
                         )
-                    // TODO: Add convert logic
-                    onClick {
-                        GuiResult.Silent
+                    onClick { action ->
+                        if (!action.isLeftClick) {
+                            return@onClick GuiResult.Silent
+                        }
+
+                        action.player.closeInventory()
+                        player.performCommand("level convert")
+                        return@onClick GuiResult.Success(Unit)
                     }
                 }
 
@@ -89,27 +99,5 @@ class RuneLevelCommand(
                     }
                 }
             }.toCommandResult()
-    }
-
-    // 総経験値/次までの経験値/現在のレベル
-    private fun getLevelInfo(player: Player): Triple<ULong, ULong, UInt>? {
-        when (val result = playerRepository.getExperience(player.uniqueId)) {
-            is RepositoryResult.Success -> {
-                val totalExperience = result.data
-                val currentLevel = ExperienceCalculator.calculateLevel(totalExperience)
-                val requiredExperience = ExperienceCalculator.getExperienceForLevel(currentLevel)
-
-                return Triple(totalExperience, requiredExperience, currentLevel)
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("Player stats not found for ${player.name}")
-                return null
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to grant experience to ${player.name}: ${result.exception.message}")
-                return null
-            }
-            else -> return null
-        }
     }
 }

@@ -4,7 +4,6 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.command.impl.RuneCustomGiveCommand
 import org.lyralis.runeCore.command.impl.RuneDiceCommand
-import org.lyralis.runeCore.command.impl.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.RuneLogoutCommand
 import org.lyralis.runeCore.command.impl.RuneMenuCommand
 import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
@@ -12,10 +11,11 @@ import org.lyralis.runeCore.command.impl.RunePayCommand
 import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
 import org.lyralis.runeCore.command.impl.RunePlayerInfoCommand
 import org.lyralis.runeCore.command.impl.RunePlayerListCommand
+import org.lyralis.runeCore.command.impl.RuneSettingsCommand
 import org.lyralis.runeCore.command.impl.RuneTrashCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
+import org.lyralis.runeCore.command.impl.level.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
-import org.lyralis.runeCore.command.impl.settings.RuneSettingsCommand
 import org.lyralis.runeCore.command.register.CommandRegistry
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.component.bossbar.BossBarManager
@@ -91,7 +91,7 @@ class RuneCore : JavaPlugin() {
             .register(RuneMoneyCommand(moneyService))
             .register(RuneCustomGiveCommand())
             .register(RuneDiceCommand())
-            .register(RuneLevelCommand(playerRepository, logger))
+            .register(RuneLevelCommand(moneyService, experienceService))
             .register(RuneLogoutCommand())
             .register(RuneMenuCommand(experienceService, moneyService))
             .register(RunePatchNoteCommand())
