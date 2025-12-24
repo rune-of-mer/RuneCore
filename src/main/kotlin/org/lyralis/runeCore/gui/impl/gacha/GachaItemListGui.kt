@@ -61,11 +61,51 @@ class GachaItemListGui(
             // アイテムを配置（最初の45スロット）
             val slots =
                 listOf(
-                    '0', '1', '2', '3', '4', '5', '6', '7', '8',
-                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-                    'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-                    's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A',
-                    'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L',
+                    '0',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    'a',
+                    'b',
+                    'c',
+                    'd',
+                    'e',
+                    'f',
+                    'g',
+                    'h',
+                    'i',
+                    'j',
+                    'k',
+                    'l',
+                    'm',
+                    'n',
+                    'o',
+                    'p',
+                    'q',
+                    'r',
+                    's',
+                    't',
+                    'u',
+                    'v',
+                    'w',
+                    'x',
+                    'y',
+                    'z',
+                    'A',
+                    'C',
+                    'D',
+                    'E',
+                    'F',
+                    'G',
+                    'H',
+                    'J',
+                    'K',
+                    'L',
                 )
 
             // 構造を再定義（アイテム用）
@@ -156,15 +196,18 @@ class GachaItemListGui(
             (meta.lore() ?: mutableListOf()).toMutableList().apply {
                 add(Component.empty())
                 add(
-                    Component.text("レアリティ: ")
+                    Component
+                        .text("レアリティ: ")
                         .color(net.kyori.adventure.text.format.NamedTextColor.GRAY)
                         .append(
-                            Component.text(rewardItem.rarity.displayName)
+                            Component
+                                .text(rewardItem.rarity.displayName)
                                 .color(rewardItem.rarity.color),
                         ),
                 )
                 add(
-                    Component.text("排出率: ${getRarityWeight(rewardItem.rarity)}")
+                    Component
+                        .text("排出率: ${getRarityWeight(rewardItem.rarity)}")
                         .color(net.kyori.adventure.text.format.NamedTextColor.GRAY),
                 )
             }

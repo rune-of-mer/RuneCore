@@ -1,6 +1,5 @@
 package org.lyralis.runeCore.database.impl.gacha
 
-import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.lyralis.runeCore.database.model.gacha.GachaEventData
 import org.lyralis.runeCore.database.model.gacha.GachaVanillaItem

@@ -15,13 +15,13 @@ import org.lyralis.runeCore.command.impl.RuneSettingsCommand
 import org.lyralis.runeCore.command.impl.RuneShopCommand
 import org.lyralis.runeCore.command.impl.RuneTrashCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
+import org.lyralis.runeCore.command.impl.gacha.RuneGachaAdminCommand
+import org.lyralis.runeCore.command.impl.gacha.RuneGachaCommand
 import org.lyralis.runeCore.command.impl.level.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTpaCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTpcCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTppCommand
-import org.lyralis.runeCore.command.impl.gacha.RuneGachaAdminCommand
-import org.lyralis.runeCore.command.impl.gacha.RuneGachaCommand
 import org.lyralis.runeCore.command.impl.warp.RuneWarpCommand
 import org.lyralis.runeCore.command.impl.world.RuneWorldCommand
 import org.lyralis.runeCore.command.register.CommandRegistry

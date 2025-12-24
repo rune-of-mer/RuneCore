@@ -36,8 +36,9 @@ class RuneGachaCommand(
         }
 
         // 引数がある場合は直接詳細GUIを開く
-        val event = gachaService.getEventById(eventId)
-            ?: return CommandResult.Failure.Custom("ガチャイベント '$eventId' が見つかりません")
+        val event =
+            gachaService.getEventById(eventId)
+                ?: return CommandResult.Failure.Custom("ガチャイベント '$eventId' が見つかりません")
 
         if (!event.isActive) {
             return CommandResult.Failure.Custom("ガチャイベント '${event.displayName}' は現在開催されていません")
@@ -49,7 +50,8 @@ class RuneGachaCommand(
     override fun suggest(context: SuggestionContext): List<String> =
         when (context.args.size) {
             1 ->
-                gachaService.getActiveEvents()
+                gachaService
+                    .getActiveEvents()
                     .map { it.id }
                     .filter { it.startsWith(context.currentArg.lowercase()) }
             else -> emptyList()

@@ -44,3 +44,6 @@ permissions:
       ## Experience Command
       - runecore.player.admin.command.experience
       - runecore.player.admin.command.experience.add
+
+      ## Gacha
+      - runecore.player.admin.command.gacha

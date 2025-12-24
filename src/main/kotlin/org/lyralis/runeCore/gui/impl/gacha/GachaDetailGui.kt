@@ -173,9 +173,12 @@ class GachaDetailGui(
         // 結果GUIを開く（次のティックで）
         val plugin = Bukkit.getPluginManager().getPlugin("RuneCore") as? JavaPlugin
         if (plugin != null) {
-            Bukkit.getScheduler().runTask(plugin, Runnable {
-                GachaResultGui(gachaService, listGui).open(player, eventId, result)
-            })
+            Bukkit.getScheduler().runTask(
+                plugin,
+                Runnable {
+                    GachaResultGui(gachaService, listGui).open(player, eventId, result)
+                },
+            )
         }
     }
 }

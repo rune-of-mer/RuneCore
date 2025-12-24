@@ -65,7 +65,10 @@ class GachaResultGui(
          * インベントリがガチャ結果GUIかどうかを判定
          */
         fun isGachaResultInventory(title: Component): Boolean {
-            val plainText = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(title)
+            val plainText =
+                net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+                    .plainText()
+                    .serialize(title)
             return plainText.startsWith(GACHA_RESULT_INV_PREFIX)
         }
     }
