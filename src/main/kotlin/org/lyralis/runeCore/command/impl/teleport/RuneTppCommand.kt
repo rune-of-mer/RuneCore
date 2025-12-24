@@ -12,6 +12,7 @@ import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.database.model.teleport.TeleportRequest
 import org.lyralis.runeCore.teleport.TeleportRequestManager
+import org.lyralis.runeCore.world.RuneWorldUtils
 
 /**
  * /tpp <プレイヤー> - テレポートリクエストを送信するコマンド
@@ -27,6 +28,11 @@ class RuneTppCommand(
 
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
+
+        if (RuneWorldUtils.isExecute(player.world)) {
+            return CommandResult.Failure.ExecutionFailed("ダークゾーン(DZ)にいる間はテレポートリクエストを送信できません。先に脱出する必要があります")
+        }
+
         val targetName =
             context.args.getOrNull(0)
                 ?: return CommandResult.Failure.InvalidArgument("/tpp <プレイヤー名>")
