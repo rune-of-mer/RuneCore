@@ -21,6 +21,9 @@ plugin:
     tutorialRune: 1000
     ### チュートリアルを受けた際に入手できる経験値 (チュートリアルを受けた際の報酬として)
     tutorialExp: 1000
+  ## アクションバーの一時通知の表示時間 (ミリ秒単位)
+  ## 経験値やお金の獲得通知などが対象です
+  notificationDurationMs: 5000
 
 # データベース設定
 database:

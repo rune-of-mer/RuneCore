@@ -6,4 +6,5 @@ data class PluginConfig(
     val firstMotd: List<String> = listOf("Rune of Mer へようこそ!"),
     val tutorialRune: Long = 1000,
     val tutorialExp: Long = 1000,
+    val notificationDurationMs: Long = 5000,
 )

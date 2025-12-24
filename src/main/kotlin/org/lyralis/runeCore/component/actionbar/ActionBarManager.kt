@@ -5,6 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
+import org.lyralis.runeCore.config.ConfigManager
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -32,7 +33,9 @@ object ActionBarManager {
     private var updateTask: BukkitTask? = null
 
     private const val UPDATE_INTERVAL_TICKS = 20L
-    private const val TEMPORARY_NOTIFICATION_DURATION_MS = 2000L
+
+    private val notificationDurationMs: Long
+        get() = ConfigManager.get().plugin.notificationDurationMs
 
     /**
      * プラグインインスタンスを設定して ActionBar 更新タスクを開始します．
@@ -120,7 +123,7 @@ object ActionBarManager {
                         val currentNotification = currentNotifications[uuid]
                         if (currentNotification != null) {
                             // 現在の通知の表示時間が終了したかチェック
-                            if (currentTime - currentNotification.startTime >= TEMPORARY_NOTIFICATION_DURATION_MS) {
+                            if (currentTime - currentNotification.startTime >= notificationDurationMs) {
                                 val queue = notificationQueues[uuid]
                                 val nextNotification = queue?.poll()
 

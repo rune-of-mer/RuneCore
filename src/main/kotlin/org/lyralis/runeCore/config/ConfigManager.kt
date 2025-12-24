@@ -26,6 +26,7 @@ object ConfigManager {
                         firstMotd = config.getStringList("plugin.noKnownPlayers.firstMotd"),
                         tutorialRune = config.getLong("plugin.noKnownPlayers.tutorialRune"),
                         tutorialExp = config.getLong("plugin.noKnownPlayers.tutorialExp"),
+                        notificationDurationMs = config.getLong("plugin.notificationDurationMs", 5000),
                     ),
                 database =
                     DatabaseConfig(
