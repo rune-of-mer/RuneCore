@@ -8,6 +8,7 @@ import org.lyralis.runeCore.command.impl.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.RuneLogoutCommand
 import org.lyralis.runeCore.command.impl.RuneMenuCommand
 import org.lyralis.runeCore.command.impl.RunePatchNoteCommand
+import org.lyralis.runeCore.command.impl.RunePayCommand
 import org.lyralis.runeCore.command.impl.RunePlayTimeCommand
 import org.lyralis.runeCore.command.impl.RunePlayerInfoCommand
 import org.lyralis.runeCore.command.impl.RunePlayerListCommand
@@ -94,6 +95,7 @@ class RuneCore : JavaPlugin() {
             .register(RuneLogoutCommand())
             .register(RuneMenuCommand(experienceService, moneyService))
             .register(RunePatchNoteCommand())
+            .register(RunePayCommand(moneyService))
             .register(RunePlayerInfoCommand(experienceService, moneyService))
             .register(RunePlayerListCommand(playerRepository))
             .register(RunePlayTimeCommand())
