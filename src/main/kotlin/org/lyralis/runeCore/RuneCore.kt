@@ -21,6 +21,7 @@ import org.lyralis.runeCore.command.impl.teleport.RuneTpaCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTpcCommand
 import org.lyralis.runeCore.command.impl.teleport.RuneTppCommand
 import org.lyralis.runeCore.command.impl.warp.RuneWarpCommand
+import org.lyralis.runeCore.command.impl.world.RuneWorldCommand
 import org.lyralis.runeCore.command.register.CommandRegistry
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.component.bossbar.BossBarManager
@@ -44,6 +45,7 @@ import org.lyralis.runeCore.listener.CustomItemInteractListener
 import org.lyralis.runeCore.listener.PlayerExperienceListener
 import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
+import org.lyralis.runeCore.listener.PlayerWorldTeleportListener
 import org.lyralis.runeCore.listener.ShopChatInputListener
 import org.lyralis.runeCore.listener.TrashInventoryListener
 import org.lyralis.runeCore.teleport.TeleportRequestManager
@@ -138,6 +140,15 @@ class RuneCore : JavaPlugin() {
                     moneyService,
                     config.teleport,
                 ),
+            )
+            // ワールドテレポートコマンド
+            .register(
+                RuneWorldCommand(
+                    config.world,
+                    teleportService,
+                    moneyService,
+                    config.teleport.costs.crossWorldBaseCost,
+                ),
             ).registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
@@ -145,6 +156,10 @@ class RuneCore : JavaPlugin() {
         server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
         server.pluginManager.registerEvents(
             PlayerPresenceListener(experienceService, moneyService, settingsService, experienceBossBarProvider),
+            this,
+        )
+        server.pluginManager.registerEvents(
+            PlayerWorldTeleportListener(),
             this,
         )
         server.pluginManager.registerEvents(TrashInventoryListener(this, moneyService), this)

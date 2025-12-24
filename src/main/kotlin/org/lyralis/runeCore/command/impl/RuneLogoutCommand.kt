@@ -6,9 +6,11 @@ import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.component.message.systemMessage
+import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.gui.result.ConfirmationResult
 import org.lyralis.runeCore.gui.template.showConfirmation
 import org.lyralis.runeCore.gui.toCommandResult
+import org.lyralis.runeCore.world.RuneWorldUtils
 
 /**
  * /logout コマンドを定義するクラス
@@ -17,6 +19,8 @@ import org.lyralis.runeCore.gui.toCommandResult
  */
 @PlayerOnlyCommand
 class RuneLogoutCommand : RuneCommand {
+    private val config = ConfigManager.get()
+
     override val name = "logout"
     override val description = "サーバーからログアウトします"
 
@@ -31,6 +35,10 @@ class RuneLogoutCommand : RuneCommand {
 
         if (player.isFlying) {
             return CommandResult.Failure.ExecutionFailed("飛行中はログアウトできません")
+        }
+
+        if (RuneWorldUtils.isExecute(player.world)) {
+            return CommandResult.Failure.ExecutionFailed("ダークゾーン(DZ)にいる間はログアウトできません。先に脱出する必要があります")
         }
 
         return player

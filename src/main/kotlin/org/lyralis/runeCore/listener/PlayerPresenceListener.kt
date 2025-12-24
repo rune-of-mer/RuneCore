@@ -3,6 +3,7 @@ package org.lyralis.runeCore.listener
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.title.Title
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -65,6 +66,13 @@ class PlayerPresenceListener(
                 ?: player.sendMessage("チュートリアルの際に付与される Rune が正しく入手できませんでした。運営に連絡してください".errorMessage())
             return
         }
+
+        player.showTitle(
+            Title.title(
+                Component.text("Welcome to Rune of Mer!", NamedTextColor.LIGHT_PURPLE),
+                Component.empty(),
+            ),
+        )
 
         player.sendMessage(Component.text(config.plugin.motd.joinToString("\n"), NamedTextColor.LIGHT_PURPLE))
         event.joinMessage("[Join] ${player.name} がログインしました".systemMessage())

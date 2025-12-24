@@ -13,3 +13,5 @@
 # https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.11.3/PlaceholderAPI-2.11.3.jar
 #
 # Add your plugin URLs below:
+
+https://cdn.modrinth.com/data/3wmN97b8/versions/fw2C2Wui/multiverse-core-5.4.0.jar
