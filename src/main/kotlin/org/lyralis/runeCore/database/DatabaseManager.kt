@@ -9,6 +9,8 @@ import org.lyralis.runeCore.config.model.DatabaseConfig
 import org.lyralis.runeCore.database.table.PlayerSettings
 import org.lyralis.runeCore.database.table.PlayerStats
 import org.lyralis.runeCore.database.table.Players
+import org.lyralis.runeCore.database.table.WarpPoints
+import org.lyralis.runeCore.database.table.WarpSlots
 import java.util.logging.Logger
 
 class DatabaseManager(
@@ -44,6 +46,8 @@ class DatabaseManager(
                 Players,
                 PlayerStats,
                 PlayerSettings,
+                WarpPoints,
+                WarpSlots,
             )
         }
 

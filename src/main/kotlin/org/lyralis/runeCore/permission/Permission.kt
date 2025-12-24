@@ -41,6 +41,8 @@ sealed class Permission(
         object MoneyAddCommand : Admin("runecore.player.admin.command.money.add")
 
         object MoneyReduceCommand : Admin("runecore.player.admin.command.money.reduce")
+
+        object WarpAddPoint : Admin("runecore.player.admin.command.warp.addpoint")
     }
 
     fun has(player: Player): Boolean = player.hasPermission(node)

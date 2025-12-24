@@ -17,6 +17,10 @@ import org.lyralis.runeCore.command.impl.RuneTrashCommand
 import org.lyralis.runeCore.command.impl.experience.RuneExperienceCommand
 import org.lyralis.runeCore.command.impl.level.RuneLevelCommand
 import org.lyralis.runeCore.command.impl.money.RuneMoneyCommand
+import org.lyralis.runeCore.command.impl.teleport.RuneTpaCommand
+import org.lyralis.runeCore.command.impl.teleport.RuneTpcCommand
+import org.lyralis.runeCore.command.impl.teleport.RuneTppCommand
+import org.lyralis.runeCore.command.impl.warp.RuneWarpCommand
 import org.lyralis.runeCore.command.register.CommandRegistry
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.component.bossbar.BossBarManager
@@ -26,9 +30,11 @@ import org.lyralis.runeCore.database.DatabaseManager
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.database.impl.settings.SettingsService
+import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.SettingsRepository
 import org.lyralis.runeCore.database.repository.StatsRepository
+import org.lyralis.runeCore.database.repository.WarpPointRepository
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheCleanupTask
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
 import org.lyralis.runeCore.gui.impl.shop.ShopMainGui
@@ -40,6 +46,8 @@ import org.lyralis.runeCore.listener.PlayerLoginListener
 import org.lyralis.runeCore.listener.PlayerPresenceListener
 import org.lyralis.runeCore.listener.ShopChatInputListener
 import org.lyralis.runeCore.listener.TrashInventoryListener
+import org.lyralis.runeCore.teleport.TeleportRequestManager
+import org.lyralis.runeCore.teleport.TeleportService
 import xyz.xenondevs.invui.InvUI
 
 class RuneCore : JavaPlugin() {
@@ -53,6 +61,10 @@ class RuneCore : JavaPlugin() {
     private lateinit var experienceBossBarProvider: ExperienceBossBarProvider
     private lateinit var headCacheCleanupTask: PlayerHeadCacheCleanupTask
     private lateinit var shopMainGui: ShopMainGui
+    private lateinit var warpPointRepository: WarpPointRepository
+    private lateinit var teleportRequestManager: TeleportRequestManager
+    private lateinit var teleportCostCalculator: TeleportCostCalculator
+    private lateinit var teleportService: TeleportService
 
     override fun onEnable() {
         // InvUI のプラグインインスタンスを設定（Paper 1.20.5+ で必要）
@@ -89,6 +101,13 @@ class RuneCore : JavaPlugin() {
             )
         shopMainGui = ShopMainGui(moneyService)
 
+        // テレポートシステムの初期化
+        warpPointRepository = WarpPointRepository()
+        teleportCostCalculator = TeleportCostCalculator(config.teleport.costs)
+        teleportService = TeleportService(moneyService, logger)
+        teleportRequestManager = TeleportRequestManager(this, config.teleport.requestTimeoutSeconds)
+        teleportRequestManager.start()
+
         ActionBarManager.initialize(this)
 
         CommandRegistry(this)
@@ -107,7 +126,19 @@ class RuneCore : JavaPlugin() {
             .register(RuneSettingsCommand(settingsService, experienceBossBarProvider))
             .register(RuneShopCommand(shopMainGui))
             .register(RuneTrashCommand())
-            .registerAll(lifecycleManager)
+            // テレポートコマンド
+            .register(RuneTppCommand(teleportRequestManager, teleportCostCalculator))
+            .register(RuneTpaCommand(teleportRequestManager, teleportService, moneyService))
+            .register(RuneTpcCommand(teleportRequestManager))
+            .register(
+                RuneWarpCommand(
+                    warpPointRepository,
+                    teleportService,
+                    teleportCostCalculator,
+                    moneyService,
+                    config.teleport,
+                ),
+            ).registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
         server.pluginManager.registerEvents(PlayerExperienceListener(experienceService, moneyService), this)
@@ -126,6 +157,11 @@ class RuneCore : JavaPlugin() {
     }
 
     override fun onDisable() {
+        // テレポートリクエストマネージャーを停止
+        if (::teleportRequestManager.isInitialized) {
+            teleportRequestManager.stop()
+        }
+
         if (::databaseManager.isInitialized) {
             databaseManager.disconnect()
         }

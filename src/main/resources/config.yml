@@ -49,3 +49,16 @@ database:
     ### プールから接続を取得するために待機する最大時間 (ミリ秒単位)
     ### 設定した制限時間を超えても接続を取得できない場合はエラーとなります．
     connectionTimeout: 30000
+
+# テレポート設定
+teleport:
+  ## テレポートリクエストのタイムアウト時間 (秒)
+  requestTimeoutSeconds: 60
+  ## デフォルトのワープスロット数
+  defaultWarpSlots: 3
+  ## テレポート料金設定
+  costs:
+    ### 最大料金 (Rune)
+    maxCost: 1000
+    ### ワールド間移動の基本料金 (Rune)
+    crossWorldBaseCost: 500
