@@ -14,6 +14,13 @@ import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 import org.lyralis.runeCore.gui.toCommandResult
 
+private data class MenuItemData(
+    val displayName: String,
+    val material: Material,
+    val lore: List<String>,
+    val command: String,
+)
+
 @PlayerOnlyCommand
 class RuneMenuCommand(
     private val experienceService: ExperienceService,
@@ -65,7 +72,96 @@ class RuneMenuCommand(
 
                 decoration('#', Material.WHITE_STAINED_GLASS_PANE)
 
-                // プレイヤー情報
+                // メニューアイテム定義
+                val menuContents =
+                    mapOf(
+                        'P' to
+                            MenuItemData(
+                                displayName = "プレイヤー一覧",
+                                material = Material.PLAYER_HEAD,
+                                lore =
+                                    listOf(
+                                        "プレイヤー一覧を開きます",
+                                        "現在 $onlinePlayers/$maxPlayers 人がプレイ中です",
+                                    ),
+                                command = "playerlist",
+                            ),
+                        'L' to
+                            MenuItemData(
+                                displayName = "レベル情報",
+                                material = Material.KNOWLEDGE_BOOK,
+                                lore =
+                                    listOf(
+                                        "レベル情報ページを開きます",
+                                    ),
+                                command = "level",
+                            ),
+                        'O' to
+                            MenuItemData(
+                                displayName = "ショップ",
+                                material = Material.EMERALD_BLOCK,
+                                lore = listOf("左クリックでショップを開きます"),
+                                command = "shop",
+                            ),
+                        'S' to
+                            MenuItemData(
+                                displayName = "設定",
+                                material = Material.COMPASS,
+                                lore =
+                                    listOf(
+                                        "設定を開きます",
+                                        "ボスバーの表示などを切り替えることができます",
+                                    ),
+                                command = "settings",
+                            ),
+                        'G' to
+                            MenuItemData(
+                                displayName = "ゴミ箱",
+                                material = Material.POISONOUS_POTATO,
+                                lore =
+                                    listOf(
+                                        "ゴミ箱を開きます",
+                                        "不要なアイテムを売却・処分することができます。",
+                                        "アイテムはルーンと交換されますが、一度捨てたアイテムは帰ってきません",
+                                    ),
+                                command = "trash",
+                            ),
+                        'Q' to
+                            MenuItemData(
+                                displayName = "ログアウト",
+                                material = Material.DARK_OAK_DOOR,
+                                lore =
+                                    listOf(
+                                        "サーバーからログアウトします",
+                                        "飛行中や一部コンテンツをプレイしている間はログアウトできません",
+                                    ),
+                                command = "logout",
+                            ),
+                        'T' to
+                            MenuItemData(
+                                displayName = "累計プレイ時間",
+                                material = Material.CLOCK,
+                                lore = listOf("現在の累計プレイ時間を表示します"),
+                                command = "playtime",
+                            ),
+                    )
+
+                menuContents.forEach { (char, data) ->
+                    item(char) {
+                        displayName = data.displayName
+                        material = data.material
+                        lore = data.lore
+                        onClick { action ->
+                            if (!action.isLeftClick) {
+                                return@onClick GuiResult.Silent
+                            }
+                            action.player.closeInventory()
+                            player.performCommand(data.command)
+                            return@onClick GuiResult.Success(Unit)
+                        }
+                    }
+                }
+
                 item('H') {
                     customItem =
                         player.getCachedPlayerHead {
@@ -86,150 +182,8 @@ class RuneMenuCommand(
                         if (!action.isLeftClick) {
                             return@onClick GuiResult.Silent
                         }
-
                         action.player.closeInventory()
                         player.performCommand("playerinfo")
-                        return@onClick GuiResult.Success(Unit)
-                    }
-                }
-
-                // プレイヤー一覧ページ
-                item('P') {
-                    displayName = "プレイヤー一覧"
-                    material = Material.PLAYER_HEAD
-                    lore =
-                        listOf(
-                            "プレイヤー一覧を開きます",
-                            "現在 $onlinePlayers/$maxPlayers 人がプレイ中です",
-                        )
-                    onClick { action ->
-                        if (!action.isLeftClick) {
-                            return@onClick GuiResult.Silent
-                        }
-
-                        action.player.closeInventory()
-                        player.performCommand("playerlist")
-                        return@onClick GuiResult.Success(Unit)
-                    }
-                }
-
-                // レベル情報ページ
-                item('L') {
-                    displayName = "レベル情報"
-                    material = Material.KNOWLEDGE_BOOK
-                    lore =
-                        listOf(
-                            "レベル情報ページを開きます",
-                            "また、お金から経験値に変換できます",
-                        )
-                    onClick { action ->
-                        if (!action.isLeftClick) {
-                            return@onClick GuiResult.Silent
-                        }
-
-                        action.player.closeInventory()
-                        player.performCommand("level")
-                        return@onClick GuiResult.Success(Unit)
-                    }
-                }
-
-                // ショップ
-                item('O') {
-                    displayName = "ショップ"
-                    material = Material.EMERALD_BLOCK
-                    lore =
-                        listOf(
-                            "右クリックでショップを開きます",
-                        )
-                    onClick { action ->
-                        when {
-                            action.isRightClick -> {
-                                action.player.closeInventory()
-                                return@onClick GuiResult.Success(Unit)
-                            }
-                            else -> {
-                                return@onClick GuiResult.Silent
-                            }
-                        }
-                    }
-                }
-
-                // 設定ページ
-                item('S') {
-                    displayName = "設定"
-                    material = Material.COMPASS
-                    lore =
-                        listOf(
-                            "設定を開きます",
-                            "ボスバーの表示などを切り替えることができます",
-                        )
-                    onClick { action ->
-                        if (!action.isLeftClick) {
-                            return@onClick GuiResult.Silent
-                        }
-
-                        action.player.closeInventory()
-                        player.performCommand("settings")
-                        return@onClick GuiResult.Success(Unit)
-                    }
-                }
-
-                // ゴミ箱ページ
-                item('G') {
-                    displayName = "ゴミ箱"
-                    material = Material.POISONOUS_POTATO
-                    lore =
-                        listOf(
-                            "ゴミ箱を開きます",
-                            "不要なアイテムを売却・処分することができます。",
-                            "アイテムはルーンと交換されますが、一度捨てたアイテムは帰ってきません",
-                        )
-                    onClick { action ->
-                        if (!action.isLeftClick) {
-                            return@onClick GuiResult.Silent
-                        }
-
-                        action.player.closeInventory()
-                        player.performCommand("trash")
-                        return@onClick GuiResult.Success(Unit)
-                    }
-                }
-
-                // ログアウトページ
-                item('Q') {
-                    displayName = "ログアウト"
-                    material = Material.DARK_OAK_DOOR
-                    lore =
-                        listOf(
-                            "サーバーからログアウトします",
-                            "飛行中や一部コンテンツをプレイしている間はログアウトできません",
-                        )
-                    onClick { action ->
-                        if (!action.isLeftClick) {
-                            return@onClick GuiResult.Silent
-                        }
-
-                        action.player.closeInventory()
-                        player.performCommand("logout")
-                        return@onClick GuiResult.Success(Unit)
-                    }
-                }
-
-                // プレイ時間を表示
-                item('T') {
-                    displayName = "累計プレイ時間"
-                    material = Material.CLOCK
-                    lore =
-                        listOf(
-                            "現在の累計プレイ時間を表示します",
-                        )
-                    onClick { action ->
-                        if (!action.isLeftClick) {
-                            return@onClick GuiResult.Silent
-                        }
-
-                        action.player.closeInventory()
-                        player.performCommand("playtime")
                         return@onClick GuiResult.Success(Unit)
                     }
                 }
