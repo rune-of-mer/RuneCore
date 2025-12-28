@@ -1,4 +1,4 @@
-package org.lyralis.runeCore.listener
+package org.lyralis.runeCore.listener.player
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent

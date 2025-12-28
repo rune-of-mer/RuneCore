@@ -1,4 +1,4 @@
-package org.lyralis.runeCore.listener
+package org.lyralis.runeCore.listener.player
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

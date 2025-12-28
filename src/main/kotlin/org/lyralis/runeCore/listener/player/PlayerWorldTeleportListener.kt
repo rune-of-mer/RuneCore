@@ -1,4 +1,4 @@
-package org.lyralis.runeCore.listener
+package org.lyralis.runeCore.listener.player
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -17,17 +17,17 @@ class PlayerWorldTeleportListener : Listener {
         val world = player.world
         val confinedWorld = config.world
 
-        var titleItem: Triple<String, String, NamedTextColor>
-
-        when (world.name) {
+        val titleItem: Triple<String, String, NamedTextColor> = when (world.name) {
             confinedWorld.pvp.name -> {
-                titleItem = Triple("PvP ワールド", "PvP/アイテムロストなしのバトル型コンテンツ", NamedTextColor.LIGHT_PURPLE)
+                Triple("PvP ワールド", "PvP/アイテムロストなしのバトル型コンテンツ", NamedTextColor.LIGHT_PURPLE)
             }
+
             confinedWorld.life.name -> {
-                titleItem = Triple("生活ワールド", "家を建てたり，町を作ったりできる生活型コンテンツ", NamedTextColor.AQUA)
+                Triple("生活ワールド", "家を建てたり，町を作ったりできる生活型コンテンツ", NamedTextColor.AQUA)
             }
+
             else -> {
-                titleItem = Triple("資源ワールド", "生活のために必要な資源を確保できる生活型コンテンツ", NamedTextColor.GREEN)
+                Triple("資源ワールド", "生活のために必要な資源を確保できる生活型コンテンツ", NamedTextColor.GREEN)
             }
         }
 

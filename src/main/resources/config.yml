@@ -59,9 +59,9 @@ teleport:
   ## テレポート料金設定
   costs:
     ### 最大料金 (Rune)
-    maxCost: 1000
+    maxCost: 3000
     ### ワールド間移動の基本料金 (Rune)
-    crossWorldBaseCost: 50
+    crossWorldBaseCost: 150
 
   # ワールド設定
   # name - ワールドの名前 (RuneCore はワールドの判定を名前ベース行うため，正しく指定してください)
