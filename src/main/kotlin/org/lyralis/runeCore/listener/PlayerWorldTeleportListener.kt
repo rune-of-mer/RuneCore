@@ -20,21 +20,6 @@ class PlayerWorldTeleportListener : Listener {
         var titleItem: Triple<String, String, NamedTextColor>
 
         when (world.name) {
-            confinedWorld.dz.name -> {
-                titleItem = Triple("ダークゾーン - DZ", "PvP/アイテムロストありのバトル型コンテンツ", NamedTextColor.DARK_PURPLE)
-                player.sendMessage(
-                    Component.text(
-                        listOf(
-                            "-------------",
-                            "ダークゾーンに接続しました。このワールドではPvP/アイテムロストが有効化されています。",
-                            "ログアウト・その他テレポート機能が無効化されました。ポーズメニューからログアウトするとペナルティとしてアイテムを失います。",
-                            "ゲートから脱出するか、救いのトーテムを使って脱出しましょう。",
-                            "\"ただし\" DZ には高価なアイテムも存在します。どうするかはあなた次第。",
-                            "-------------",
-                        ).joinToString("\n"),
-                    ),
-                )
-            }
             confinedWorld.pvp.name -> {
                 titleItem = Triple("PvP ワールド", "PvP/アイテムロストなしのバトル型コンテンツ", NamedTextColor.LIGHT_PURPLE)
             }

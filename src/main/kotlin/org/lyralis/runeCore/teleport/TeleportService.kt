@@ -38,11 +38,6 @@ sealed class TeleportResult {
      * テレポート先が見つからない。
      */
     data object LocationNotFound : TeleportResult()
-
-    /**
-     * プレイヤーが DZ にいる
-     */
-    data object PlayerInDZ : TeleportResult()
 }
 
 /**
@@ -67,10 +62,6 @@ class TeleportService(
         destination: Location,
         cost: ULong,
     ): TeleportResult {
-        if (RuneWorldUtils.isExecute(player.world)) {
-            return TeleportResult.PlayerInDZ
-        }
-
         // 料金が0の場合は無料でテレポート
         if (cost == 0uL) {
             player.teleport(destination)

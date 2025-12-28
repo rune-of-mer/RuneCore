@@ -36,10 +36,6 @@ class RuneLogoutCommand : RuneCommand {
             return CommandResult.Failure.ExecutionFailed("飛行中はログアウトできません")
         }
 
-        if (RuneWorldUtils.isExecute(player.world)) {
-            return CommandResult.Failure.ExecutionFailed("ダークゾーン(DZ)にいる間はログアウトできません。先に脱出する必要があります")
-        }
-
         return player
             .showConfirmation {
                 title = "ログアウト確認"
