@@ -2,6 +2,7 @@ package org.lyralis.runeCore.command.impl.warp
 
 import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
+import org.lyralis.runeCore.command.impl.warp.admin.RuneWarpAddCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
@@ -10,7 +11,6 @@ import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.database.repository.WarpPointRepository
 import org.lyralis.runeCore.teleport.TeleportService
-import org.lyralis.runeCore.world.RuneWorldUtils
 
 /**
  * /warp - ワープポイントを管理する親コマンド
@@ -35,15 +35,8 @@ class RuneWarpCommand(
             RuneWarpAddCommand(warpPointRepository),
         )
 
-    override fun execute(context: RuneCommandContext): CommandResult {
-        val player = context.playerOrThrow
-
-        if (RuneWorldUtils.isExecute(player.world)) {
-            return CommandResult.Failure.ExecutionFailed("ダークゾーン(DZ)内ではワープコマンドは実行できません")
-        }
-
-        return CommandResult.Failure.InvalidArgument("/warp <create|go|delete|list|add>")
-    }
+    override fun execute(context: RuneCommandContext): CommandResult =
+        CommandResult.Failure.InvalidArgument("/warp <create|go|delete|list|add>")
 
     override fun suggest(context: SuggestionContext): List<String> =
         context.filterStartsWith(listOf("create", "go", "delete", "list", "add"))

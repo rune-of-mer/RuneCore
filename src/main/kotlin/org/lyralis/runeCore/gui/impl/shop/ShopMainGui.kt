@@ -43,10 +43,11 @@ class ShopMainGui(
 
             item('1') {
                 material = Material.EMERALD
-                displayName = "所持金: $balance Rune"
+                displayName = "所持金: §6$balance §eRune"
                 lore =
                     listOf(
-                        "お金は動物を倒したり、鉱物を破壊すると入手できます",
+                        "",
+                        "§7お金は動物を倒したり、鉱物を破壊すると入手できます",
                     )
             }
 

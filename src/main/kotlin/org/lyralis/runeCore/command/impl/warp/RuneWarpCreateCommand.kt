@@ -25,7 +25,6 @@ class RuneWarpCreateCommand(
             context.args.getOrNull(1)
                 ?: return CommandResult.Failure.InvalidArgument("/warp create <拠点名>")
 
-        // 名前の検証
         if (warpName.length > 32) {
             return CommandResult.Failure.Custom("拠点名は32文字以内で指定してください")
         }
@@ -34,12 +33,10 @@ class RuneWarpCreateCommand(
             return CommandResult.Failure.Custom("拠点名には英数字、ハイフン、アンダースコアのみ使用できます")
         }
 
-        // 既存チェック
         if (warpPointRepository.exists(player.uniqueId, warpName)) {
             return CommandResult.Failure.Custom("'$warpName' という名前のワープポイントは既に存在します")
         }
 
-        // スロット数チェック
         val totalSlots =
             when (val result = warpPointRepository.getTotalSlots(player.uniqueId, config.defaultWarpSlots)) {
                 is RepositoryResult.Success -> result.data
@@ -56,7 +53,6 @@ class RuneWarpCreateCommand(
             return CommandResult.Failure.Custom("ワープポイントの登録上限（$totalSlots 個）に達しています")
         }
 
-        // 作成
         return when (val result = warpPointRepository.createWarpPoint(player.uniqueId, warpName, player.location)) {
             is RepositoryResult.Success -> {
                 val remaining = totalSlots - currentCount - 1

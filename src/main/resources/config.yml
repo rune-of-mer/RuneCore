@@ -59,9 +59,9 @@ teleport:
   ## テレポート料金設定
   costs:
     ### 最大料金 (Rune)
-    maxCost: 1000
+    maxCost: 3000
     ### ワールド間移動の基本料金 (Rune)
-    crossWorldBaseCost: 50
+    crossWorldBaseCost: 150
 
   # ワールド設定
   # name - ワールドの名前 (RuneCore はワールドの判定を名前ベース行うため，正しく指定してください)
@@ -83,15 +83,6 @@ teleport:
     resourceEnd:
       name: "world_resource_end"
       crossWorldCost: 55
-    ## ダークゾーン - PvP On / アイテムロストありのバトル型コンテンツのワールド  - v0.1.0 時点ではこのコンテンツはまだ未実装なので，使用されない
-    dz:
-      name: "world_dz"
-      crossWorldCost: 500
-      ### DZ を解放しない場合は false にする
-      enabled: false
-      ### 同時可能接続人数
-      ### DZ はバトル型コンテンツのため，大人数で入ることは想定していません．ここで指定した人数ワールドにいる場合接続しようとするとエラーになります
-      maxMemberSize: 10
     ## PvPワールド - PvP On / アイテムロストなしの気軽なバトル型コンテンツのワールド
     pvp:
       name: "world_pvp"

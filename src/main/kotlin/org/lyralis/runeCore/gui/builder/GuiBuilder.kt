@@ -1,6 +1,7 @@
 package org.lyralis.runeCore.gui.builder
 
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.lyralis.runeCore.gui.annotation.GuiDsl
 import org.lyralis.runeCore.gui.item.DecorationItem
@@ -125,6 +126,9 @@ class GuiBuilder {
             onCloseHandler?.let { handler ->
                 windowBuilder.addCloseHandler { handler(player) }
             }
+
+            // GUI を開く際にサウンドを再生
+            player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
 
             windowBuilder.build().open()
 

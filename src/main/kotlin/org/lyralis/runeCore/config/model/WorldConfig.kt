@@ -5,7 +5,6 @@ data class WorldConfig(
     val resource: ResourceWorld,
     val resourceNether: ResourceNetherWorld,
     val resourceEnd: ResourceEndWorld,
-    val dz: DarkZoneWorld,
     val pvp: PvPWorld,
 )
 
@@ -27,13 +26,6 @@ data class ResourceNetherWorld(
 data class ResourceEndWorld(
     val name: String,
     val crossWorldCost: Int,
-)
-
-data class DarkZoneWorld(
-    val name: String,
-    val crossWorldCost: Int,
-    val enabled: Boolean,
-    val maxMemberSize: Int,
 )
 
 data class PvPWorld(

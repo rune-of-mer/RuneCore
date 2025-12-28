@@ -1,4 +1,4 @@
-package org.lyralis.runeCore.command.impl.world
+package org.lyralis.runeCore.command.impl
 
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -17,7 +17,6 @@ import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 import org.lyralis.runeCore.teleport.TeleportResult
 import org.lyralis.runeCore.teleport.TeleportService
-import org.lyralis.runeCore.world.RuneWorldUtils
 
 /**
  * /world コマンド - ワールド間テレポートを行うコマンド
@@ -42,18 +41,12 @@ class RuneWorldCommand(
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
 
-        if (RuneWorldUtils.isExecute(player.world)) {
-            return CommandResult.Failure.ExecutionFailed("ダークゾーン(DZ)内では，ワールドコマンドは使用できません")
-        }
-
-        // 引数がない場合はGUIを開く
         val worldArg = context.args.getOrNull(0)
         if (worldArg == null) {
             openWorldSelectionGui(player)
             return CommandResult.Silent
         }
 
-        // 引数がある場合は指定ワールドへの確認GUI
         val worldEntry =
             worldEntries.find { it.id == worldArg.lowercase() }
                 ?: return CommandResult.Failure.Custom("ワールド '$worldArg' は存在しません")
@@ -88,7 +81,6 @@ class RuneWorldCommand(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // 情報アイテム
             item('I') {
                 customItem =
                     Material.COMPASS.asGuiItem {
@@ -124,16 +116,8 @@ class RuneWorldCommand(
                                     "§7料金: §6$cost Rune",
                                     "",
                                     when (entry.worldName) {
-                                        confinedWorld.dz.name ->
-                                            "§cPvP あり・アイテムロストありのバトル型コンテンツです。" +
-                                                "ここでしか手に入らないレアなアイテムが存在しますが，" +
-                                                "他のプレイヤーと奪い合いが必要になる危険なワールドです。" +
-                                                "一度接続すると脱出するまでログアウト・" +
-                                                "その他テレポート機能が使えなくなります。" +
-                                                "接続する場合は注意してください。"
                                         confinedWorld.pvp.name ->
                                             "§dPvP あり・アイテムロストなしのバトル型コンテンツです。"
-                                        // "DZ とは違い、純粋な戦いが楽しめます。"
                                         confinedWorld.life.name ->
                                             "§b家を建てたり，町を作ったりできる生活型コンテンツです。"
                                         else ->
@@ -200,7 +184,6 @@ class RuneWorldCommand(
                     }
             }
 
-            // テレポートボタン
             item('C') {
                 customItem =
                     Material.LIME_WOOL.asGuiItem {
@@ -297,14 +280,6 @@ class RuneWorldCommand(
                 crossWorldCost = worldConfig.resourceEnd.crossWorldCost,
                 icon = Material.END_STONE,
                 enabled = true,
-            ),
-            WorldEntry(
-                id = "dz",
-                displayName = "ダークゾーン",
-                worldName = worldConfig.dz.name,
-                crossWorldCost = worldConfig.dz.crossWorldCost,
-                icon = Material.NETHERITE_SWORD,
-                enabled = worldConfig.dz.enabled,
             ),
             WorldEntry(
                 id = "pvp",

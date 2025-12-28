@@ -25,7 +25,6 @@ class RuneTpcCommand(
             return CommandResult.Failure.Custom("却下できるテレポートリクエストがありません")
         }
 
-        // 全リクエストを却下
         requests.forEach { request ->
             val requester = player.server.getPlayer(request.requesterId)
             requester?.sendMessage("${player.name} がテレポートリクエストを却下しました".errorMessage())

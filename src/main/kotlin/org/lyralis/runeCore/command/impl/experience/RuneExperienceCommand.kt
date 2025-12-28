@@ -10,11 +10,6 @@ import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.database.impl.experience.ExperienceService
 import org.lyralis.runeCore.permission.Permission
 
-/**
- * /experience コマンドを定義するクラス
- *
- * コマンドの詳細は Dokka 上の [org.lyralis.runeCore.command] で確認可能．
- */
 @PlayerOnlyCommand
 @CommandPermission(Permission.Admin.ExperienceCommand::class)
 class RuneExperienceCommand(

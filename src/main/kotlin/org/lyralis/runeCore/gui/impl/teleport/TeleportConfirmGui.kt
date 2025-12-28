@@ -104,11 +104,6 @@ class TeleportConfirmGui(
                             requester.sendMessage("所持金が不足しているためテレポートできませんでした".errorMessage())
                             action.player.sendMessage("${requester.name} の所持金が不足しています".errorMessage())
                         }
-                        is TeleportResult.PlayerInDZ -> {
-                            requester.sendMessage("あなたはダークゾーン(DZ)にいるため、テレポートリクエストがかき消されました。テレポートできません".errorMessage())
-                            action.player.sendMessage("${requester.name} はダークゾーン(DZ)にいるため、テレポートはキャンセルされました".errorMessage())
-                            requestManager.removeRequest(action.player.uniqueId, request.requesterId)
-                        }
                         else -> {
                             action.player.sendMessage("テレポート処理に失敗しました".errorMessage())
                         }

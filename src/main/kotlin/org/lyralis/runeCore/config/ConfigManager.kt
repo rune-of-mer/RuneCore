@@ -2,7 +2,6 @@ package org.lyralis.runeCore.config
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.lyralis.runeCore.config.model.Config
-import org.lyralis.runeCore.config.model.DarkZoneWorld
 import org.lyralis.runeCore.config.model.DatabaseConfig
 import org.lyralis.runeCore.config.model.DistanceTier
 import org.lyralis.runeCore.config.model.LifeWorld
@@ -140,13 +139,6 @@ object ConfigManager {
                 ResourceEndWorld(
                     name = config.getString("world.resourceEnd.name", "world_resource_end")!!,
                     crossWorldCost = config.getInt("world.resourceEnd.crossWorldCost", 200),
-                ),
-            dz =
-                DarkZoneWorld(
-                    name = config.getString("world.dz.name", "world_dz")!!,
-                    crossWorldCost = config.getInt("world.dz.crossWorldCost", 500),
-                    enabled = config.getBoolean("world.dz.enabled", false),
-                    maxMemberSize = config.getInt("world.dz.maxMemberSize", 10),
                 ),
             pvp =
                 PvPWorld(

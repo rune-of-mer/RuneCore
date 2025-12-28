@@ -4,12 +4,11 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
+import org.lyralis.runeCore.database.impl.experience.ExperienceCalculator
 import org.lyralis.runeCore.database.repository.PlayerRepository
-import org.lyralis.runeCore.database.repository.RepositoryResult
 import org.lyralis.runeCore.gui.getCachedPlayerHead
 import org.lyralis.runeCore.gui.template.showPaginatedGui
 import org.lyralis.runeCore.gui.toCommandResult
-import java.util.UUID
 
 /**
  * /playerlist コマンドを定義するクラス
@@ -33,9 +32,9 @@ class RunePlayerListCommand(
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
         // TODO: Should OP players be excluded from the list?
+
         val onlinePlayers =
-            player.server.onlinePlayers
-                .toList()
+            player.server.onlinePlayers.toList()
         val maxPlayers = player.server.maxPlayers
 
         return player
@@ -46,23 +45,19 @@ class RunePlayerListCommand(
                 items(onlinePlayers)
 
                 render { player ->
+                    val level = playerRepository.getLevel(player.uniqueId)
                     player.getCachedPlayerHead {
-                        displayName = "${player.name} - Lv${getLevel(player.uniqueId) ?: 0}"
+                        displayName = player.name
                         lore {
-                            +"UUID: ${player.uniqueId}"
-                            +"Ping値: ${player.ping}ms"
-                            +"現在地: ${player.world.name}"
+                            +""
+                            +"§7レベル: §e$level §7/ §e${ExperienceCalculator.getMaxLevel()}"
+                            +""
+                            +"§8UUID: §7${player.uniqueId}"
+                            +"§8Ping値: §7${player.ping}ms"
+                            +"§8現在地: §7${player.world.name}"
                         }
                     }
                 }
             }.toCommandResult("現在 ${onlinePlayers.size} 人がオンラインです (最大 $maxPlayers 人)")
     }
-
-    private fun getLevel(uuid: UUID): UInt? =
-        when (val result = playerRepository.getLevel(uuid)) {
-            is RepositoryResult.Success -> {
-                result.data
-            }
-            else -> null
-        }
 }
