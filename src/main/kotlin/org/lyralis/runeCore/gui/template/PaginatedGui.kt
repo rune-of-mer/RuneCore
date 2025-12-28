@@ -145,7 +145,7 @@ class PaginatedGuiBuilder<T> {
         }
     }
 
-    private inner class PaginatedItem<T>(
+    private class PaginatedItem<T>(
         private val item: T,
         private val renderer: (T) -> ItemStack,
         private val clickHandler: ((T, ClickAction) -> GuiResult<Unit>)?,
