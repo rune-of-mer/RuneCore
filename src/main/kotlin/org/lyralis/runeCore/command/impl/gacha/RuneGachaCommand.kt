@@ -22,20 +22,13 @@ class RuneGachaCommand(
 ) : RuneCommand {
     override val name = "gacha"
     override val description = "ガチャを開きます"
-    override val aliases = listOf("g", "gatya")
 
     private val listGui by lazy { GachaListGui(gachaService) }
 
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
+        val eventId = context.args.getOrNull(0) ?: return listGui.open(player).toCommandResult()
 
-        // 引数がない場合はガチャ一覧を開く
-        val eventId = context.args.getOrNull(0)
-        if (eventId == null) {
-            return listGui.open(player).toCommandResult()
-        }
-
-        // 引数がある場合は直接詳細GUIを開く
         val event =
             gachaService.getEventById(eventId)
                 ?: return CommandResult.Failure.Custom("ガチャイベント '$eventId' が見つかりません")

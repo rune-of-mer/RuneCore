@@ -10,7 +10,6 @@ import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.gui.result.ConfirmationResult
 import org.lyralis.runeCore.gui.template.showConfirmation
 import org.lyralis.runeCore.gui.toCommandResult
-import org.lyralis.runeCore.world.RuneWorldUtils
 
 /**
  * /logout コマンドを定義するクラス

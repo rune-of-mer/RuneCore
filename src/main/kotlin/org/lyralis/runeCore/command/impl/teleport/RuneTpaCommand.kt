@@ -30,7 +30,6 @@ class RuneTpaCommand(
             return CommandResult.Failure.Custom("承認待ちのテレポートリクエストがありません")
         }
 
-        // リクエストが1件の場合は直接確認GUI、複数の場合は選択GUI
         if (requests.size == 1) {
             val request = requests.first()
             TeleportConfirmGui(requestManager, teleportService, moneyService, request).open(player)

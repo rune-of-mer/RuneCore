@@ -35,17 +35,11 @@ class RuneGachaAdminCommand(
     private fun showHelp(): CommandResult =
         CommandResult.Success(
             """
-            §6=== ガチャ管理コマンド ===
             §e/gachaadmin create <id> <表示名> [チケット数] [天井回数]
-            §7  新規ガチャイベントを作成
             §e/gachaadmin list
-            §7  全イベント一覧を表示
             §e/gachaadmin activate <id>
-            §7  イベントを有効化
             §e/gachaadmin deactivate <id>
-            §7  イベントを無効化
             §e/gachaadmin info <id>
-            §7  イベントの詳細を表示
             """.trimIndent(),
         )
 

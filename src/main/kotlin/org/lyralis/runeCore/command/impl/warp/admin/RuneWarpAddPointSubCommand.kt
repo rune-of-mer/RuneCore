@@ -1,4 +1,4 @@
-package org.lyralis.runeCore.command.impl.warp
+package org.lyralis.runeCore.command.impl.warp.admin
 
 import org.bukkit.Bukkit
 import org.lyralis.runeCore.command.RuneCommand
@@ -11,31 +11,9 @@ import org.lyralis.runeCore.database.repository.WarpPointRepository
 import org.lyralis.runeCore.permission.Permission
 
 /**
- * /warp add - 管理者用のワープ関連追加コマンド（親コマンド）
- */
-@CommandPermission(Permission.Admin.WarpAddPoint::class)
-@Deprecated("課金要素の実装は遠回しになったので，このコマンドは未使用になっています。このコマンドを使用した機能の実装はしないでください")
-class RuneWarpAddCommand(
-    warpPointRepository: WarpPointRepository,
-) : RuneCommand {
-    override val name = "add"
-    override val description = "管理者用のワープポイント関連コマンド"
-
-    override val subcommands: List<RuneCommand> =
-        listOf(
-            RuneWarpAddPointSubCommand(warpPointRepository),
-        )
-
-    override fun execute(context: RuneCommandContext): CommandResult = CommandResult.Failure.InvalidArgument("/warp add point <プレイヤー> <数値>")
-
-    override fun suggest(context: SuggestionContext): List<String> = context.filterStartsWith(listOf("point"))
-}
-
-/**
  * /warp add point <プレイヤー> <数値> - ワープスロットを追加するコマンド
  */
 @CommandPermission(Permission.Admin.WarpAddPoint::class)
-@Deprecated("課金要素の実装は遠回しになったので，このコマンドは未使用になっています。このコマンドを使用した機能の実装はしないでください")
 class RuneWarpAddPointSubCommand(
     private val warpPointRepository: WarpPointRepository,
 ) : RuneCommand {

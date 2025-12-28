@@ -12,7 +12,6 @@ import org.lyralis.runeCore.database.impl.money.MoneyService
 import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.database.model.teleport.TeleportRequest
 import org.lyralis.runeCore.teleport.TeleportRequestManager
-import org.lyralis.runeCore.world.RuneWorldUtils
 
 /**
  * /tpp <プレイヤー> - テレポートリクエストを送信するコマンド

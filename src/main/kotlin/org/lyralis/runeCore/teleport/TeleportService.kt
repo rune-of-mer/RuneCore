@@ -3,7 +3,6 @@ package org.lyralis.runeCore.teleport
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.world.RuneWorldUtils
 import java.util.logging.Logger
 
 /**
