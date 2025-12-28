@@ -114,14 +114,13 @@ class PaginatedGuiBuilder<T> {
                     "x x x x x x x x x",
                     "x x x x x x x x x",
                     "x x x x x x x x x",
-                    "B # < # # # > # #",
+                    "# # < # B # > # #",
                 ).addIngredient('x', xyz.xenondevs.invui.gui.structure.Markers.CONTENT_LIST_SLOT_HORIZONTAL)
                 .addIngredient('#', borderItem)
                 .addIngredient('<', BackwardPageItem())
                 .addIngredient('>', ForwardPageItem())
                 .setContent(items)
 
-        // 戻るボタンの設定
         val backHandler = onBackHandler
         if (backHandler != null) {
             guiBuilder.addIngredient('B', BackButtonItem(backHandler))
