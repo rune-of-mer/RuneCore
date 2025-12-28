@@ -82,8 +82,11 @@ class RuneMenuCommand(
                                 material = Material.PLAYER_HEAD,
                                 lore =
                                     listOf(
-                                        "プレイヤー一覧を開きます",
-                                        "現在 $onlinePlayers/$maxPlayers 人がプレイ中です",
+                                        "",
+                                        "§7プレイヤー一覧を開きます",
+                                        "§7現在 §e$onlinePlayers§7/§e$maxPlayers §7人がプレイ中です",
+                                        "",
+                                        "§aクリックで開く",
                                     ),
                                 command = "playerlist",
                             ),
@@ -93,7 +96,11 @@ class RuneMenuCommand(
                                 material = Material.KNOWLEDGE_BOOK,
                                 lore =
                                     listOf(
-                                        "レベル情報ページを開きます",
+                                        "",
+                                        "§7レベル情報ページを開きます",
+                                        "§7経験値の確認やレベルアップができます",
+                                        "",
+                                        "§aクリックで開く",
                                     ),
                                 command = "level",
                             ),
@@ -101,7 +108,14 @@ class RuneMenuCommand(
                             MenuItemData(
                                 displayName = "ショップ",
                                 material = Material.EMERALD_BLOCK,
-                                lore = listOf("左クリックでショップを開きます"),
+                                lore =
+                                    listOf(
+                                        "",
+                                        "§7様々なアイテムを購入できます",
+                                        "§7お金を使って便利なアイテムを手に入れましょう",
+                                        "",
+                                        "§aクリックで開く",
+                                    ),
                                 command = "shop",
                             ),
                         'S' to
@@ -110,8 +124,11 @@ class RuneMenuCommand(
                                 material = Material.COMPASS,
                                 lore =
                                     listOf(
-                                        "設定を開きます",
-                                        "ボスバーの表示などを切り替えることができます",
+                                        "",
+                                        "§7設定を開きます",
+                                        "§7ボスバーの表示などを切り替えることができます",
+                                        "",
+                                        "§aクリックで開く",
                                     ),
                                 command = "settings",
                             ),
@@ -121,9 +138,14 @@ class RuneMenuCommand(
                                 material = Material.POISONOUS_POTATO,
                                 lore =
                                     listOf(
-                                        "ゴミ箱を開きます",
-                                        "不要なアイテムを売却・処分することができます。",
-                                        "アイテムはルーンと交換されますが、一度捨てたアイテムは帰ってきません",
+                                        "",
+                                        "§7ゴミ箱を開きます",
+                                        "§7不要なアイテムを売却・処分することができます",
+                                        "",
+                                        "§cアイテムはルーンと交換されます",
+                                        "§c一度捨てたアイテムは帰ってきません",
+                                        "",
+                                        "§aクリックで開く",
                                     ),
                                 command = "trash",
                             ),
@@ -133,8 +155,13 @@ class RuneMenuCommand(
                                 material = Material.DARK_OAK_DOOR,
                                 lore =
                                     listOf(
-                                        "サーバーからログアウトします",
-                                        "飛行中や一部コンテンツをプレイしている間はログアウトできません",
+                                        "",
+                                        "§7サーバーからログアウトします",
+                                        "",
+                                        "§c飛行中や一部コンテンツをプレイしている間は",
+                                        "§cログアウトできません",
+                                        "",
+                                        "§aクリックでログアウト",
                                     ),
                                 command = "logout",
                             ),
@@ -142,7 +169,13 @@ class RuneMenuCommand(
                             MenuItemData(
                                 displayName = "累計プレイ時間",
                                 material = Material.CLOCK,
-                                lore = listOf("現在の累計プレイ時間を表示します"),
+                                lore =
+                                    listOf(
+                                        "",
+                                        "§7現在の累計プレイ時間を表示します",
+                                        "",
+                                        "§aクリックで確認",
+                                    ),
                                 command = "playtime",
                             ),
                         'W' to
@@ -151,8 +184,11 @@ class RuneMenuCommand(
                                 material = Material.GRASS_BLOCK,
                                 lore =
                                     listOf(
-                                        "ワールド間テレポートを行います",
-                                        "生活ワールド、資源ワールドなどに移動できます",
+                                        "",
+                                        "§7ワールド間テレポートを行います",
+                                        "§7生活ワールド、資源ワールドなどに移動できます",
+                                        "",
+                                        "§aクリックで開く",
                                     ),
                                 command = "world",
                             ),
@@ -162,8 +198,11 @@ class RuneMenuCommand(
                                 material = Material.ENDER_CHEST,
                                 lore =
                                     listOf(
-                                        "ガチャを開きます",
-                                        "チケットを使用してアイテムを入手できます",
+                                        "",
+                                        "§7ガチャを開きます",
+                                        "§7チケットを使用してアイテムを入手できます",
+                                        "",
+                                        "§aクリックで開く",
                                     ),
                                 command = "gacha",
                             ),
@@ -190,15 +229,16 @@ class RuneMenuCommand(
                         player.getCachedPlayerHead {
                             displayName = player.name
                             lore {
-                                +"レベル: Lv$level (最大Lv${ExperienceCalculator.getMaxLevel()})"
-                                +"総経験値: $experience Exp"
-                                +"所持金: $money Rune"
-                                +"----"
-                                +"UUID: ${player.uniqueId}"
-                                +"Ping値: ${player.ping}ms"
-                                +"現在地: ${player.world.name}"
                                 +""
-                                +"左クリックでプレイヤー情報を開きます"
+                                +"§7レベル: §e$level §7/ §e${ExperienceCalculator.getMaxLevel()}"
+                                +"§7総経験値: §6$experience §7Exp"
+                                +"§7所持金: §6$money §7Rune"
+                                +""
+                                +"§8UUID: §7${player.uniqueId}"
+                                +"§8Ping値: §7${player.ping}ms"
+                                +"§8現在地: §7${player.world.name}"
+                                +""
+                                +"§aクリックでプレイヤー情報を開く"
                             }
                         }
                     onClick { action ->

@@ -43,16 +43,18 @@ class RuneLevelCommand(
         val result =
             if (currentLevel >= maxLevel) {
                 listOf(
-                    "   レベル: $currentLevel/$maxLevel",
-                    "   経験値: $currentExp",
                     "",
-                    "すでに最大レベルに到達しています",
-                    "超過分は上限突破後に引き続きカウントされます",
+                    "§7   レベル: §e$currentLevel §7/ §e$maxLevel",
+                    "§7   経験値: §6$currentExp",
+                    "",
+                    "§6すでに最大レベルに到達しています",
+                    "§7超過分は上限突破後に引き続きカウントされます",
                 )
             } else {
                 listOf(
-                    "   レベル: $currentLevel/$maxLevel",
-                    "   経験値: $currentExp/$nextExp",
+                    "",
+                    "§7   レベル: §e$currentLevel §7/ §e$maxLevel",
+                    "§7   経験値: §6$currentExp §7/ §6$nextExp",
                 )
             }
 
@@ -74,11 +76,15 @@ class RuneLevelCommand(
                     displayName = "お金からレベルアップ"
                     lore =
                         listOf(
-                            "お金を経験値に変換してレベルアップできます",
-                            "このボタンからでは 1000 Rune を経験値に変換します",
-                            "さらに変換するには \"/level convert <変換金額>\" を実行します",
                             "",
-                            "一度に変換できる経験値は10万Expまでです",
+                            "§7お金を経験値に変換してレベルアップできます",
+                            "",
+                            "§eこのボタンからでは §61000 Rune §eを経験値に変換します",
+                            "§7さらに変換するには §b/level convert <変換金額> §7を実行します",
+                            "",
+                            "§c一度に変換できる経験値は10万Expまでです",
+                            "",
+                            "§aクリックで変換",
                         )
                     onClick { action ->
                         if (!action.isLeftClick) {
