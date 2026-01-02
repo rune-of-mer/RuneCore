@@ -29,7 +29,7 @@ jobs:
       run: ./gradlew ktlintCheck --no-daemon
 
     - name: Build with shadowJar
-      run: ./gradlew shadowJar --no-daemon
+      run: ./gradlew shadowJar --parallel --no-daemon
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v6

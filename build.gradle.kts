@@ -81,7 +81,6 @@ dokka {
     dokkaSourceSets {
         named("main") {
             includes.from(project.layout.projectDirectory.file("docs/module.md"))
-            includes.from(project.layout.projectDirectory.file("docs/command.md"))
         }
     }
 }
