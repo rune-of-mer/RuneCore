@@ -510,29 +510,26 @@ class PlayerService(
     }
 
     /**
-     * 指定された UUID のプレイヤーのプレイ時間を追加します．
+     * 指定された UUID のプレイヤーのキルデス比を取得します．
+     *
+     * デス数が0の場合はキル数をそのまま返します．
      *
      * @param uuid プレイヤーの UUID
-     * @param seconds 追加するプレイ時間（秒）
-     * @return 追加に成功した場合は true，失敗した場合は false
+     * @return キルデス比．存在しない場合は null
      */
-    fun addPlayTime(
-        uuid: UUID,
-        seconds: ULong,
-    ): Boolean {
-        val result = statsRepository.addPlayTimes(uuid, seconds)
-        if (result is RepositoryResult.Success) {
-            statsDataCache[uuid]?.let {
-                statsDataCache[uuid] = it.copy(playTimes = it.playTimes + seconds)
+    fun getKillDeathRatio(uuid: UUID): Double? =
+        when (val result = statsRepository.getKillDeathRatio(uuid)) {
+            is RepositoryResult.Success -> result.data
+            is RepositoryResult.NotFound -> {
+                logger.warning("Player stats not found for K/D ratio: $uuid")
+                null
             }
-            return true
+            is RepositoryResult.Error -> {
+                logger.severe("Failed to get K/D ratio: $uuid - ${result.exception.message}")
+                null
+            }
+            else -> null
         }
-
-        if (result is RepositoryResult.Error) {
-            logger.severe("Failed to add play time: $uuid - ${result.exception.message}")
-        }
-        return false
-    }
 
     /**
      * 指定された UUID のプレイヤーデータをキャッシュにロードします．

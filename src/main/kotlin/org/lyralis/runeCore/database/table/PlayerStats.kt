@@ -16,6 +16,5 @@ object PlayerStats : Table("player_stats") {
     val blocksDestroys = uinteger("blocks_destroys").default(0u)
     val blocksPlaces = uinteger("blocks_places").default(0u)
     val loginDays = uinteger("login_days").default(1u)
-    val playTimes = ulong("play_times").default(0u)
     val updatedAt = datetime("updated_at").default(LocalDateTime.now())
 }

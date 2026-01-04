@@ -20,7 +20,6 @@ class StatsRepository {
             blocksDestroys = this[PlayerStats.blocksDestroys],
             blocksPlaces = this[PlayerStats.blocksPlaces],
             loginDays = this[PlayerStats.loginDays],
-            playTimes = this[PlayerStats.playTimes],
             updatedAt = this[PlayerStats.updatedAt],
         )
 
@@ -652,83 +651,6 @@ class StatsRepository {
         }
 
     /**
-     * 指定された UUID のプレイヤーのプレイ時間を取得します．
-     *
-     * @param uuid プレイヤーの UUID
-     * @return データベース操作の結果を示す [RepositoryResult] とプレイ時間
-     */
-    fun getPlayTimes(uuid: UUID): RepositoryResult<ULong> =
-        try {
-            transaction {
-                PlayerStats
-                    .selectAll()
-                    .where { PlayerStats.uuid eq uuid }
-                    .map { it[PlayerStats.playTimes] }
-                    .singleOrNull()
-                    ?.let { RepositoryResult.Success(it) }
-                    ?: RepositoryResult.NotFound("Player stats not found: $uuid")
-            }
-        } catch (e: Exception) {
-            RepositoryResult.Error(e)
-        }
-
-    /**
-     * 指定された UUID のプレイヤーのプレイ時間を設定します．
-     *
-     * @param uuid プレイヤーの UUID
-     * @param amount 設定するプレイ時間
-     * @return データベース操作の結果を示す [RepositoryResult]
-     */
-    fun setPlayTimes(
-        uuid: UUID,
-        amount: ULong,
-    ): RepositoryResult<Unit> =
-        try {
-            transaction {
-                val updated =
-                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
-                        it[playTimes] = amount
-                        it[updatedAt] = LocalDateTime.now()
-                    }
-                if (updated > 0) {
-                    RepositoryResult.Success(Unit)
-                } else {
-                    RepositoryResult.NotFound("Player stats not found: $uuid")
-                }
-            }
-        } catch (e: Exception) {
-            RepositoryResult.Error(e)
-        }
-
-    /**
-     * 指定された UUID のプレイヤーにプレイ時間を追加します．
-     *
-     * @param uuid プレイヤーの UUID
-     * @param amount 追加するプレイ時間
-     * @return データベース操作の結果を示す [RepositoryResult]
-     */
-    fun addPlayTimes(
-        uuid: UUID,
-        amount: ULong,
-    ): RepositoryResult<Unit> =
-        try {
-            transaction {
-                val updated =
-                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
-                        it[playTimes] = playTimes + amount
-                        it[updatedAt] = LocalDateTime.now()
-                    }
-                if (updated > 0) {
-                    RepositoryResult.Success(Unit)
-                } else {
-                    RepositoryResult.NotFound("Player stats not found: $uuid")
-                }
-            }
-        } catch (e: Exception) {
-            RepositoryResult.Error(e)
-        }
-
-    /**
      * 指定された UUID のプレイヤーのキルデス比を計算して取得します．
      *
      * デス数が0の場合はキル数をそのまま返します．
@@ -745,7 +667,7 @@ class StatsRepository {
                     .map { row ->
                         val kills = row[PlayerStats.kills].toDouble()
                         val deaths = row[PlayerStats.deaths].toDouble()
-                        if (deaths == 0.0) kills else kills / deaths
+                        if (deaths == 0.0) kills else (kills / deaths)
                     }.singleOrNull()
                     ?.let { RepositoryResult.Success(it) }
                     ?: RepositoryResult.NotFound("Player stats not found: $uuid")
