@@ -15,6 +15,7 @@
     * [権限を追加する](#権限を追加する)
     * [権限の確認](#権限の確認)
   * [メッセージコンポーネント](#メッセージコンポーネント)
+  * [アクションバー](#アクションバー)
   * [コマンドシステム](#コマンドシステム)
       * [プレイヤー専用のコマンドを実装する](#プレイヤー専用のコマンドを実装する)
       * [権限付きコマンドを実装する](#権限付きコマンドを実装する)
@@ -24,6 +25,10 @@
     * [Tab 補完](#tab-補完)
     * [コマンドの登録](#コマンドの登録)
     * [コマンドの命名規則](#コマンドの命名規則)
+  * [GUI](#gui)
+    * [通常の GUI を生成する](#通常の-gui-を生成する)
+    * [確認ダイアログの GUI を生成する](#確認ダイアログの-gui-を生成する)
+    * [ページネーション付き GUI を生成する](#ページネーション付き-gui-を生成する)
   * [データベース](#データベース)
     * [`runecore_db` について](#runecore_db-について)
     * [データの扱い方](#データの扱い方)
@@ -31,6 +36,7 @@
     * [外部プラグインの導入](#外部プラグインの導入)
   * [付録: コラム](#付録-コラム)
     * [データを扱う際に UUID を使う理由](#データを扱う際に-uuid-を使う理由)
+    * [スコアボードを使用しない理由](#スコアボードを使用しない理由)
   * [付録: タスク索引](#付録-タスク索引)
     * [RuneCore](#runecore)
     * [ktlint (ktlint-gradle)](#ktlint-ktlint-gradle)
@@ -189,7 +195,7 @@ import org.bukkit.entity.*
 ## メッセージコンポーネント
 
 - RuneCore のメッセージには一貫性を持たせるため，Kotlin の [拡張関数](https://kotlinlang.org/docs/extensions.html) と言う機能を使用し，[既存の `String`, `List<String>` クラスに RuneCore 独自のヘルパー関数を追加しています](../src/main/kotlin/org/lyralis/runeCore/component/MessageComponent.kt)．
-- プレイヤー向けに送信するメッセージには適したヘルパー関数を使用してコンポーネントを付与した上で `sendMessage()` や `sendActionBar()` を使用してください．
+- プレイヤー向けに送信するメッセージには適したヘルパー関数を使用してコンポーネントを付与した上で `sendMessage()` や `showTemporaryNotification()` を使用してください．
 
 ```kotlin
 fun String.systemMessage(): Component = Component.text(this).color(SYSTEM_COLOR)
@@ -200,9 +206,24 @@ fun String.errorMessage(): Component = Component.text(this).color(ERROR_COLOR)
 player.sendActionBar("ゲームモードを変更しました: ${player.gameMode}".systemMessage())
 ```
 
+## アクションバー
+
+- RuneCore は所持金などの表示をアクションバーで行っています．
+  - スコアボードを使用しない理由は [こちら](#スコアボードを使用しない理由) を参照ください．
+- Paper API の `sendActionBar()` を使用するとアクションバーのステータス表示に妨害され，正しく表示できません．
+- そのため，アクションバーに通知を送信する場合は [`ActionBarManager` の `showTemporaryNotification()`](../src/main/kotlin/org/lyralis/runeCore/component/actionbar/ActionBarManager.kt) を使用します．
+
+```kotlin
+ActionBarManager.showTemporaryNotification(this, "+$addedExperience EXP".infoMessage())
+```
+
 ## コマンドシステム
 
 - RuneCore は Paper の `LifecycleEventManager` を使用した型安全なコマンドシステムを採用しています．
+- コマンドの実装は `impl/` ディレクトリに配置します．
+- `RuneCommand` を継承します．
+    - Spigot/Paper の `CommandExecutor` は使用しないでください．
+- サブコマンドを伴うコマンドは `impl/` ディレクトリ内にもう1つディレクトリを作成し，その中にまとめてください．
 
 ```
 src/main/kotlin/org/lyralis/runeCore/command/
@@ -219,18 +240,23 @@ src/main/kotlin/org/lyralis/runeCore/command/
     └── ...
 ```
 
-- コマンドの実装は `impl/` ディレクトリに配置します．
-- `RuneCommand` を継承します．
-  - Spigot/Paper の `CommandExecutor` は使用しないでください．
-
 ```kotlin
-class MyCommand : RuneCommand {
-    override val name = "mycommand"
-    override val description = "コマンドの説明"
+@PlayerOnlyCommand
+class RunePlayTimeCommand : RuneCommand {
+    override val name = "playtime"
+    override val description = "現在の累積プレイ時間を表示します"
 
     override fun execute(context: RuneCommandContext): CommandResult {
-        val sender = context.sender
-        return CommandResult.Success("実行しました")
+        val player = context.playerOrThrow
+        // WARN: playerTime (getPlayerTime()) はティック数なので変換が必要 (秒 → 分 → 時間)
+        val playTimeTicks: Long = player.playerTime
+
+        val seconds = playTimeTicks / 20
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val formatted = String.format("%02d時間%02d分%02d秒", hours, minutes, seconds)
+
+        return CommandResult.Success("現在の累積プレイ時間: $formatted")
     }
 }
 ```
@@ -243,15 +269,21 @@ class MyCommand : RuneCommand {
 
 ```kotlin
 @PlayerOnlyCommand
-class PlayerCommand : RuneCommand {
-    override val name = "playeronly"
-    override val description = "プレイヤー専用コマンド"
+class RunePatchNoteCommand : RuneCommand {
+    private val patchNoteURL = ConfigManager.get().plugin.patchNoteURL
+
+    override val name = "patchnote"
+    override val description = "公式サイトのパッチノートページを開く"
+    override val aliases = listOf("update")
 
     override fun execute(context: RuneCommandContext): CommandResult {
-        val player = context.playerOrThrow
-        
-        player.sendMessage("Hello, ${player.name}!")
-        return CommandResult.Silent
+        val result =
+            listOf(
+                patchNoteURL,
+                "(URLをクリックするとブラウザが開きます)",
+            ).joinToString("\n")
+
+        return CommandResult.Success("パッチノートページ: $result")
     }
 }
 ```
@@ -385,6 +417,82 @@ override fun onEnable() {
 - コマンドクラス名: `Rune{機能名}Command`（例: `RuneLogoutCommand`, `RuneInfoCommand`）
 - パッケージ: `org.lyralis.runeCore.command.impl`
 
+## GUI
+
+- RuneCore で GUI を扱うには内部の API を使用します．
+  - invUI の生 API は使用しないでください．
+- GUI の実装は [`src/main/kotlin/org/lyralis/runeCore/gui`](../src/main/kotlin/org/lyralis/runeCore/gui) にまとめてあります．
+  - GUI の生成は [DSL](https://kotlinlang.org/docs/type-safe-builders.html) で記述します．
+  - いずれも `Player` の拡張関数として実装されています．
+- GUI 生成時に使用できる各種プロパティは [API ドキュメント](https://runeofmer-api.lyralis.org) を参照してください．
+
+### 通常の GUI を生成する
+
+- 通常の GUI を生成するには [`Player.openGui()`](https://runeofmer-api.lyralis.org/-rune-core/org.lyralis.runeCore.gui/open-gui.html) を使用します．
+
+```kotlin
+player.openGui {
+    title = "設定メニュー"
+    rows = 3
+
+    structure {
+        +"# # # # # # # # #"
+        +"# A . B . C . D #"
+        +"# # # # # # # # #"
+    }
+
+    decoration('#', Material.BLACK_STAINED_GLASS_PANE)
+
+    item('A') {
+        material = Material.DIAMOND_SWORD
+        displayName = "戦闘設定"
+        onClick { action ->
+            GuiResult.Success(Unit)
+        }
+    }
+}
+```
+
+### 確認ダイアログの GUI を生成する
+
+- 確認ダイアログの GUI を生成するには [`Player.showConfirmation()`](https://runeofmer-api.lyralis.org/-rune-core/org.lyralis.runeCore.gui.template/show-confirmation.html) を使用します．
+- [`result`](https://runeofmer-api.lyralis.org/-rune-core/org.lyralis.runeCore.gui.result/-confirmation-result/index.html) でそれぞれの結果の振る舞いを記述します．
+
+```kotlin
+player.showConfirmation {
+    title = "削除確認"
+    message = "本当に削除しますか？"
+
+    onResult { result ->
+        when (result) {
+            ConfirmationResult.Confirmed -> deleteItem()
+            ConfirmationResult.Denied -> {}
+            ConfirmationResult.Cancelled -> {}
+        }
+    }
+}
+```
+
+### ページネーション付き GUI を生成する
+
+- ページネーション付き GUI を生成するには [`Player.showPaginatedGui()`](https://runeofmer-api.lyralis.org/-rune-core/org.lyralis.runeCore.gui.template/show-paginated-gui.html) を使用します．
+
+```kotlin
+player.showPaginatedGui<CustomItem> {
+    title = "アイテム一覧"
+
+    items(ItemRegistry.getAllItems())
+
+    render { item ->
+        item.createItemStack()
+    }
+
+    onItemClick { item, action ->
+        GuiResult.Success(Unit)
+    }
+}
+```
+
 ## データベース
 
 RuneCore ではデータベースに MariaDB を採用しています．
@@ -407,7 +515,6 @@ RuneCore 内部で使用している `runecore_db` は以下のテーブルを�
   - SQL 文での直接操作は避けます．
 - データベース操作の結果 (成功か失敗か) を表現するための sealed class が各 Repository に実装されているため，データベース操作は基本的に `when` を使い，エラー時の振る舞いも書く必要があります．
   - イメージ的には Rust の `match` 文を使った `Result<T, E>` の処理と似ています．
-
 
 ```kotlin
 when (val result = playerRepository.existsByUUID(uuid)) {
@@ -493,6 +600,12 @@ https://github.com/EssentialsX/Essentials/releases/download/2.21.2/EssentialsX-2
 - 幸運にもプレイヤーには **重複しないこと，衝突しないこと，不変であること** が約束されている ID として UUID が存在しているため，データベースなどでは UUID を主キーとして扱うべきです．
 - RuneCore ではプレイヤーデータに MCID を含めていないのは MCID が信用できるものではないからです．
   - Paper API から都度取得した方が信頼できます．
+
+### スコアボードを使用しない理由
+
+- 他のマルチサーバではお金などの情報表示にスコアボードを使うのを見かけます．
+- 私はスコアボードの表示は画面サイズが小さい環境でプレイしているプレイヤーの視覚的な情報を少なくしてしまうと考えています．
+- そのため， RuneCore ではスコアボードの使用を避けています．
 
 ## 付録: タスク索引
 
