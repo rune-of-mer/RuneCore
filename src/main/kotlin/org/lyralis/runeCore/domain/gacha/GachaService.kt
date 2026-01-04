@@ -152,7 +152,7 @@ class GachaService(
         val allItems = customItems + vanillaItems
 
         if (allItems.isEmpty()) {
-            logger.warning("ガチャイベント '$eventId' に排出アイテムがありません")
+            logger.warning("Gacha event '$eventId' has no items available")
             return GachaResult(emptyList(), false, 0u)
         }
 
@@ -261,7 +261,7 @@ class GachaService(
         defaultEvents.forEach { event ->
             if (getEventById(event.id) == null) {
                 upsertEvent(event)
-                logger.info("デフォルトガチャイベント '${event.id}' を作成しました")
+                logger.info("Created default gacha event '${event.id}'")
             }
         }
     }
