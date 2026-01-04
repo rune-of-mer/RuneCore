@@ -90,7 +90,28 @@ class CommandRegistry(
             literal.then(
                 Commands
                     .argument("args", StringArgumentType.greedyString())
-                    .executes { ctx ->
+                    .suggests { ctx, builder ->
+                        val input = ctx.input
+                        val parts = input.removePrefix("/").split(" ")
+                        val commandDepth = countCommandDepth(runeCommand, parts)
+                        val args = parts.drop(commandDepth)
+                        val currentArg = args.lastOrNull() ?: ""
+
+                        val suggestionContext =
+                            SuggestionContext(
+                                source = ctx.source,
+                                input = input,
+                                args = args,
+                                currentArg = currentArg,
+                            )
+
+                        val suggestions = runeCommand.suggest(suggestionContext)
+                        suggestions.forEach { suggestion ->
+                            builder.suggest(suggestion)
+                        }
+
+                        builder.buildFuture()
+                    }.executes { ctx ->
                         executeCommand(runeCommand, ctx)
                     },
             )

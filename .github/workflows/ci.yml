@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 on:
   push:
@@ -11,6 +11,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
 
     steps:
     - name: Checkout repository
@@ -27,6 +31,18 @@ jobs:
 
     - name: Check ktlint
       run: ./gradlew ktlintCheck --no-daemon
+
+    - name: Run tests
+      run: ./gradlew test --no-daemon
+      continue-on-error: true
+
+    - name: Post test results to PR
+      if: github.event_name == 'pull_request' && always()
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_REF: ${{ github.ref }}
+      run: .github/scripts/post-test-results.sh
 
     - name: Build with shadowJar
       run: ./gradlew shadowJar --parallel --no-daemon
