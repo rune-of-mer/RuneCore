@@ -76,3 +76,8 @@ Use extension functions from `MessageComponent.kt` for consistent styling: `"tex
 - No wildcard imports
 - Commit messages: Conventional Commits in English, no gitmoji
 - Run `./gradlew ktlintFormat` before commits
+
+## Message and Logger
+
+- Player messages are displayed in Japanese
+- Console logs are displayed in English
