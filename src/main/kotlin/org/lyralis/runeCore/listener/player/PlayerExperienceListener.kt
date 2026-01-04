@@ -13,14 +13,14 @@ import org.bukkit.event.entity.EntityDeathEvent
 import org.lyralis.runeCore.component.actionbar.ActionBarManager
 import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.experience.ExperienceService
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.model.experience.MobExperience
-import org.lyralis.runeCore.database.model.experience.OreExperience
-import org.lyralis.runeCore.database.model.experience.PvPExperience
-import org.lyralis.runeCore.database.model.money.MobMoney
-import org.lyralis.runeCore.database.model.money.OreMoney
-import org.lyralis.runeCore.database.model.money.PvPMoney
+import org.lyralis.runeCore.domain.experience.ExperienceService
+import org.lyralis.runeCore.domain.experience.MobExperience
+import org.lyralis.runeCore.domain.experience.OreExperience
+import org.lyralis.runeCore.domain.experience.PvPExperience
+import org.lyralis.runeCore.domain.money.MobMoney
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.money.OreMoney
+import org.lyralis.runeCore.domain.money.PvPMoney
 
 /**
  * プレイヤーの各行動に対して経験値・お金を付与するリスナー
@@ -29,13 +29,11 @@ class PlayerExperienceListener(
     private val experienceService: ExperienceService,
     private val moneyService: MoneyService,
 ) : Listener {
-    // モブ殺害時・PvP時の経験値獲得
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onMobKill(event: EntityDeathEvent) {
         val killer = event.entity.killer ?: return
         val victim = event.entity
 
-        // PvP 時
         if (victim is Player) {
             val killerLevel = experienceService.getLevel(killer.uniqueId)
             val victimLevel = experienceService.getLevel(victim.uniqueId)
@@ -58,7 +56,6 @@ class PlayerExperienceListener(
             return
         }
 
-        // モブ殺害時
         val expAmount = MobExperience.getExperience(victim.type)
         val moneyAmount = MobMoney.getMoney(victim.type)
         if (expAmount == 0uL || moneyAmount == 0uL) return

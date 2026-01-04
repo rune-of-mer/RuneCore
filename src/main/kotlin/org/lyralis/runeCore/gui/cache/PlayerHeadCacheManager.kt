@@ -18,13 +18,11 @@ object PlayerHeadCacheManager {
      * @return プレイヤーの頭の ItemStack
      */
     fun getOrCreatePlayerHead(playerId: UUID): ItemStack {
-        // キャッシュから取得を試みる
         val cached = headCache[playerId]
         if (cached != null && !cached.isExpired()) {
-            return cached.itemStack.clone() // ItemStack は可変なので clone を返す
+            return cached.itemStack.clone()
         }
 
-        // キャッシュミスまたは期限切れの場合は新規作成
         val newHead = createPlayerHead(playerId)
         headCache[playerId] = CachedPlayerHead(newHead.clone())
         return newHead

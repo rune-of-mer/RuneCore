@@ -14,7 +14,7 @@ import org.bukkit.plugin.Plugin
 import org.lyralis.runeCore.command.impl.TRASH_INV_NAME
 import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
+import org.lyralis.runeCore.domain.money.MoneyService
 import org.lyralis.runeCore.gui.result.ConfirmationResult
 import org.lyralis.runeCore.gui.template.showConfirmation
 import org.lyralis.runeCore.item.ItemRegistry
@@ -102,7 +102,6 @@ class TrashInventoryListener(
                                 player.sendMessage("売却をキャンセルしました。アイテムは全てインベントリへ返却しました".systemMessage())
                             }
                             ConfirmationResult.Cancelled -> {
-                                // 確認ダイアログを閉じた場合は何もしない（インベントリは既に閉じられている）
                             }
                         }
                     }
@@ -121,7 +120,6 @@ class TrashInventoryListener(
     ) {
         items.forEach { item ->
             val leftover = player.inventory.addItem(item)
-            // インベントリに入らなかった分は足元にドロップ
             leftover.values.forEach { excess ->
                 player.world.dropItemNaturally(player.location, excess)
             }

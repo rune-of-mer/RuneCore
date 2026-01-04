@@ -7,14 +7,11 @@ import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.config.model.TeleportConfig
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.database.repository.WarpPointRepository
-import org.lyralis.runeCore.teleport.TeleportService
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
+import org.lyralis.runeCore.domain.teleport.TeleportService
 
-/**
- * /warp - ワープポイントを管理する親コマンド
- */
 @PlayerOnlyCommand
 class RuneWarpCommand(
     warpPointRepository: WarpPointRepository,

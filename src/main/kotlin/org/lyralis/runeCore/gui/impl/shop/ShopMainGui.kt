@@ -3,8 +3,8 @@ package org.lyralis.runeCore.gui.impl.shop
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.lyralis.runeCore.component.message.infoMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.model.shop.ShopCategory
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.shop.ShopCategory
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult

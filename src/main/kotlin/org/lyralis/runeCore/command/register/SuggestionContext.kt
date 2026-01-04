@@ -15,6 +15,5 @@ data class SuggestionContext(
     val player: Player?
         get() = sender as? Player
 
-    // 現在の入力でフィルタリングするヘルパー
     fun filterStartsWith(candidates: List<String>): List<String> = candidates.filter { it.startsWith(currentArg, ignoreCase = true) }
 }

@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.lyralis.runeCore.database.impl.gacha.GachaRewardItem
-import org.lyralis.runeCore.database.impl.gacha.GachaService
+import org.lyralis.runeCore.domain.gacha.GachaRewardItem
+import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
@@ -58,7 +58,6 @@ class GachaItemListGui(
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
             decoration('.', Material.AIR)
 
-            // アイテムを配置（最初の45スロット）
             val slots =
                 listOf(
                     '0',
@@ -108,7 +107,6 @@ class GachaItemListGui(
                     'L',
                 )
 
-            // 構造を再定義（アイテム用）
             structure {
                 +"0 1 2 3 4 5 6 7 8"
                 +"a b c d e f g h i"
@@ -126,12 +124,10 @@ class GachaItemListGui(
                 }
             }
 
-            // 空きスロットを装飾
             for (index in pageItems.size until slots.size) {
                 decoration(slots[index], Material.LIGHT_GRAY_STAINED_GLASS_PANE)
             }
 
-            // ページ情報
             item('I') {
                 customItem =
                     Material.PAPER.asGuiItem {
@@ -143,7 +139,6 @@ class GachaItemListGui(
                     }
             }
 
-            // 前のページ
             item('<') {
                 customItem =
                     (if (currentPage > 0) Material.ARROW else Material.GRAY_DYE).asGuiItem {
@@ -157,7 +152,6 @@ class GachaItemListGui(
                 }
             }
 
-            // 次のページ
             item('>') {
                 customItem =
                     (if (currentPage < totalPages - 1) Material.ARROW else Material.GRAY_DYE).asGuiItem {
@@ -171,7 +165,6 @@ class GachaItemListGui(
                 }
             }
 
-            // 戻るボタン
             item('B') {
                 customItem =
                     Material.DARK_OAK_DOOR.asGuiItem {

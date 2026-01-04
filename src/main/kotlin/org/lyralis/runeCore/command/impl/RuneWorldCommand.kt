@@ -11,19 +11,13 @@ import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.config.model.WorldConfig
-import org.lyralis.runeCore.database.impl.money.MoneyService
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportResult
+import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
-import org.lyralis.runeCore.teleport.TeleportResult
-import org.lyralis.runeCore.teleport.TeleportService
 
-/**
- * /world コマンド - ワールド間テレポートを行うコマンド
- *
- * - `/world` - ワールド選択GUIを開く
- * - `/world <ワールド名>` - 指定したワールドへテレポート（確認GUI表示）
- */
 @PlayerOnlyCommand
 class RuneWorldCommand(
     private val worldConfig: WorldConfig,
@@ -167,7 +161,6 @@ class RuneWorldCommand(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // 情報表示
             item('I') {
                 customItem =
                     worldEntry.icon.asGuiItem {
@@ -231,7 +224,6 @@ class RuneWorldCommand(
                 }
             }
 
-            // キャンセルボタン
             item('D') {
                 customItem =
                     Material.RED_WOOL.asGuiItem {

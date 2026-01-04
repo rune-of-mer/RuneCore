@@ -5,14 +5,14 @@ import org.bukkit.entity.Player
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.model.teleport.TeleportRequest
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportRequest
+import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
+import org.lyralis.runeCore.domain.teleport.TeleportResult
+import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
-import org.lyralis.runeCore.teleport.TeleportRequestManager
-import org.lyralis.runeCore.teleport.TeleportResult
-import org.lyralis.runeCore.teleport.TeleportService
 
 /**
  * テレポートリクエスト確認GUI。
@@ -46,7 +46,6 @@ class TeleportConfirmGui(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // 情報表示
             item('I') {
                 customItem =
                     Material.PAPER.asGuiItem {
@@ -60,7 +59,6 @@ class TeleportConfirmGui(
                     }
             }
 
-            // 承認ボタン
             item('C') {
                 customItem =
                     Material.LIME_WOOL.asGuiItem {
@@ -84,7 +82,6 @@ class TeleportConfirmGui(
                         return@onClick GuiResult.Silent
                     }
 
-                    // リクエスト送信者を承認者の位置へテレポート
                     when (
                         val result =
                             teleportService.executeTeleport(
@@ -114,7 +111,6 @@ class TeleportConfirmGui(
                 }
             }
 
-            // 却下ボタン
             item('D') {
                 customItem =
                     Material.RED_WOOL.asGuiItem {

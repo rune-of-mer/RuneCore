@@ -6,7 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.gacha.GachaService
+import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
@@ -46,7 +46,6 @@ class GachaDetailGui(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // ガチャ情報
             item('I') {
                 customItem =
                     Material.ENDER_CHEST.asGuiItem {
@@ -64,7 +63,6 @@ class GachaDetailGui(
                     }
             }
 
-            // 排出アイテム一覧ボタン
             item('L') {
                 customItem =
                     Material.BOOK.asGuiItem {
@@ -83,7 +81,6 @@ class GachaDetailGui(
                 }
             }
 
-            // 1回ガチャボタン
             item('1') {
                 customItem =
                     (if (canPull1) Material.GOLD_INGOT else Material.IRON_INGOT).asGuiItem {
@@ -105,7 +102,6 @@ class GachaDetailGui(
                 }
             }
 
-            // 10連ガチャボタン
             item('X') {
                 customItem =
                     (if (canPull10) Material.GOLD_BLOCK else Material.IRON_BLOCK).asGuiItem {
@@ -127,7 +123,6 @@ class GachaDetailGui(
                 }
             }
 
-            // 戻るボタン
             item('B') {
                 customItem =
                     Material.ARROW.asGuiItem {
@@ -152,13 +147,11 @@ class GachaDetailGui(
         val event = gachaService.getEventById(eventId) ?: return
         val requiredTickets = event.ticketCost.toInt() * pullCount
 
-        // チケット消費
         if (!gachaService.consumeTickets(player.inventory.contents, requiredTickets)) {
             player.sendMessage("チケットの消費に失敗しました".errorMessage())
             return
         }
 
-        // ガチャを引く
         val result = gachaService.pullGacha(player.uniqueId, eventId, pullCount)
 
         if (result.items.isEmpty()) {
@@ -170,7 +163,6 @@ class GachaDetailGui(
             player.sendMessage("§6§l★天井達成！★ §e高レアリティアイテムが確定しました！".systemMessage())
         }
 
-        // 結果GUIを開く（次のティックで）
         val plugin = Bukkit.getPluginManager().getPlugin("RuneCore") as? JavaPlugin
         if (plugin != null) {
             Bukkit.getScheduler().runTask(

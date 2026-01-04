@@ -127,7 +127,6 @@ class GuiBuilder {
                 windowBuilder.addCloseHandler { handler(player) }
             }
 
-            // GUI を開く際にサウンドを再生
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
 
             windowBuilder.build().open()

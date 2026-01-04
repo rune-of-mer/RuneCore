@@ -7,21 +7,11 @@ import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
-import org.lyralis.runeCore.database.impl.settings.SettingsService
-import org.lyralis.runeCore.database.model.PlayerSettingKey
+import org.lyralis.runeCore.domain.player.PlayerSettingKey
+import org.lyralis.runeCore.domain.settings.SettingsService
 import org.lyralis.runeCore.gui.impl.settings.SettingsGui
 import org.lyralis.runeCore.gui.toCommandResult
 
-/**
- * /settings コマンドを定義するクラス
- *
- * 引数なし: 設定GUIを開く
- * 引数あり: 指定した設定を切り替え
- *
- * 使用例:
- * - /settings - GUIを開く
- * - /settings bossbar - ボスバー表示を切り替え
- */
 @PlayerOnlyCommand
 class RuneSettingsCommand(
     private val settingsService: SettingsService,

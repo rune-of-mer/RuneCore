@@ -35,7 +35,6 @@ class ClickableItem(
     private inner class ClickableInvUiItem : AbstractItem() {
         override fun getItemProvider(): ItemProvider =
             ItemProvider {
-                // customItem が設定されている場合はそれを使用
                 customItem?.clone() ?: org.bukkit.inventory.ItemStack(material, amount).apply {
                     editMeta { meta ->
                         meta.displayName(Component.text(displayName))

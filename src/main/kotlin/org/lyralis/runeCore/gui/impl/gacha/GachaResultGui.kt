@@ -5,8 +5,8 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import org.lyralis.runeCore.database.impl.gacha.GachaResult
-import org.lyralis.runeCore.database.impl.gacha.GachaService
+import org.lyralis.runeCore.domain.gacha.GachaResult
+import org.lyralis.runeCore.domain.gacha.GachaService
 
 /**
  * ガチャ結果を表示するインベントリ名のプレフィックス
@@ -34,7 +34,6 @@ class GachaResultGui(
         val event = gachaService.getEventById(eventId)
         val eventName = event?.displayName ?: "ガチャ"
 
-        // インベントリサイズを決定（9の倍数）
         val size =
             when {
                 result.items.size <= 9 -> 9
@@ -50,7 +49,6 @@ class GachaResultGui(
                 Component.text("$GACHA_RESULT_INV_PREFIX - $eventName", NamedTextColor.GOLD),
             )
 
-        // アイテムを配置
         result.items.forEachIndexed { index, rewardItem ->
             if (index < size) {
                 inventory.setItem(index, rewardItem.toItemStack())

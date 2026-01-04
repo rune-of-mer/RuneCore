@@ -5,8 +5,8 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.infoMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.model.shop.ShopItem
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.shop.ShopItem
 import org.lyralis.runeCore.gui.result.GuiResult
 import org.lyralis.runeCore.gui.template.showPaginatedGui
 import org.lyralis.runeCore.item.ItemRegistry
@@ -59,7 +59,6 @@ class ShopSearchGui(
         val canAfford = balance >= shopItem.price
         val canAfford64 = balance >= shopItem.price * 64uL
 
-        // カスタムアイテムの場合は ItemRegistry から取得
         val customItemId = shopItem.customItemId
         val baseItem =
             if (customItemId != null) {
@@ -77,7 +76,6 @@ class ShopSearchGui(
 
                 val loreList = mutableListOf<Component>()
 
-                // アイテムの説明を追加
                 if (shopItem.description.isNotEmpty()) {
                     shopItem.description.forEach { line ->
                         loreList.add(Component.text("§7$line"))

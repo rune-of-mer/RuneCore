@@ -8,9 +8,6 @@ import org.lyralis.runeCore.config.model.TeleportConfig
 import org.lyralis.runeCore.database.repository.RepositoryResult
 import org.lyralis.runeCore.database.repository.WarpPointRepository
 
-/**
- * /warp create <拠点名> - 現在地をワープポイントとして登録するコマンド
- */
 @PlayerOnlyCommand
 class RuneWarpCreateCommand(
     private val warpPointRepository: WarpPointRepository,

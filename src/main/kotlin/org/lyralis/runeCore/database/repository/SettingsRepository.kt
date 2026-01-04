@@ -4,9 +4,9 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import org.lyralis.runeCore.database.model.PlayerSettingKey
-import org.lyralis.runeCore.database.model.PlayerSettingsData
 import org.lyralis.runeCore.database.table.PlayerSettings
+import org.lyralis.runeCore.domain.player.PlayerSettingKey
+import org.lyralis.runeCore.domain.player.PlayerSettingsData
 import java.time.LocalDateTime
 import java.util.UUID
 

@@ -2,7 +2,7 @@ package org.lyralis.runeCore.gui.impl.gacha
 
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.lyralis.runeCore.database.impl.gacha.GachaService
+import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
@@ -33,7 +33,6 @@ class GachaListGui(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // チケット情報
             item('I') {
                 customItem =
                     Material.PAPER.asGuiItem {

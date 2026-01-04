@@ -6,11 +6,6 @@ import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.config.ConfigManager
 
-/**
- * /patchnote コマンドを定義するクラス
- *
- * コマンドの詳細は Dokka 上の [org.lyralis.runeCore.command] で確認可能
- */
 @PlayerOnlyCommand
 class RunePatchNoteCommand : RuneCommand {
     private val patchNoteURL = ConfigManager.get().plugin.patchNoteURL
@@ -19,12 +14,6 @@ class RunePatchNoteCommand : RuneCommand {
     override val description = "公式サイトのパッチノートページを開く"
     override val aliases = listOf("update")
 
-    /**
-     * パッチノートコマンドを実行する．
-     *
-     * @param context コマンドのコンテキスト情報
-     * @return コマンドの実行結果
-     */
     override fun execute(context: RuneCommandContext): CommandResult {
         val result =
             listOf(

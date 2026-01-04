@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.Plugin
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.infoMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.model.shop.ShopItemRegistry
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.shop.ShopItemRegistry
 import org.lyralis.runeCore.gui.impl.shop.ShopMainGui
 import org.lyralis.runeCore.gui.impl.shop.ShopSearchGui
 import org.lyralis.runeCore.gui.impl.shop.ShopSearchManager

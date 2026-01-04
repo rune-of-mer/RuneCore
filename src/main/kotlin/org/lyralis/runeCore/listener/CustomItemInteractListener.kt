@@ -21,7 +21,6 @@ class CustomItemInteractListener : Listener {
 
         val customItem = ItemRegistry.getFromItemStack(item) ?: return
 
-        // Usable でない場合は処理しない
         if (customItem !is CustomItemType.Usable) return
 
         val action =

@@ -7,22 +7,11 @@ import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.component.message.systemMessage
 
-/**
- * /dice コマンドを定義するクラス
- *
- * コマンドの詳細は Dokka 上の [org.lyralis.runeCore.command] で確認可能．
- */
 @PlayerOnlyCommand
 class RuneDiceCommand : RuneCommand {
     override val name = "dice"
     override val description = "0~999の数字の1つをランダムに抽選しチャットに送信する"
 
-    /**
-     * ダイスコマンドを実行する．
-     *
-     * @param context コマンドのコンテキスト情報
-     * @return コマンドの実行結果
-     */
     override fun execute(context: RuneCommandContext): CommandResult {
         val maxNumberStr = context.arg(0, "999")
         val isBroadcastStr = context.arg(1, "true")
