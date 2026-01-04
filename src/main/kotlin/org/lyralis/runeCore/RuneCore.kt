@@ -135,7 +135,7 @@ class RuneCore : JavaPlugin() {
             .register(RuneMenuCommand(experienceService, moneyService))
             .register(RunePatchNoteCommand())
             .register(RunePayCommand(moneyService))
-            .register(RunePlayerInfoCommand(experienceService, moneyService))
+            .register(RunePlayerInfoCommand(playerService))
             .register(RunePlayerListCommand(playerService))
             .register(RunePlayTimeCommand())
             .register(RuneSettingsCommand(settingsService, experienceBossBarProvider))
@@ -164,7 +164,7 @@ class RuneCore : JavaPlugin() {
             .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
-        server.pluginManager.registerEvents(PlayerExperienceListener(experienceService, moneyService), this)
+        server.pluginManager.registerEvents(PlayerExperienceListener(playerService, experienceService, moneyService), this)
         server.pluginManager.registerEvents(PlayerLoginListener(playerService, logger), this)
         server.pluginManager.registerEvents(
             PlayerPresenceListener(experienceService, moneyService, settingsService, experienceBossBarProvider),
