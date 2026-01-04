@@ -5,11 +5,11 @@ import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.config.model.TeleportConfig
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.database.repository.WarpPointRepository
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
+import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.impl.teleport.WarpPointListGui
-import org.lyralis.runeCore.teleport.TeleportService
 
 /**
  * /warp list - ワープポイント一覧をGUIで表示するコマンド

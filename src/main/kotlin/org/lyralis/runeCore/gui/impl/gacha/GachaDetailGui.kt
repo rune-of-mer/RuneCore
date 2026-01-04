@@ -6,7 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.gacha.GachaService
+import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult

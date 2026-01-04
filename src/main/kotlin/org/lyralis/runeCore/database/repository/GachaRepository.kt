@@ -6,10 +6,10 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import org.lyralis.runeCore.database.model.gacha.GachaEventData
-import org.lyralis.runeCore.database.model.gacha.PlayerGachaPityData
 import org.lyralis.runeCore.database.table.GachaEvents
 import org.lyralis.runeCore.database.table.PlayerGachaPity
+import org.lyralis.runeCore.domain.gacha.GachaEventData
+import org.lyralis.runeCore.domain.gacha.PlayerGachaPityData
 import java.time.LocalDateTime
 import java.util.UUID
 

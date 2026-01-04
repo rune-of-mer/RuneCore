@@ -9,9 +9,9 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import org.lyralis.runeCore.database.model.teleport.WarpPointData
 import org.lyralis.runeCore.database.table.WarpPoints
 import org.lyralis.runeCore.database.table.WarpSlots
+import org.lyralis.runeCore.domain.teleport.WarpPointData
 import java.time.LocalDateTime
 import java.util.UUID
 

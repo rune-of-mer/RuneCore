@@ -5,7 +5,7 @@ import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
-import org.lyralis.runeCore.database.impl.gacha.GachaService
+import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.gui.impl.gacha.GachaDetailGui
 import org.lyralis.runeCore.gui.impl.gacha.GachaListGui
 import org.lyralis.runeCore.gui.toCommandResult

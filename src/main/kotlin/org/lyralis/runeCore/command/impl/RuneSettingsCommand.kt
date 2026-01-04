@@ -7,8 +7,8 @@ import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
-import org.lyralis.runeCore.database.impl.settings.SettingsService
-import org.lyralis.runeCore.database.model.PlayerSettingKey
+import org.lyralis.runeCore.domain.player.PlayerSettingKey
+import org.lyralis.runeCore.domain.settings.SettingsService
 import org.lyralis.runeCore.gui.impl.settings.SettingsGui
 import org.lyralis.runeCore.gui.toCommandResult
 

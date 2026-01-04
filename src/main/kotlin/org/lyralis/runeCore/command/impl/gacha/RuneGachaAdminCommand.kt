@@ -5,8 +5,8 @@ import org.lyralis.runeCore.command.annotation.CommandPermission
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
-import org.lyralis.runeCore.database.impl.gacha.GachaService
-import org.lyralis.runeCore.database.model.gacha.GachaEventData
+import org.lyralis.runeCore.domain.gacha.GachaEventData
+import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.permission.Permission
 
 @CommandPermission(Permission.Admin.GachaAdminCommand::class)

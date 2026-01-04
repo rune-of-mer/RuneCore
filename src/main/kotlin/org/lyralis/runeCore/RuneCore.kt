@@ -30,16 +30,18 @@ import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
 import org.lyralis.runeCore.config.ConfigManager
 import org.lyralis.runeCore.database.DatabaseManager
-import org.lyralis.runeCore.database.impl.experience.ExperienceService
-import org.lyralis.runeCore.database.impl.gacha.GachaService
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.impl.settings.SettingsService
-import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.database.repository.GachaRepository
 import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.database.repository.SettingsRepository
 import org.lyralis.runeCore.database.repository.StatsRepository
 import org.lyralis.runeCore.database.repository.WarpPointRepository
+import org.lyralis.runeCore.domain.experience.ExperienceService
+import org.lyralis.runeCore.domain.gacha.GachaService
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.settings.SettingsService
+import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
+import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
+import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheCleanupTask
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
 import org.lyralis.runeCore.gui.impl.shop.ShopMainGui
@@ -53,8 +55,6 @@ import org.lyralis.runeCore.listener.player.PlayerExperienceListener
 import org.lyralis.runeCore.listener.player.PlayerLoginListener
 import org.lyralis.runeCore.listener.player.PlayerPresenceListener
 import org.lyralis.runeCore.listener.player.PlayerWorldTeleportListener
-import org.lyralis.runeCore.teleport.TeleportRequestManager
-import org.lyralis.runeCore.teleport.TeleportService
 import xyz.xenondevs.invui.InvUI
 
 class RuneCore : JavaPlugin() {

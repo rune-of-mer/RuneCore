@@ -4,8 +4,8 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
-import org.lyralis.runeCore.database.impl.experience.ExperienceCalculator
 import org.lyralis.runeCore.database.repository.PlayerRepository
+import org.lyralis.runeCore.domain.experience.ExperienceCalculator
 import org.lyralis.runeCore.gui.getCachedPlayerHead
 import org.lyralis.runeCore.gui.template.showPaginatedGui
 import org.lyralis.runeCore.gui.toCommandResult

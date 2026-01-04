@@ -9,16 +9,16 @@ import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
-import org.lyralis.runeCore.database.model.teleport.WarpPointData
 import org.lyralis.runeCore.database.repository.RepositoryResult
 import org.lyralis.runeCore.database.repository.WarpPointRepository
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
+import org.lyralis.runeCore.domain.teleport.TeleportResult
+import org.lyralis.runeCore.domain.teleport.TeleportService
+import org.lyralis.runeCore.domain.teleport.WarpPointData
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
-import org.lyralis.runeCore.teleport.TeleportResult
-import org.lyralis.runeCore.teleport.TeleportService
 
 /**
  * /warp go <拠点名> - 指定したワープポイントへテレポートするコマンド

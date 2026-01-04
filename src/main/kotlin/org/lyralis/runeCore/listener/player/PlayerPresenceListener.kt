@@ -16,9 +16,9 @@ import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.component.message.systemMessage
 import org.lyralis.runeCore.config.ConfigManager
-import org.lyralis.runeCore.database.impl.experience.ExperienceService
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.impl.settings.SettingsService
+import org.lyralis.runeCore.domain.experience.ExperienceService
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.settings.SettingsService
 import org.lyralis.runeCore.gui.cache.PlayerHeadCacheManager
 
 class PlayerPresenceListener(

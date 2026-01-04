@@ -8,10 +8,10 @@ import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.impl.teleport.TeleportCostCalculator
-import org.lyralis.runeCore.database.model.teleport.TeleportRequest
-import org.lyralis.runeCore.teleport.TeleportRequestManager
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
+import org.lyralis.runeCore.domain.teleport.TeleportRequest
+import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
 
 /**
  * /tpp <プレイヤー> - テレポートリクエストを送信するコマンド

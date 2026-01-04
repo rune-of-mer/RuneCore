@@ -6,7 +6,7 @@ import org.lyralis.runeCore.command.annotation.CommandPermission
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
-import org.lyralis.runeCore.database.impl.experience.ExperienceService
+import org.lyralis.runeCore.domain.experience.ExperienceService
 import org.lyralis.runeCore.permission.Permission
 
 @PlayerOnlyCommand

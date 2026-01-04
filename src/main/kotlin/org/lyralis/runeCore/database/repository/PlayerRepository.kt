@@ -7,10 +7,10 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import org.lyralis.runeCore.database.model.PlayerData
 import org.lyralis.runeCore.database.table.PlayerSettings
 import org.lyralis.runeCore.database.table.PlayerStats
 import org.lyralis.runeCore.database.table.Players
+import org.lyralis.runeCore.domain.player.PlayerData
 import java.time.LocalDateTime
 import java.util.UUID
 

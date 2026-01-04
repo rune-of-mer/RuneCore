@@ -4,11 +4,11 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
-import org.lyralis.runeCore.database.impl.money.MoneyService
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
+import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.impl.teleport.TeleportConfirmGui
 import org.lyralis.runeCore.gui.impl.teleport.TeleportRequestSelectGui
-import org.lyralis.runeCore.teleport.TeleportRequestManager
-import org.lyralis.runeCore.teleport.TeleportService
 
 /**
  * /tpa - テレポートリクエストを承認するコマンド

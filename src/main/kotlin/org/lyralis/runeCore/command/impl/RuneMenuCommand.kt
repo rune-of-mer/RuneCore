@@ -6,9 +6,9 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
-import org.lyralis.runeCore.database.impl.experience.ExperienceCalculator
-import org.lyralis.runeCore.database.impl.experience.ExperienceService
-import org.lyralis.runeCore.database.impl.money.MoneyService
+import org.lyralis.runeCore.domain.experience.ExperienceCalculator
+import org.lyralis.runeCore.domain.experience.ExperienceService
+import org.lyralis.runeCore.domain.money.MoneyService
 import org.lyralis.runeCore.gui.getCachedPlayerHead
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult

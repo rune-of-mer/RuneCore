@@ -14,7 +14,7 @@ import org.bukkit.plugin.Plugin
 import org.lyralis.runeCore.command.impl.TRASH_INV_NAME
 import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.impl.money.MoneyService
+import org.lyralis.runeCore.domain.money.MoneyService
 import org.lyralis.runeCore.gui.result.ConfirmationResult
 import org.lyralis.runeCore.gui.template.showConfirmation
 import org.lyralis.runeCore.item.ItemRegistry

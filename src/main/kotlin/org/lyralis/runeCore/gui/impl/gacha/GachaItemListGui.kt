@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.lyralis.runeCore.database.impl.gacha.GachaRewardItem
-import org.lyralis.runeCore.database.impl.gacha.GachaService
+import org.lyralis.runeCore.domain.gacha.GachaRewardItem
+import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult

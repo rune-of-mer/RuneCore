@@ -2,13 +2,13 @@ package org.lyralis.runeCore.gui.impl.teleport
 
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.lyralis.runeCore.database.impl.money.MoneyService
-import org.lyralis.runeCore.database.model.teleport.TeleportRequest
+import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.teleport.TeleportRequest
+import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
+import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.getCachedPlayerHead
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
-import org.lyralis.runeCore.teleport.TeleportRequestManager
-import org.lyralis.runeCore.teleport.TeleportService
 
 /**
  * 複数のテレポートリクエストから選択するGUI。

@@ -4,8 +4,8 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.component.bossbar.ExperienceBossBarProvider
-import org.lyralis.runeCore.database.impl.settings.SettingsService
-import org.lyralis.runeCore.database.model.PlayerSettingKey
+import org.lyralis.runeCore.domain.player.PlayerSettingKey
+import org.lyralis.runeCore.domain.settings.SettingsService
 import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
