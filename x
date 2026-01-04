@@ -10,6 +10,7 @@ Usage: ./x <command>
 
 Commands:
     start      Build with gradlew and start docker compose
+    start-db   Start MariaDB container
     restart    Restart minecraft container
     stop       Stop docker compose
     clean      Stop docker compose and remove volumes
@@ -25,6 +26,9 @@ case "${1:-}" in
         ./gradlew shadowJar
         ./docker/download-plugins.sh
         $DOCKER_COMPOSE up
+        ;;
+    start-db)
+        $DOCKER_COMPOSE up mariadb
         ;;
     restart)
         $DOCKER_COMPOSE restart minecraft

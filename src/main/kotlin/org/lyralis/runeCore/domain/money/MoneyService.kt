@@ -1,43 +1,21 @@
 package org.lyralis.runeCore.domain.money
 
 import org.bukkit.entity.Player
-import org.lyralis.runeCore.database.repository.PlayerRepository
-import org.lyralis.runeCore.database.repository.RepositoryResult
+import org.lyralis.runeCore.domain.player.PlayerService
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Logger
 
 class MoneyService(
-    private val playerRepository: PlayerRepository,
+    private val playerService: PlayerService,
     private val logger: Logger,
 ) {
-    private val balanceCache = ConcurrentHashMap<UUID, ULong>()
-
     /**
      * 指定したプレイヤーの所持金を取得します．
      *
      * @param uuid プレイヤーの UUID
      * @return 所持金
      */
-    fun getBalance(uuid: UUID): ULong {
-        balanceCache[uuid]?.let { return it }
-
-        return when (val result = playerRepository.getBalance(uuid)) {
-            is RepositoryResult.Success -> {
-                balanceCache[uuid] = result.data
-                result.data
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("No balance found for $uuid")
-                0uL
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("An error occurred while fetching balance for $uuid: ${result.exception.message}")
-                0uL
-            }
-            else -> 0uL
-        }
-    }
+    fun getBalance(uuid: UUID): ULong = playerService.getBalance(uuid)
 
     /**
      * 指定したプレイヤーに所持金を追加します．
@@ -53,24 +31,13 @@ class MoneyService(
         if (amount == 0uL) return null
 
         val uuid = player.uniqueId
-        val currentBalance = getBalance(uuid)
-        val newBalance = currentBalance + amount
 
-        return when (val result = playerRepository.addBalance(uuid, amount)) {
-            is RepositoryResult.Success -> {
-                balanceCache[uuid] = newBalance
-                newBalance
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("Player not found for ${player.name}")
-                null
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to add balance to ${player.name}: ${result.exception.message}")
-                null
-            }
-            else -> null
+        if (!playerService.addBalance(uuid, amount)) {
+            logger.warning("Failed to add balance to ${player.name}")
+            return null
         }
+
+        return playerService.getBalance(uuid)
     }
 
     /**
@@ -87,32 +54,18 @@ class MoneyService(
         if (amount == 0uL) return null
 
         val uuid = player.uniqueId
-        val currentBalance = getBalance(uuid)
+        val currentBalance = playerService.getBalance(uuid)
 
         if (currentBalance < amount) {
             return null
         }
 
-        val newBalance = currentBalance - amount
-
-        return when (val result = playerRepository.subtractBalance(uuid, amount)) {
-            is RepositoryResult.Success -> {
-                balanceCache[uuid] = newBalance
-                newBalance
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("Player not found for ${player.name}")
-                null
-            }
-            is RepositoryResult.InsufficientBalance -> {
-                logger.info("Insufficient balance for ${player.name}: current=${result.current}, required=${result.required}")
-                null
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to subtract balance from ${player.name}: ${result.exception.message}")
-                null
-            }
+        if (!playerService.subtractBalance(uuid, amount)) {
+            logger.warning("Failed to subtract balance from ${player.name}")
+            return null
         }
+
+        return playerService.getBalance(uuid)
     }
 
     /**
@@ -128,21 +81,12 @@ class MoneyService(
     ): ULong? {
         val uuid = player.uniqueId
 
-        return when (val result = playerRepository.setBalance(uuid, amount)) {
-            is RepositoryResult.Success -> {
-                balanceCache[uuid] = amount
-                amount
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("Player not found for ${player.name}")
-                null
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to set balance for ${player.name}: ${result.exception.message}")
-                null
-            }
-            else -> null
+        if (!playerService.setBalance(uuid, amount)) {
+            logger.warning("Failed to set balance for ${player.name}")
+            return null
         }
+
+        return amount
     }
 
     /**
@@ -165,32 +109,15 @@ class MoneyService(
 
         if (fromUuid == toUuid) return null
 
-        val currentFromBalance = getBalance(fromUuid)
-        val currentToBalance = getBalance(toUuid)
-
-        return when (val result = playerRepository.transferBalance(fromUuid, toUuid, amount)) {
-            is RepositoryResult.Success -> {
-                val newFromBalance = currentFromBalance - amount
-                val newToBalance = currentToBalance + amount
-
-                balanceCache[fromUuid] = newFromBalance
-                balanceCache[toUuid] = newToBalance
-
-                Pair(newFromBalance, newToBalance)
-            }
-            is RepositoryResult.InsufficientBalance -> {
-                logger.info("Insufficient balance for ${from.name}: current=${result.current}, required=${result.required}")
-                null
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("Player not found during transfer: ${from.name} -> ${to.name}")
-                null
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to transfer balance: ${result.exception.message}")
-                null
-            }
+        if (!playerService.transferBalance(fromUuid, toUuid, amount)) {
+            logger.warning("Failed to transfer balance: ${from.name} -> ${to.name}")
+            return null
         }
+
+        return Pair(
+            playerService.getBalance(fromUuid),
+            playerService.getBalance(toUuid),
+        )
     }
 
     /**
@@ -198,39 +125,17 @@ class MoneyService(
      *
      * @param uuid UUID
      */
-    fun loadBalance(uuid: UUID) {
-        when (val result = playerRepository.getBalance(uuid)) {
-            is RepositoryResult.Success -> {
-                balanceCache[uuid] = result.data
-                logger.info("Loaded balance for $uuid: ${result.data}")
-            }
-            is RepositoryResult.NotFound -> {
-                logger.info("Balance not found for $uuid, will use default")
-                balanceCache[uuid] = 0uL
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to load balance for $uuid: ${result.exception.message}")
-                balanceCache[uuid] = 0uL
-            }
-            else -> {
-                balanceCache[uuid] = 0uL
-            }
-        }
-    }
+    fun loadBalance(uuid: UUID) = playerService.loadPlayerData(uuid)
 
     /**
      * キャッシュを初期化します．
      *
      * @param uuid UUID
      */
-    fun clearCache(uuid: UUID) {
-        balanceCache.remove(uuid)
-    }
+    fun clearCache(uuid: UUID) = playerService.clearCache(uuid)
 
     /**
      * 全てのキャッシュを初期化します．
      */
-    fun clearAllCache() {
-        balanceCache.clear()
-    }
+    fun clearAllCache() = playerService.clearAllCache()
 }

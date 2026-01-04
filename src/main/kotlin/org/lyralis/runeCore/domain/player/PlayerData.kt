@@ -10,6 +10,7 @@ import java.util.UUID
  * @param level プレイヤーのレベル
  * @param experience プレイヤーの経験値
  * @param balance プレイヤーの所持金
+ * @param lastLoginAt 最終ログイン日時
  * @param createdAt データの作成日時
  * @param updatedAt データの更新日時
  */
@@ -18,6 +19,7 @@ data class PlayerData(
     val level: UInt = 1u,
     val experience: ULong = 0uL,
     val balance: ULong = 0uL,
+    val lastLoginAt: LocalDateTime? = null,
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null,
 )

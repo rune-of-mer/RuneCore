@@ -13,5 +13,8 @@ object PlayerStats : Table("player_stats") {
     val kills = uinteger("kills").default(0u)
     val mobKills = uinteger("mob_kills").default(0u)
     val deaths = uinteger("deaths").default(0u)
+    val blocksDestroys = uinteger("blocks_destroys").default(0u)
+    val blocksPlaces = uinteger("blocks_places").default(0u)
+    val loginDays = uinteger("login_days").default(1u)
     val updatedAt = datetime("updated_at").default(LocalDateTime.now())
 }

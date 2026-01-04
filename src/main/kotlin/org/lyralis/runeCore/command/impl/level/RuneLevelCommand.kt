@@ -32,7 +32,7 @@ class RuneLevelCommand(
 
         val currentLevel = experienceService.getLevel(player.uniqueId)
         val currentExp = experienceService.getExperience(player.uniqueId)
-        val nextExp = ExperienceCalculator.getExperienceForNextLevel(currentLevel)
+        val nextExp = ExperienceCalculator.getExperienceForLevel(currentLevel + 1u)
         val maxLevel = ExperienceCalculator.getMaxLevel()
 
         val result =

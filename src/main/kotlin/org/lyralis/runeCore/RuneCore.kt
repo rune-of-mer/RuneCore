@@ -38,6 +38,7 @@ import org.lyralis.runeCore.database.repository.WarpPointRepository
 import org.lyralis.runeCore.domain.experience.ExperienceService
 import org.lyralis.runeCore.domain.gacha.GachaService
 import org.lyralis.runeCore.domain.money.MoneyService
+import org.lyralis.runeCore.domain.player.PlayerService
 import org.lyralis.runeCore.domain.settings.SettingsService
 import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
@@ -62,6 +63,7 @@ class RuneCore : JavaPlugin() {
     private lateinit var playerRepository: PlayerRepository
     private lateinit var statsRepository: StatsRepository
     private lateinit var settingsRepository: SettingsRepository
+    private lateinit var playerService: PlayerService
     private lateinit var experienceService: ExperienceService
     private lateinit var moneyService: MoneyService
     private lateinit var settingsService: SettingsService
@@ -99,8 +101,10 @@ class RuneCore : JavaPlugin() {
         playerRepository = PlayerRepository()
         statsRepository = StatsRepository()
         settingsRepository = SettingsRepository()
-        experienceService = ExperienceService(playerRepository, logger)
-        moneyService = MoneyService(playerRepository, logger)
+
+        playerService = PlayerService(playerRepository, statsRepository, logger)
+        experienceService = ExperienceService(playerService, logger)
+        moneyService = MoneyService(playerService, logger)
         settingsService = SettingsService(settingsRepository, logger)
         experienceBossBarProvider =
             ExperienceBossBarProvider(
@@ -131,8 +135,8 @@ class RuneCore : JavaPlugin() {
             .register(RuneMenuCommand(experienceService, moneyService))
             .register(RunePatchNoteCommand())
             .register(RunePayCommand(moneyService))
-            .register(RunePlayerInfoCommand(experienceService, moneyService))
-            .register(RunePlayerListCommand(playerRepository))
+            .register(RunePlayerInfoCommand(playerService))
+            .register(RunePlayerListCommand(playerService))
             .register(RunePlayTimeCommand())
             .register(RuneSettingsCommand(settingsService, experienceBossBarProvider))
             .register(RuneShopCommand(shopMainGui))
@@ -160,8 +164,8 @@ class RuneCore : JavaPlugin() {
             .registerAll(lifecycleManager)
 
         server.pluginManager.registerEvents(CustomItemInteractListener(), this)
-        server.pluginManager.registerEvents(PlayerExperienceListener(experienceService, moneyService), this)
-        server.pluginManager.registerEvents(PlayerLoginListener(playerRepository, logger), this)
+        server.pluginManager.registerEvents(PlayerExperienceListener(playerService, experienceService, moneyService), this)
+        server.pluginManager.registerEvents(PlayerLoginListener(playerService, logger), this)
         server.pluginManager.registerEvents(
             PlayerPresenceListener(experienceService, moneyService, settingsService, experienceBossBarProvider),
             this,
@@ -190,10 +194,9 @@ class RuneCore : JavaPlugin() {
         }
 
         BossBarManager.shutdown()
-        experienceService.clearAllCache()
-
         ActionBarManager.shutdown()
-        moneyService.clearAllCache()
+
+        playerService.clearAllCache()
         settingsService.clearAllCache()
 
         PlayerHeadCacheManager.clearAllCache()

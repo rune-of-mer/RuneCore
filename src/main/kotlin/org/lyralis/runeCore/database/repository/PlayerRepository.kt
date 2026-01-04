@@ -21,6 +21,7 @@ class PlayerRepository {
             level = this[Players.level],
             experience = this[Players.experience],
             balance = this[Players.balance],
+            lastLoginAt = this[Players.lastLoginAt],
             createdAt = this[Players.createdAt],
             updatedAt = this[Players.updatedAt],
         )
@@ -381,6 +382,39 @@ class PlayerRepository {
                 }
 
                 RepositoryResult.Success(Unit)
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    fun getLastLoginAt(uuid: UUID): RepositoryResult<LocalDateTime?> =
+        try {
+            transaction {
+                Players
+                    .selectAll()
+                    .where { Players.uuid eq uuid }
+                    .map { it[Players.lastLoginAt] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player $uuid not found")
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    fun updateLastLoginAt(uuid: UUID): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    Players.update({ Players.uuid eq uuid }) {
+                        it[lastLoginAt] = LocalDateTime.now()
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player not found: $uuid")
+                }
             }
         } catch (e: Exception) {
             RepositoryResult.Error(e)

@@ -4,15 +4,15 @@ import org.lyralis.runeCore.command.RuneCommand
 import org.lyralis.runeCore.command.annotation.PlayerOnlyCommand
 import org.lyralis.runeCore.command.register.CommandResult
 import org.lyralis.runeCore.command.register.RuneCommandContext
-import org.lyralis.runeCore.database.repository.PlayerRepository
 import org.lyralis.runeCore.domain.experience.ExperienceCalculator
+import org.lyralis.runeCore.domain.player.PlayerService
 import org.lyralis.runeCore.gui.getCachedPlayerHead
 import org.lyralis.runeCore.gui.template.showPaginatedGui
 import org.lyralis.runeCore.gui.toCommandResult
 
 @PlayerOnlyCommand
 class RunePlayerListCommand(
-    private val playerRepository: PlayerRepository,
+    private val playerService: PlayerService,
 ) : RuneCommand {
     override val name = "playerlist"
     override val description = "サーバーに接続しているプレイヤーの一覧を表示します"
@@ -34,7 +34,7 @@ class RunePlayerListCommand(
                 items(onlinePlayers)
 
                 render { player ->
-                    val level = playerRepository.getLevel(player.uniqueId)
+                    val level = playerService.getLevel(player.uniqueId)
                     player.getCachedPlayerHead {
                         displayName = player.name
                         lore {
