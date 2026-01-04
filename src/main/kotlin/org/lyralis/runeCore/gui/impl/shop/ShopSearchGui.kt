@@ -59,7 +59,6 @@ class ShopSearchGui(
         val canAfford = balance >= shopItem.price
         val canAfford64 = balance >= shopItem.price * 64uL
 
-        // カスタムアイテムの場合は ItemRegistry から取得
         val customItemId = shopItem.customItemId
         val baseItem =
             if (customItemId != null) {
@@ -77,7 +76,6 @@ class ShopSearchGui(
 
                 val loreList = mutableListOf<Component>()
 
-                // アイテムの説明を追加
                 if (shopItem.description.isNotEmpty()) {
                     shopItem.description.forEach { line ->
                         loreList.add(Component.text("§7$line"))

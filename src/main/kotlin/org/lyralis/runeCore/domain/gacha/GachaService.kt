@@ -144,7 +144,6 @@ class GachaService(
     ): GachaResult {
         val event = getEventById(eventId) ?: return GachaResult(emptyList(), false, 0u)
 
-        // カスタムアイテム（イベント専用）とバニラアイテムを取得
         val customItems =
             ItemRegistry.getGachaItemsByEventId(eventId).map {
                 GachaRewardItem.Custom(it)
@@ -164,20 +163,16 @@ class GachaService(
             (1..pullCount).map { pullIndex ->
                 val pullNumber = currentPity + pullIndex.toUInt()
 
-                // 天井チェック
                 if (pullNumber >= event.pityThreshold) {
                     pityTriggered = true
-                    // 天井時は高レアリティを確定
                     selectHighRarityItem(allItems)
                 } else {
                     selectRandomItem(allItems)
                 }
             }
 
-        // 天井カウントを更新
         val newPityCount =
             if (pityTriggered) {
-                // 天井達成でリセット
                 gachaRepository.resetPlayerPity(playerUuid, eventId)
                 0u
             } else {
@@ -213,7 +208,6 @@ class GachaService(
      * 高レアリティアイテムを選択（天井用）
      */
     private fun selectHighRarityItem(items: List<GachaRewardItem>): GachaRewardItem {
-        // EPIC以上を優先
         val highRarityItems =
             items.filter {
                 it.rarity == ItemRarity.LEGENDARY ||
@@ -223,7 +217,6 @@ class GachaService(
         return if (highRarityItems.isNotEmpty()) {
             highRarityItems.random()
         } else {
-            // 高レアリティがなければRAREを選択
             val rareItems = items.filter { it.rarity == ItemRarity.RARE }
             rareItems.randomOrNull() ?: items.random()
         }

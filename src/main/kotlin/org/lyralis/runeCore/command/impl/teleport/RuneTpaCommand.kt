@@ -10,9 +10,6 @@ import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.impl.teleport.TeleportConfirmGui
 import org.lyralis.runeCore.gui.impl.teleport.TeleportRequestSelectGui
 
-/**
- * /tpa - テレポートリクエストを承認するコマンド
- */
 @PlayerOnlyCommand
 class RuneTpaCommand(
     private val requestManager: TeleportRequestManager,

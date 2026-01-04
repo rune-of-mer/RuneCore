@@ -29,13 +29,11 @@ class PlayerExperienceListener(
     private val experienceService: ExperienceService,
     private val moneyService: MoneyService,
 ) : Listener {
-    // モブ殺害時・PvP時の経験値獲得
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onMobKill(event: EntityDeathEvent) {
         val killer = event.entity.killer ?: return
         val victim = event.entity
 
-        // PvP 時
         if (victim is Player) {
             val killerLevel = experienceService.getLevel(killer.uniqueId)
             val victimLevel = experienceService.getLevel(victim.uniqueId)
@@ -58,7 +56,6 @@ class PlayerExperienceListener(
             return
         }
 
-        // モブ殺害時
         val expAmount = MobExperience.getExperience(victim.type)
         val moneyAmount = MobMoney.getMoney(victim.type)
         if (expAmount == 0uL || moneyAmount == 0uL) return

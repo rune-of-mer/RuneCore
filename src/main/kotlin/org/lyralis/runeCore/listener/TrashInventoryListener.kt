@@ -102,7 +102,6 @@ class TrashInventoryListener(
                                 player.sendMessage("売却をキャンセルしました。アイテムは全てインベントリへ返却しました".systemMessage())
                             }
                             ConfirmationResult.Cancelled -> {
-                                // 確認ダイアログを閉じた場合は何もしない（インベントリは既に閉じられている）
                             }
                         }
                     }
@@ -121,7 +120,6 @@ class TrashInventoryListener(
     ) {
         items.forEach { item ->
             val leftover = player.inventory.addItem(item)
-            // インベントリに入らなかった分は足元にドロップ
             leftover.values.forEach { excess ->
                 player.world.dropItemNaturally(player.location, excess)
             }

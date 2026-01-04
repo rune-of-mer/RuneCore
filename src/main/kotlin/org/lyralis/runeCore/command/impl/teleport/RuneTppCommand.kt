@@ -13,9 +13,6 @@ import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.domain.teleport.TeleportRequest
 import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
 
-/**
- * /tpp <プレイヤー> - テレポートリクエストを送信するコマンド
- */
 @PlayerOnlyCommand
 class RuneTppCommand(
     private val requestManager: TeleportRequestManager,
@@ -41,8 +38,6 @@ class RuneTppCommand(
         }
 
         val cost = costCalculator.calculateCost(player.location, target.location)
-
-        // 所持金チェック
         val balance = moneyService.getBalance(player.uniqueId)
         if (balance < cost) {
             return CommandResult.Failure.Custom(

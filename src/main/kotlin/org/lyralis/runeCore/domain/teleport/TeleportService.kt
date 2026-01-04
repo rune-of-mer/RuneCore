@@ -62,24 +62,20 @@ class TeleportService(
         destination: Location,
         cost: ULong,
     ): TeleportResult {
-        // 料金が0の場合は無料でテレポート
         if (cost == 0uL) {
             player.teleport(destination)
             return TeleportResult.Success(moneyService.getBalance(player.uniqueId))
         }
 
-        // 所持金チェック
         val balance = moneyService.getBalance(player.uniqueId)
         if (balance < cost) {
             return TeleportResult.InsufficientBalance(balance, cost)
         }
 
-        // 所持金を差し引き
         val newBalance =
             moneyService.subtractBalance(player, cost)
                 ?: return TeleportResult.TransactionFailed
 
-        // テレポート実行
         player.teleport(destination)
 
         logger.fine(

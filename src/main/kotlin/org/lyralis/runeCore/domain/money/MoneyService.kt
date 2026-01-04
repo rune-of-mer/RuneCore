@@ -170,7 +170,6 @@ class MoneyService(
 
         return when (val result = playerRepository.transferBalance(fromUuid, toUuid, amount)) {
             is RepositoryResult.Success -> {
-                // トランザクション成功後にキャッシュを更新
                 val newFromBalance = currentFromBalance - amount
                 val newToBalance = currentToBalance + amount
 

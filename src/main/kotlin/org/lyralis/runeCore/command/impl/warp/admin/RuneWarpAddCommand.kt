@@ -8,9 +8,6 @@ import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.database.repository.WarpPointRepository
 import org.lyralis.runeCore.permission.Permission
 
-/**
- * /warp add - 管理者用のワープ関連追加コマンド（親コマンド）
- */
 @CommandPermission(Permission.Admin.WarpAddPoint::class)
 class RuneWarpAddCommand(
     warpPointRepository: WarpPointRepository,

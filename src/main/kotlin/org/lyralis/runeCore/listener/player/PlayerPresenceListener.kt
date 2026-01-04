@@ -57,7 +57,6 @@ class PlayerPresenceListener(
             }
         }
 
-        // 初見時の処理
         if (!player.hasPlayedBefore()) {
             // TODO: チュートリアルの処理を入れる?
             event.joinMessage(Component.text("初参加の ${player.name} がログインしました! ようこそ!").color(NamedTextColor.LIGHT_PURPLE))

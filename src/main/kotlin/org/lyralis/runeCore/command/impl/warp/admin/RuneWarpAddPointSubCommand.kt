@@ -10,9 +10,6 @@ import org.lyralis.runeCore.database.repository.RepositoryResult
 import org.lyralis.runeCore.database.repository.WarpPointRepository
 import org.lyralis.runeCore.permission.Permission
 
-/**
- * /warp add point <プレイヤー> <数値> - ワープスロットを追加するコマンド
- */
 @CommandPermission(Permission.Admin.WarpAddPoint::class)
 class RuneWarpAddPointSubCommand(
     private val warpPointRepository: WarpPointRepository,

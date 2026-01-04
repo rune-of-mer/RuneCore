@@ -13,11 +13,6 @@ import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 import org.lyralis.runeCore.gui.toCommandResult
 
-/**
- * /level コマンドを定義するクラス
- *
- * コマンドの詳細は Dokka 上の [org.lyralis.runeCore.command] で確認可能．
- */
 @PlayerOnlyCommand
 class RuneLevelCommand(
     moneyService: MoneyService,

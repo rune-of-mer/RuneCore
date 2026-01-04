@@ -46,7 +46,6 @@ class TeleportConfirmGui(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // 情報表示
             item('I') {
                 customItem =
                     Material.PAPER.asGuiItem {
@@ -60,7 +59,6 @@ class TeleportConfirmGui(
                     }
             }
 
-            // 承認ボタン
             item('C') {
                 customItem =
                     Material.LIME_WOOL.asGuiItem {
@@ -84,7 +82,6 @@ class TeleportConfirmGui(
                         return@onClick GuiResult.Silent
                     }
 
-                    // リクエスト送信者を承認者の位置へテレポート
                     when (
                         val result =
                             teleportService.executeTeleport(
@@ -114,7 +111,6 @@ class TeleportConfirmGui(
                 }
             }
 
-            // 却下ボタン
             item('D') {
                 customItem =
                     Material.RED_WOOL.asGuiItem {

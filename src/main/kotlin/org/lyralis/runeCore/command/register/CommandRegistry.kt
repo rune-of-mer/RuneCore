@@ -128,7 +128,6 @@ class CommandRegistry(
         val input = ctx.input
         val parts = input.removePrefix("/").split(" ")
 
-        // サブコマンドの深さを計算して適切な位置から引数を取得
         val commandDepth = countCommandDepth(runeCommand, parts)
         val args = parts.drop(commandDepth).toTypedArray()
 
@@ -157,10 +156,7 @@ class CommandRegistry(
         runeCommand: RuneCommand,
         parts: List<String>,
     ): Int {
-        // 最低でもルートコマンド分の 1
         var depth = 1
-
-        // parts の中でサブコマンド名と一致するものをカウント
         var currentSubcommands = runeCommand.subcommands
         for (i in 1 until parts.size) {
             val matchingSubcommand = currentSubcommands.find { it.name == parts[i] }

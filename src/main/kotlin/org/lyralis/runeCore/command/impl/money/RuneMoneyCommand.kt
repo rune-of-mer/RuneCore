@@ -10,11 +10,6 @@ import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.domain.money.MoneyService
 import org.lyralis.runeCore.permission.Permission
 
-/**
- * /money コマンドを定義するクラス
- *
- * コマンドの詳細は Dokka 上の [org.lyralis.runeCore.command] で確認可能．
- */
 @PlayerOnlyCommand
 @CommandPermission(Permission.Admin.MoneyCommand::class)
 class RuneMoneyCommand(

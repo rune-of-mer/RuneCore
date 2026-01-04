@@ -76,7 +76,6 @@ class RuneCore : JavaPlugin() {
     private lateinit var gachaService: GachaService
 
     override fun onEnable() {
-        // InvUI のプラグインインスタンスを設定（Paper 1.20.5+ で必要）
         InvUI.getInstance().setPlugin(this)
 
         saveDefaultConfig()
@@ -110,14 +109,12 @@ class RuneCore : JavaPlugin() {
             )
         shopMainGui = ShopMainGui(moneyService)
 
-        // テレポートシステムの初期化
         warpPointRepository = WarpPointRepository()
         teleportCostCalculator = TeleportCostCalculator(config.teleport.costs)
         teleportService = TeleportService(moneyService, logger)
         teleportRequestManager = TeleportRequestManager(this, config.teleport.requestTimeoutSeconds)
         teleportRequestManager.start()
 
-        // ガチャシステムの初期化
         gachaRepository = GachaRepository()
         gachaService = GachaService(gachaRepository, logger)
         gachaService.initializeDefaultEvents()
@@ -140,7 +137,6 @@ class RuneCore : JavaPlugin() {
             .register(RuneSettingsCommand(settingsService, experienceBossBarProvider))
             .register(RuneShopCommand(shopMainGui))
             .register(RuneTrashCommand())
-            // テレポートコマンド
             .register(RuneTppCommand(teleportRequestManager, teleportCostCalculator, moneyService))
             .register(RuneTpaCommand(teleportRequestManager, teleportService, moneyService))
             .register(RuneTpcCommand(teleportRequestManager))
@@ -152,18 +148,14 @@ class RuneCore : JavaPlugin() {
                     moneyService,
                     config.teleport,
                 ),
-            )
-            // ワールドテレポートコマンド
-            .register(
+            ).register(
                 RuneWorldCommand(
                     config.world,
                     teleportService,
                     moneyService,
                     config.teleport.costs.crossWorldBaseCost,
                 ),
-            )
-            // ガチャコマンド
-            .register(RuneGachaCommand(gachaService))
+            ).register(RuneGachaCommand(gachaService))
             .register(RuneGachaAdminCommand(gachaService))
             .registerAll(lifecycleManager)
 
@@ -189,7 +181,6 @@ class RuneCore : JavaPlugin() {
     }
 
     override fun onDisable() {
-        // テレポートリクエストマネージャーを停止
         if (::teleportRequestManager.isInitialized) {
             teleportRequestManager.stop()
         }

@@ -8,9 +8,6 @@ import org.lyralis.runeCore.command.register.SuggestionContext
 import org.lyralis.runeCore.database.repository.RepositoryResult
 import org.lyralis.runeCore.database.repository.WarpPointRepository
 
-/**
- * /warp delete <拠点名> - ワープポイントを削除するコマンド
- */
 @PlayerOnlyCommand
 class RuneWarpDeleteCommand(
     private val warpPointRepository: WarpPointRepository,

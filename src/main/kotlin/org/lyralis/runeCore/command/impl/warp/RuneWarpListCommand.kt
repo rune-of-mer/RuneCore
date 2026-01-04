@@ -11,9 +11,6 @@ import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.domain.teleport.TeleportService
 import org.lyralis.runeCore.gui.impl.teleport.WarpPointListGui
 
-/**
- * /warp list - ワープポイント一覧をGUIで表示するコマンド
- */
 @PlayerOnlyCommand
 class RuneWarpListCommand(
     private val warpPointRepository: WarpPointRepository,

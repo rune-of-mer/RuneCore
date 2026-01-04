@@ -52,7 +52,6 @@ class TeleportRequestManager(
      */
     fun addRequest(request: TeleportRequest): Boolean {
         val list = pendingRequests.getOrPut(request.targetId) { mutableListOf() }
-        // 同一送信者からの既存リクエストを削除
         list.removeIf { it.requesterId == request.requesterId }
         list.add(request)
         return true

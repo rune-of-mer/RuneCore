@@ -18,12 +18,6 @@ import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 
-/**
- * /world コマンド - ワールド間テレポートを行うコマンド
- *
- * - `/world` - ワールド選択GUIを開く
- * - `/world <ワールド名>` - 指定したワールドへテレポート（確認GUI表示）
- */
 @PlayerOnlyCommand
 class RuneWorldCommand(
     private val worldConfig: WorldConfig,
@@ -167,7 +161,6 @@ class RuneWorldCommand(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // 情報表示
             item('I') {
                 customItem =
                     worldEntry.icon.asGuiItem {
@@ -231,7 +224,6 @@ class RuneWorldCommand(
                 }
             }
 
-            // キャンセルボタン
             item('D') {
                 customItem =
                     Material.RED_WOOL.asGuiItem {

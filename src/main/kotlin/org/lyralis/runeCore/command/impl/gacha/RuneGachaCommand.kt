@@ -10,12 +10,6 @@ import org.lyralis.runeCore.gui.impl.gacha.GachaDetailGui
 import org.lyralis.runeCore.gui.impl.gacha.GachaListGui
 import org.lyralis.runeCore.gui.toCommandResult
 
-/**
- * /gacha コマンド - ガチャGUIを開く
- *
- * - `/gacha` - ガチャ一覧GUIを開く
- * - `/gacha <event_id>` - 指定したガチャの詳細GUIを直接開く
- */
 @PlayerOnlyCommand
 class RuneGachaCommand(
     private val gachaService: GachaService,

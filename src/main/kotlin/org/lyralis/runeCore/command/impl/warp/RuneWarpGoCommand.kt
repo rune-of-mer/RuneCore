@@ -20,9 +20,6 @@ import org.lyralis.runeCore.gui.asGuiItem
 import org.lyralis.runeCore.gui.openGui
 import org.lyralis.runeCore.gui.result.GuiResult
 
-/**
- * /warp go <拠点名> - 指定したワープポイントへテレポートするコマンド
- */
 @PlayerOnlyCommand
 class RuneWarpGoCommand(
     private val warpPointRepository: WarpPointRepository,
@@ -39,7 +36,6 @@ class RuneWarpGoCommand(
             context.args.getOrNull(1)
                 ?: return CommandResult.Failure.InvalidArgument("/warp go <拠点名>")
 
-        // ワープポイント取得
         val warpPoint =
             when (val result = warpPointRepository.findByOwnerAndName(player.uniqueId, warpName)) {
                 is RepositoryResult.Success -> result.data
@@ -49,15 +45,11 @@ class RuneWarpGoCommand(
                 else -> return CommandResult.Failure.ExecutionFailed("ワープポイントの取得に失敗しました")
             }
 
-        // 位置取得
         val location =
             warpPoint.toLocation(player.server)
                 ?: return CommandResult.Failure.Custom("ワールド '${warpPoint.worldName}' が見つかりません")
 
-        // 料金計算
         val cost = costCalculator.calculateCost(player.location, location)
-
-        // 確認GUI表示
         showWarpConfirmation(player, warpPoint, cost)
 
         return CommandResult.Silent
@@ -83,7 +75,6 @@ class RuneWarpGoCommand(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // 情報表示
             item('I') {
                 customItem =
                     Material.ENDER_PEARL.asGuiItem {
@@ -101,7 +92,6 @@ class RuneWarpGoCommand(
                     }
             }
 
-            // テレポートボタン
             item('C') {
                 customItem =
                     Material.LIME_WOOL.asGuiItem {
@@ -145,7 +135,6 @@ class RuneWarpGoCommand(
                 }
             }
 
-            // キャンセルボタン
             item('D') {
                 customItem =
                     Material.RED_WOOL.asGuiItem {

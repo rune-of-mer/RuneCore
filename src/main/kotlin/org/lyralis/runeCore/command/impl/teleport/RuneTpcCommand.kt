@@ -7,9 +7,6 @@ import org.lyralis.runeCore.command.register.RuneCommandContext
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.domain.teleport.TeleportRequestManager
 
-/**
- * /tpc - テレポートリクエストを却下するコマンド
- */
 @PlayerOnlyCommand
 class RuneTpcCommand(
     private val requestManager: TeleportRequestManager,

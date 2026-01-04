@@ -11,11 +11,6 @@ import org.lyralis.runeCore.gui.result.ConfirmationResult
 import org.lyralis.runeCore.gui.template.showConfirmation
 import org.lyralis.runeCore.gui.toCommandResult
 
-/**
- * /logout コマンドを定義するクラス
- *
- * コマンドの詳細は Dokka 上の [org.lyralis.runeCore.command] で確認可能．
- */
 @PlayerOnlyCommand
 class RuneLogoutCommand : RuneCommand {
     private val config = ConfigManager.get()
@@ -23,12 +18,6 @@ class RuneLogoutCommand : RuneCommand {
     override val name = "logout"
     override val description = "サーバーからログアウトします"
 
-    /**
-     * ログアウトコマンドを実行する．
-     *
-     * @param context コマンドのコンテキスト情報
-     * @return コマンドの実行結果
-     */
     override fun execute(context: RuneCommandContext): CommandResult {
         val player = context.playerOrThrow
 

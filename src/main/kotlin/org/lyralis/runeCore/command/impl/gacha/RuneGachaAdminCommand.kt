@@ -55,7 +55,6 @@ class RuneGachaAdminCommand(
         val ticketCost = context.args.getOrNull(3)?.toUIntOrNull() ?: 1u
         val pityThreshold = context.args.getOrNull(4)?.toUIntOrNull() ?: 100u
 
-        // 既存チェック
         if (gachaService.getEventById(id) != null) {
             return CommandResult.Failure.Custom("イベントID '$id' は既に存在します")
         }
@@ -147,11 +146,8 @@ class RuneGachaAdminCommand(
         )
     }
 
-    private fun getAllEvents(): List<GachaEventData> {
-        // アクティブ・非アクティブ両方を取得するため、Repositoryを直接使う必要があるが
-        // 現状はアクティブのみを取得して表示
-        return gachaService.getActiveEvents()
-    }
+    // TODO: アクティブ・非アクティブ両方を取得するため、Repositoryを直接使う必要がある
+    private fun getAllEvents(): List<GachaEventData> = gachaService.getActiveEvents()
 
     override fun suggest(context: SuggestionContext): List<String> =
         when (context.args.size) {

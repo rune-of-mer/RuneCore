@@ -53,18 +53,6 @@ class RuneMenuCommand(
                 title = "メニュー"
                 rows = 3
 
-                /**
-                 *  H - プレイヤー情報
-                 *  P - プレイヤー一覧ページを開く
-                 *  T - プレイ時間を表示
-                 *  S - 設定ページを開く
-                 *  L - レベル情報ページを開く
-                 *  Q - ログアウトページを開く
-                 *  G - ゴミ箱を開く
-                 *  O - ショップを開く
-                 *  W - ワールド移動
-                 *  A - ガチャを開く
-                 */
                 structure {
                     +"T # # # H # # # P"
                     +"# L O A # # W # #"
@@ -73,7 +61,6 @@ class RuneMenuCommand(
 
                 decoration('#', Material.WHITE_STAINED_GLASS_PANE)
 
-                // メニューアイテム定義
                 val menuContents =
                     mapOf(
                         'P' to

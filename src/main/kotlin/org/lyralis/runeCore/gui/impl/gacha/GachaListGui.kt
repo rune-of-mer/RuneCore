@@ -33,7 +33,6 @@ class GachaListGui(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // チケット情報
             item('I') {
                 customItem =
                     Material.PAPER.asGuiItem {

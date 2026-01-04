@@ -18,19 +18,16 @@ class GachaInventoryListener : Listener {
         val player = event.player as? Player ?: return
         val inventory = event.inventory
 
-        // ガチャ結果インベントリかどうかをチェック
         if (!GachaResultGui.isGachaResultInventory(event.view.title())) {
             return
         }
 
-        // 残っているアイテムを取得
         val remainingItems = inventory.contents.filterNotNull()
 
         if (remainingItems.isEmpty()) {
             return
         }
 
-        // アイテムを地面にドロップ
         remainingItems.forEach { itemStack ->
             player.world.dropItemNaturally(player.location, itemStack)
         }
@@ -39,7 +36,6 @@ class GachaInventoryListener : Listener {
             "取り出さなかった ${remainingItems.size} 個のアイテムを足元にドロップしました".infoMessage(),
         )
 
-        // インベントリをクリア
         inventory.clear()
     }
 }

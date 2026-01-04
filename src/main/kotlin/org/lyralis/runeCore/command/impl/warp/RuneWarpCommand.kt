@@ -12,9 +12,6 @@ import org.lyralis.runeCore.domain.money.MoneyService
 import org.lyralis.runeCore.domain.teleport.TeleportCostCalculator
 import org.lyralis.runeCore.domain.teleport.TeleportService
 
-/**
- * /warp - ワープポイントを管理する親コマンド
- */
 @PlayerOnlyCommand
 class RuneWarpCommand(
     warpPointRepository: WarpPointRepository,

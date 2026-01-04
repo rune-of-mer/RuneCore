@@ -197,7 +197,6 @@ class WarpPointRepository {
     ): RepositoryResult<Int> =
         try {
             transaction {
-                // 既存のレコードがあるかチェック
                 val existing =
                     WarpSlots
                         .selectAll()

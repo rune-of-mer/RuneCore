@@ -63,7 +63,6 @@ class WarpPointListGui(
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
             decoration('.', Material.GRAY_STAINED_GLASS_PANE)
 
-            // 情報アイテム
             item('I') {
                 customItem =
                     Material.BOOK.asGuiItem {
@@ -81,7 +80,6 @@ class WarpPointListGui(
 
             val slots = listOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J')
 
-            // ワープポイントを表示
             warpPoints.forEachIndexed { index, warpPoint ->
                 if (index < slots.size) {
                     val location = warpPoint.toLocation(player.server)
@@ -113,7 +111,6 @@ class WarpPointListGui(
                                 return@onClick GuiResult.Silent
                             }
 
-                            // 確認GUIを表示
                             showWarpConfirmation(action.player, warpPoint, cost, loc)
                             GuiResult.Silent
                         }
@@ -121,7 +118,6 @@ class WarpPointListGui(
                 }
             }
 
-            // 空きスロットの表示
             for (i in warpPoints.size until totalSlots.coerceAtMost(slots.size)) {
                 item(slots[i]) {
                     customItem =
@@ -159,7 +155,6 @@ class WarpPointListGui(
 
             decoration('#', Material.BLACK_STAINED_GLASS_PANE)
 
-            // 情報表示
             item('I') {
                 customItem =
                     Material.ENDER_PEARL.asGuiItem {
@@ -177,7 +172,6 @@ class WarpPointListGui(
                     }
             }
 
-            // テレポートボタン
             item('C') {
                 customItem =
                     Material.LIME_WOOL.asGuiItem {
@@ -214,7 +208,6 @@ class WarpPointListGui(
                 }
             }
 
-            // 戻るボタン
             item('D') {
                 customItem =
                     Material.ARROW.asGuiItem {

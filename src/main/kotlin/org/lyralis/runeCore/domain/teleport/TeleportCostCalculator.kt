@@ -21,7 +21,6 @@ class TeleportCostCalculator(
         val isDifferentWorld = from.world?.name != to.world?.name
         val distance =
             if (isDifferentWorld) {
-                // 異なるワールドの場合は座標ベクトルの距離を計算
                 from.toVector().distance(to.toVector())
             } else {
                 from.distance(to)
