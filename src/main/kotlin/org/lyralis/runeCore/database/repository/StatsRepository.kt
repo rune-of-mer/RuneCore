@@ -17,6 +17,10 @@ class StatsRepository {
             kills = this[PlayerStats.kills],
             deaths = this[PlayerStats.deaths],
             mobKills = this[PlayerStats.mobKills],
+            blocksDestroys = this[PlayerStats.blocksDestroys],
+            blocksPlaces = this[PlayerStats.blocksPlaces],
+            loginDays = this[PlayerStats.loginDays],
+            playTimes = this[PlayerStats.playTimes],
             updatedAt = this[PlayerStats.updatedAt],
         )
 
@@ -137,6 +141,27 @@ class StatsRepository {
                 } else {
                     RepositoryResult.NotFound("Player stats not found: $uuid")
                 }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのモブキル数を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とモブキル数
+     */
+    fun getMobKills(uuid: UUID): RepositoryResult<UInt> =
+        try {
+            transaction {
+                PlayerStats
+                    .selectAll()
+                    .where { PlayerStats.uuid eq uuid }
+                    .map { it[PlayerStats.mobKills] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player stats not found: $uuid")
             }
         } catch (e: Exception) {
             RepositoryResult.Error(e)
@@ -311,6 +336,386 @@ class StatsRepository {
                 val updated =
                     PlayerStats.update({ PlayerStats.uuid eq uuid }) {
                         it[deaths] = deaths + amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのブロック破壊数を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とブロック破壊数
+     */
+    fun getBlocksDestroys(uuid: UUID): RepositoryResult<UInt> =
+        try {
+            transaction {
+                PlayerStats
+                    .selectAll()
+                    .where { PlayerStats.uuid eq uuid }
+                    .map { it[PlayerStats.blocksDestroys] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player stats not found: $uuid")
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのブロック破壊数を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定するブロック破壊数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun setBlocksDestroys(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[blocksDestroys] = amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのブロック破壊数を1増加させます．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun incrementBlocksDestroys(uuid: UUID): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[blocksDestroys] = blocksDestroys + 1u
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーにブロック破壊数を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加するブロック破壊数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun addBlocksDestroys(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[blocksDestroys] = blocksDestroys + amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのブロック設置数を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とブロック設置数
+     */
+    fun getBlocksPlaces(uuid: UUID): RepositoryResult<UInt> =
+        try {
+            transaction {
+                PlayerStats
+                    .selectAll()
+                    .where { PlayerStats.uuid eq uuid }
+                    .map { it[PlayerStats.blocksPlaces] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player stats not found: $uuid")
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのブロック設置数を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定するブロック設置数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun setBlocksPlaces(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[blocksPlaces] = amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのブロック設置数を1増加させます．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun incrementBlocksPlaces(uuid: UUID): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[blocksPlaces] = blocksPlaces + 1u
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーにブロック設置数を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加するブロック設置数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun addBlocksPlaces(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[blocksPlaces] = blocksPlaces + amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーの累計ログイン日数を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] と累計ログイン日数
+     */
+    fun getLoginDays(uuid: UUID): RepositoryResult<UInt> =
+        try {
+            transaction {
+                PlayerStats
+                    .selectAll()
+                    .where { PlayerStats.uuid eq uuid }
+                    .map { it[PlayerStats.loginDays] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player stats not found: $uuid")
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーの累計ログイン日数を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定する累計ログイン日数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun setLoginDays(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[loginDays] = amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーの累計ログイン日数を1増加させます．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun incrementLoginDays(uuid: UUID): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[loginDays] = loginDays + 1u
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーに累計ログイン日数を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加する累計ログイン日数
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun addLoginDays(
+        uuid: UUID,
+        amount: UInt,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[loginDays] = loginDays + amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのプレイ時間を取得します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @return データベース操作の結果を示す [RepositoryResult] とプレイ時間
+     */
+    fun getPlayTimes(uuid: UUID): RepositoryResult<ULong> =
+        try {
+            transaction {
+                PlayerStats
+                    .selectAll()
+                    .where { PlayerStats.uuid eq uuid }
+                    .map { it[PlayerStats.playTimes] }
+                    .singleOrNull()
+                    ?.let { RepositoryResult.Success(it) }
+                    ?: RepositoryResult.NotFound("Player stats not found: $uuid")
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーのプレイ時間を設定します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 設定するプレイ時間
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun setPlayTimes(
+        uuid: UUID,
+        amount: ULong,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[playTimes] = amount
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                if (updated > 0) {
+                    RepositoryResult.Success(Unit)
+                } else {
+                    RepositoryResult.NotFound("Player stats not found: $uuid")
+                }
+            }
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+
+    /**
+     * 指定された UUID のプレイヤーにプレイ時間を追加します．
+     *
+     * @param uuid プレイヤーの UUID
+     * @param amount 追加するプレイ時間
+     * @return データベース操作の結果を示す [RepositoryResult]
+     */
+    fun addPlayTimes(
+        uuid: UUID,
+        amount: ULong,
+    ): RepositoryResult<Unit> =
+        try {
+            transaction {
+                val updated =
+                    PlayerStats.update({ PlayerStats.uuid eq uuid }) {
+                        it[playTimes] = playTimes + amount
                         it[updatedAt] = LocalDateTime.now()
                     }
                 if (updated > 0) {

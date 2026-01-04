@@ -11,20 +11,15 @@ import org.lyralis.runeCore.component.bossbar.BossBarManager
 import org.lyralis.runeCore.component.message.errorMessage
 import org.lyralis.runeCore.component.message.infoMessage
 import org.lyralis.runeCore.component.message.systemMessage
-import org.lyralis.runeCore.database.repository.PlayerRepository
-import org.lyralis.runeCore.database.repository.RepositoryResult
+import org.lyralis.runeCore.domain.player.PlayerService
 import java.time.Duration
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Logger
 
 class ExperienceService(
-    private val playerRepository: PlayerRepository,
+    private val playerService: PlayerService,
     private val logger: Logger,
 ) {
-    private val experienceCache = ConcurrentHashMap<UUID, ULong>()
-    private val levelCache = ConcurrentHashMap<UUID, UInt>()
-
     /**
      * 指定したプレイヤーに経験値を付与します．
      *
@@ -49,35 +44,24 @@ class ExperienceService(
         }
 
         val uuid = player.uniqueId
-        val currentExperience = getExperience(uuid)
+        val currentExperience = playerService.getExperience(uuid)
         val newExperience = currentExperience + amount
-        val oldLevel = getLevel(uuid)
+        val oldLevel = playerService.getLevel(uuid)
         val newLevel = ExperienceCalculator.calculateLevel(newExperience)
 
-        return when (val result = playerRepository.addExperience(uuid, amount)) {
-            is RepositoryResult.Success -> {
-                if (newLevel != oldLevel) {
-                    playerRepository.setLevel(uuid, newLevel)
-                }
-
-                experienceCache[uuid] = newExperience
-                levelCache[uuid] = newLevel
-
-                BossBarManager.update(player)
-                notifyGetExperience(player, amount, newLevel, oldLevel)
-
-                newExperience
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("Player stats not found for ${player.name}")
-                null
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to grant experience to ${player.name}: ${result.exception.message}")
-                null
-            }
-            else -> null
+        if (!playerService.addExperience(uuid, amount)) {
+            logger.warning("Failed to grant experience to ${player.name}")
+            return null
         }
+
+        if (newLevel != oldLevel) {
+            playerService.setLevel(uuid, newLevel)
+        }
+
+        BossBarManager.update(player)
+        notifyGetExperience(player, amount, newLevel, oldLevel)
+
+        return newExperience
     }
 
     /**
@@ -86,15 +70,7 @@ class ExperienceService(
      * @param uuid 対象の UUID
      * @return 保存されているレベル
      */
-    fun getLevel(uuid: UUID): UInt {
-        levelCache[uuid]?.let { return it }
-
-        val experience = getExperience(uuid)
-        val level = ExperienceCalculator.calculateLevel(experience)
-
-        levelCache[uuid] = level
-        return level
-    }
+    fun getLevel(uuid: UUID): UInt = playerService.getLevel(uuid)
 
     /**
      * 現在の総経験値を取得する
@@ -102,76 +78,26 @@ class ExperienceService(
      * @param uuid UUID
      * @return 現在の総経験値
      */
-    fun getExperience(uuid: UUID): ULong {
-        experienceCache[uuid]?.let { return it }
-
-        return when (val result = playerRepository.findByUUID(uuid)) {
-            is RepositoryResult.Success -> {
-                val experience = result.data.experience
-                experienceCache[uuid] = experience
-                levelCache[uuid] = result.data.level
-                experience
-            }
-            is RepositoryResult.NotFound -> {
-                logger.warning("No experience found for $uuid")
-                0uL
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("An error occurred while fetching experience for $uuid")
-                0uL
-            }
-            else -> 0uL
-        }
-    }
+    fun getExperience(uuid: UUID): ULong = playerService.getExperience(uuid)
 
     /**
      * 現在の総経験値を読み込みます
      *
      * @param uuid UUID
      */
-    fun loadExperience(uuid: UUID) {
-        when (val result = playerRepository.findByUUID(uuid)) {
-            is RepositoryResult.Success -> {
-                val data = result.data
-                experienceCache[uuid] = data.experience
-                levelCache[uuid] = data.level
-                logger.info("Loaded experience for $uuid: ${data.experience} EXP, Level ${data.level}")
-            }
-            is RepositoryResult.NotFound -> {
-                logger.info("Player stats not found for $uuid, will be created on first write")
-                experienceCache[uuid] = 0uL
-                levelCache[uuid] = 1u
-            }
-            is RepositoryResult.Error -> {
-                logger.severe("Failed to load experience for $uuid: ${result.exception.message}")
-                experienceCache[uuid] = 0uL
-                levelCache[uuid] = 1u
-            }
-            else -> {
-                logger.warning("Unexpected result when loading experience for $uuid")
-                experienceCache[uuid] = 0uL
-                levelCache[uuid] = 1u
-            }
-        }
-    }
+    fun loadExperience(uuid: UUID) = playerService.loadPlayerData(uuid)
 
     /**
      * キャッシュを初期化します
      *
      * @param uuid UUID
      */
-    fun clearCache(uuid: UUID) {
-        experienceCache[uuid] = 0uL
-        levelCache[uuid] = 1u
-    }
+    fun clearCache(uuid: UUID) = playerService.clearCache(uuid)
 
     /**
      * 全てのキャッシュを初期化します
      */
-    fun clearAllCache() {
-        experienceCache.clear()
-        levelCache.clear()
-    }
+    fun clearAllCache() = playerService.clearAllCache()
 
     private fun notifyGetExperience(
         player: Player,
