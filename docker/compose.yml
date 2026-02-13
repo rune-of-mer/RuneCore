@@ -56,7 +56,7 @@ services:
     stdin_open: true
 
   mariadb:
-    image: mariadb:12.1.2
+    image: mariadb:12.2.2
     container_name: runecore-mariadb
     ports:
       - "3306:3306"
