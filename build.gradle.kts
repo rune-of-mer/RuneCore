@@ -28,7 +28,7 @@ dependencies {
     compileOnly("xyz.xenondevs.invui:invui:1.49")
     compileOnly("xyz.xenondevs.invui:invui-kotlin:1.49")
 
-    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.7")
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.8")
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
